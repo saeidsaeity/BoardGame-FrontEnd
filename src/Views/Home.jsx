@@ -2,6 +2,8 @@ import { Link } from "react-router-dom"
 import Header from "./Header"
 import useSound from 'use-sound';
 import opening from '/GameSound1.mp3' 
+import { MdOutlineMusicOff } from "react-icons/md";
+import { SlMusicTone } from "react-icons/sl";
 import { useEffect, useState } from "react";
 function Home() {
     const [playSound] = useSound('/GameSound1.mp3');
@@ -16,6 +18,7 @@ function Home() {
             console.log("Delayed for 1 second.");
           }, "5000");
         document.querySelector('audio').play()
+        document.querySelector('audio').volume = 0.5
         }
         else{
             document.querySelector('audio').pause()
@@ -33,7 +36,7 @@ function Home() {
         <p>rules</p>
         <p>how to play</p>
         <p>project description: pt3 games</p>
-        <button onClick={toggleMute}>{muted ? 'Unmute' : 'Mute'}</button>
+        <button onClick={toggleMute}>{muted ? <MdOutlineMusicOff /> : <SlMusicTone />}</button>
         <audio autoPlay={!muted}>
             <source src="/GameSound1.mp3" type="audio/mpeg"/>
 
