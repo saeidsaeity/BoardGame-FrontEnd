@@ -27,9 +27,11 @@ function GameBoard() {
 
     return(
         <div className={styles.gameBoard}>
-            <Canvas camera={{ fov: 60, position: [0, 5, 10] }}>
-                <ambientLight/>
-                <directionalLight />
+            <Canvas shadows camera={{ fov: 60, position: [0, 5, 10] }}>
+                <ambientLight intensity={Math.PI / 4}/>
+                <directionalLight castShadow intensity={5} position={ [-2,3,4] } shadow-normalBias={0.04}>
+{/* +                   <orthographicCamera attach="shadow-camera" args={[-10, 10, 10, -10]} /> */}
++               </directionalLight>
                 <OrbitControls 
                     minDistance={5} 
                     maxDistance={20} 

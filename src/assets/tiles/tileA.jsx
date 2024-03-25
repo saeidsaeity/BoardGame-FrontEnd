@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useGLTF } from '@react-three/drei'
+import { ContactShadows, useGLTF } from '@react-three/drei'
 
 export default function TileA(props) {
   const { nodes, materials } = useGLTF('/tileA.glb')
