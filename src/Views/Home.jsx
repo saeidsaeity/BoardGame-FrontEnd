@@ -32,6 +32,8 @@ function Home() {
         <h2>Host Game</h2>
         </Link>
         <Link to ='/join'>Join game</Link>
+        <br></br>
+        <Link to ='/gameboard'>gameboard(placeholder)</Link>
         <p>game description</p>
         <p>rules</p>
         <p>how to play</p>
