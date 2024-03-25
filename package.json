@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "leva": "^0.9.35",
+    "playroomkit": "^0.0.70",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",
+    "three": "^0.162.0",
     "use-sound": "^4.0.1"
   },
   "devDependencies": {

@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Header from "./Header"
 import useSound from 'use-sound';
 import opening from '/GameSound1.mp3' 
 import { MdOutlineMusicOff } from "react-icons/md";
 import { SlMusicTone } from "react-icons/sl";
 import { useEffect, useState } from "react";
+import { insertCoin } from "playroomkit";
 function Home() {
+    const navigate=useNavigate()
     const [playSound] = useSound('/GameSound1.mp3');
     const [muted, setMuted] = useState(true);
     const toggleMute = () => {
@@ -24,13 +26,20 @@ function Home() {
             document.querySelector('audio').pause()
         }
     },[muted])
+
+    function hostGameHandler(){
+        insertCoin().then(()=>{
+            navigate('/gameboard')
+          
+
+        })
+    }
     return (
         <>
         <Header/>
         <h1>Welcome to Citizens of Newcastle</h1>
-        <Link to ="/lobby">
-        <h2>Host Game</h2>
-        </Link>
+    
+        <button onClick={hostGameHandler}>HOST</button>
         <Link to ='/join'>Join game</Link>
         <br></br>
         <Link to ='/gameboard'>gameboard(placeholder)</Link>
