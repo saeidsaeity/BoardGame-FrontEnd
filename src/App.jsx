@@ -3,7 +3,7 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import Home from './Views/Home';
 import Login from './Views/Login';
-import GameBoard from './Views/GameBoard';
+import GameBoard from './Views/GameBoard/GameBoard';
 
 function App() {
   
