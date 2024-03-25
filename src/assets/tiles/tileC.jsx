@@ -3,15 +3,17 @@ import { useGLTF } from '@react-three/drei'
 
 export default function TileC(props) {
   const { nodes, materials } = useGLTF('/tileC.glb')
+  console.log(materials);
   return (
     <group {...props} dispose={null}>
       <mesh
         castShadow
         receiveShadow
         geometry={nodes.Cube001.geometry}
-        material={materials['Material.004']}
+        material={materials['Wood.010']}
         position={[0, 0.35, 0]}
-        scale={[1, 0.1, 1]}>
+        scale={[1, 0.1, 1]}
+        >
         <mesh
           castShadow
           receiveShadow

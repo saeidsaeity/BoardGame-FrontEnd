@@ -3,6 +3,7 @@ import { useGLTF } from '@react-three/drei'
 
 export default function TileD(props) {
   const { nodes, materials } = useGLTF('/tileD.glb')
+  console.log(materials, 'tileD');
   return (
     <group {...props} dispose={null}>
       <group position={[0, 0.35, 0]} scale={[1, 0.1, 1]}>
@@ -16,7 +17,7 @@ export default function TileD(props) {
           castShadow
           receiveShadow
           geometry={nodes.Cube017_1.geometry}
-          material={materials['Material.004']}
+          material={materials['Wood.011']}
         />
         <mesh
           castShadow
