@@ -1,19 +1,23 @@
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-export default function TileC(props) {
+const TileC = React.forwardRef((props, ref) => {
   const { nodes, materials } = useGLTF('/tileC.glb')
-  
   return (
     <group {...props} dispose={null}>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Cube001.geometry}
-        material={materials['Wood.010']}
-        position={[0, 0.35, 0]}
-        scale={[1, 0.1, 1]}
-        >
+      <group position={[0, 0.35, 0]} scale={[1, 0.1, 1]}>
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Cube001_1.geometry}
+          material={materials.City_floor}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Cube001_2.geometry}
+          material={materials.City_edge}
+        />
         <mesh
           castShadow
           receiveShadow
@@ -393,9 +397,11 @@ export default function TileC(props) {
             material={materials['Wood_Light.003']}
           />
         </group>
-      </mesh>
+      </group>
     </group>
   )
-}
+})
 
 useGLTF.preload('/tileC.glb')
+
+export default TileC
