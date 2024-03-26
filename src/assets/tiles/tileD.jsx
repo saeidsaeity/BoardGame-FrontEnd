@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-export default function TileD(props) {
+const TileD = React.forwardRef((props, ref) => {
   const { nodes, materials } = useGLTF('/tileD.glb')
  
   return (
@@ -456,6 +456,8 @@ export default function TileD(props) {
       </group>
     </group>
   )
-}
+})
 
 useGLTF.preload('/tileD.glb')
+
+export default TileD
