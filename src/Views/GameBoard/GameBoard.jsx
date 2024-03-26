@@ -44,7 +44,7 @@ const[newTilePosition,setnewTilePosition]=useState(draggedTileRef.current)
     const newPosition=snapToGrid(currentPosition)
      console.log(newPosition,'newpos');
     
-    draggedTileRef.current.position.set(newPosition.x,newPosition.y,newPosition.z)
+    draggedTileRef.current.position.set( newPosition.x,newPosition.y,newPosition.z)
     const {x,y,z}=draggedTileRef.current.position
     setnewTilePosition([x,y,z])
     console.log(newTilePosition,'new tile pos');
@@ -79,6 +79,8 @@ const[newTilePosition,setnewTilePosition]=useState(draggedTileRef.current)
           }
           }
           onDrag={(localMatrix) => {
+            console.log(localMatrix,'local');
+           
             setCurrentPosition({x:localMatrix.elements[12],y:localMatrix.elements[13],z:localMatrix.elements[14]})
             // console.log(
             //   localMatrix.elements[12],
