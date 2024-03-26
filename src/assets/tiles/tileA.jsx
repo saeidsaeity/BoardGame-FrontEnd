@@ -1,10 +1,11 @@
 import React, { useRef } from 'react'
 import { ContactShadows, useGLTF } from '@react-three/drei'
 
-export default function TileA(props) {
+const TileA= React.forwardRef((props, ref) => {
   const { nodes, materials } = useGLTF('/tileA.glb')
+  
   return (
-    <group {...props} dispose={null}>
+    <group ref={ref} {...props}  dispose={null}>
       <group position={[0, 0.45, 0]} scale={0.2}>
         <mesh
           castShadow
@@ -49,6 +50,6 @@ export default function TileA(props) {
       />
     </group>
   )
-}
-
+})
+export default TileA
 useGLTF.preload('/tileA.glb')

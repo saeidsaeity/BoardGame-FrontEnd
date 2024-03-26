@@ -3,7 +3,7 @@ import { useGLTF } from '@react-three/drei'
 
 export default function TileC(props) {
   const { nodes, materials } = useGLTF('/tileC.glb')
-  console.log(materials);
+  
   return (
     <group {...props} dispose={null}>
       <mesh
