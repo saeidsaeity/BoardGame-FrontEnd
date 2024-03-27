@@ -1,7 +1,9 @@
-import * as THREE from "three";
+
 import { useEffect, useRef, useState } from "react";
-import { DragControls, OrbitControls } from "@react-three/drei";
+import { DragControls, OrbitControls, Sky } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { Perf } from 'r3f-perf'
+import { Physics, RigidBody } from '@react-three/rapier'
 
 // asset loader
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -25,90 +27,88 @@ import TileL from "../../assets/tiles/tileL.jsx";
 
 //test
 import { tiledata } from "./testboarddata.js";
+import { useControls } from "leva";
 
 function GameBoard() {
-  const [enableRotate, setEnableRotate] = useState(true);
   const tileScale = [0.94, 0.94, 0.94];
   const tileSize = 2;
-
+  
   const [boardGameMatrix, setBoardGameMatrix] = useState(
     Array(11).fill([[], [], [], [], [], [], [], [], [], [], []], 0, 11)
-  );
+    );
+    
+
+  // CAMERA  
+  const [enableRotate, setEnableRotate] = useState(true);
 
   // TILE DRAGGING
-  console.log(boardGameMatrix);
   const [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0, z: 0 });
   const [placedPosition, setPlacedPosition] = useState([0,0,2]);
+
   const draggedTileRef = useRef({ localMatrix: [] });
+  const tile = useRef()
   const starterTileRef = useRef({ position: [0, 0, 0] });
 
+  const { sunPosition } = useControls('sky', {
+    sunPosition: { value: [ 1, 2, 3 ]}
+  })
+
+  const tileJump = () => {
+    console.log('jump');
+    tile.current.applyImpulse({ x: 0, y: 3, z: 0})
+    tile.current.applyTorqueImpulse({ x: 0, y: 2, z: 0})
+  }
+  
   //rotatiom
   const [tileRotation, setTileRotation] = useState(0);
-//   useEffect(() => {
-//     const useEffectPosition = snapToGrid(currentPosition);
-//     console.log(currentPosition, "currentPosition EFFECT");
-//     console.log(useEffectPosition, "useEffectPosition");
-//     // console.log(draggedTileRef.current.position)
-//     console.log(tiledata, "tiledata");
-//     setPlacedPosition([
-//       useEffectPosition.x,
-//       useEffectPosition.y,
-//       useEffectPosition.z,
-//     ]);
-//     console.log(useEffectPosition);
-   
-//   }, [currentPosition]);
   useEffect(()=>{
-   
-        setBoardGameMatrix((currBoard) => {
-          
-             const newboard = JSON.parse(JSON.stringify(currBoard))
-           
-            newboard[placedPosition[5]]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
-            
-            tiledata.orientation=tileRotation*(180/Math.PI)
-            
-            newboard[5][5] = tiledata;
-            return newboard;
-          });
-     
+    setBoardGameMatrix((currBoard) => {
+      
+          const newboard = JSON.parse(JSON.stringify(currBoard))
+        
+        newboard[placedPosition[5]]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
+        
+        tiledata.orientation=tileRotation*(180/Math.PI)
+        
+        newboard[5][5] = [tiledata];
+        return newboard;
+      });
   },[])
+
+
   const snapToGrid = (currentPosition) => {
-    // console.log(currentPosition.x, "snaptoGrid curr");
     return {
       x: Math.round(currentPosition.x / tileSize) * tileSize,
       y: 0,
       z: Math.round(currentPosition.z / tileSize) * tileSize,
     };
   };
+
+
   const confirmTilePlacement = ()=>{
     const snappedPosition = snapToGrid(currentPosition);
-    
     setPlacedPosition([
         snappedPosition.x,
         snappedPosition.y,
         snappedPosition.z,
     ]);
     
-        setBoardGameMatrix((currBoard) => {
-          console.log('here');
-           const newboard = JSON.parse(JSON.stringify(currBoard))
-          
-          if (newboard[placedPosition[0]/2+5] === undefined) {
-          newboard[placedPosition[0]/2+5]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
-          }
-          tiledata.orientation=tileRotation*(180/Math.PI)
-          console.log(placedPosition[0]);
-          newboard[placedPosition[0]/2+5][placedPosition[2]/2+5] = tiledata;
-          return newboard;
-        });
-      
+    setBoardGameMatrix((currBoard) => {
+      const newboard = JSON.parse(JSON.stringify(currBoard))
+      if (newboard[placedPosition[0]/2+5] === undefined) {
+        newboard[placedPosition[0]/2+5]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
+      }
+      tiledata.orientation=tileRotation*(180/Math.PI)
+      newboard[placedPosition[0]/2+5][placedPosition[2]/2+5] = tiledata;
+      console.log(newboard, "newboard");
+      return newboard;
+    });
   }
 
-  const handleDragStart = () => {
-    setEnableRotate(false);
-  };
+  console.log("rendered");
+  console.log(boardGameMatrix);
 
+  // JSX BEGINS //
   return (
     <div className={styles.gameBoard}>
       <button className={styles.button}
@@ -120,20 +120,41 @@ function GameBoard() {
       >
         Press to Rotate
       </button>
-      <button onClick={()=>{confirmTilePlacement()}}className={styles.confirmbutton}>Confirm Tile</button>
-      <Canvas shadows camera={{ fov: 60, position: [0, 5, 10] }}>
-        <ambientLight intensity={0.5} />
+
+      <button 
+        onClick={()=>{
+          // confirmTilePlacement()
+          tileJump()
+        }}
+        className={styles.confirmbutton}
+      >
+        Confirm Tile
+      </button>
+      
+      <Canvas 
+        shadows 
+        camera={{ fov: 60, position: [0, 5, 10] }}
+      >
+        <Physics>
+        
+        <ambientLight intensity={0.1} />
+
+        <Sky sunPosition={sunPosition}/>
+
         <directionalLight
           castShadow
-          intensity={5}
-          position={[-2, 3, 4]}
+          intensity={3}
+          position={sunPosition}
           shadow-normalBias={0.04}
         />
+
         <OrbitControls
           minDistance={5}
           maxDistance={20}
           enableRotate={enableRotate}
+          maxPolarAngle = { ( Math.PI / 2 ) - 0.1}
         />
+
         <DragControls
           autoTransform={true}
           axisLock={"y"}
@@ -151,7 +172,6 @@ function GameBoard() {
             };
           }}
           onDragEnd={() => {
-            console.log(draggedTileRef.current.localMatrix, "local");
             setEnableRotate(true);
             setCurrentPosition(draggedTileRef.current.localMatrix);
           }}
@@ -163,21 +183,38 @@ function GameBoard() {
             }
           }}
         >
+          
+        <RigidBody ref={tile} >
           <TileA
             position={placedPosition}
             scale={tileScale}
             ref={draggedTileRef}
             rotation-y={tileRotation}
+            onCollisionExit={ () => { console.log('collision exit') } }
+            onSleep = { () => { console.log('sleep') } }
+            onWake = { () => { console.log( 'wake' ) } }
           />
+        </RigidBody>
+
         </DragControls>
-{/* 
-        <TileB
-          position={[4, 0, -2]}
-          scale={tileScale}
-          rotation-y={Math.PI * 1}
-        />
-        <TileC position={[2, 0, 0]} scale={tileScale} rotation-y={Math.PI} /> */}
-        <TileD position={[0, 0, 0]} scale={tileScale} ref={starterTileRef} />
+        
+        <RigidBody>
+          <TileD position={[0, 4, 0]} scale={tileScale} ref={starterTileRef} />
+        </RigidBody>
+
+        <RigidBody type="fixed">
+          <mesh receiveShadow position-y={ -0.3 } >
+            <boxGeometry args={ [ 25, 0.5, 25 ] } />
+            <meshStandardMaterial color="#8f4111" />
+          </mesh>
+        </RigidBody>
+
+        </Physics>
+
+        
+
+
+
         {/* <TileE position={[2, 0, 2]} scale={tileScale} />
         <TileF
           position={[2, 0, -2]}
@@ -211,8 +248,12 @@ function GameBoard() {
           rotation-y={Math.PI * 0.5}
         /> */}
 
+
+        {/* HELPERS */}
+        <Perf position="top-left"/>
         <axesHelper args={[5]} />
         <gridHelper args={[50, 25, "black", "red"]} />
+
       </Canvas>
     </div>
   );
