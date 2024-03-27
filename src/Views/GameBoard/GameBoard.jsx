@@ -23,26 +23,47 @@ import TileJ from '../../assets/tiles/tileJ.jsx'
 import TileK from '../../assets/tiles/tileK.jsx'
 import TileL from '../../assets/tiles/tileL.jsx'
 
+//test
+import { tiledata } from './testboarddata.js'
+
 function GameBoard() {
     
     const [enableRotate, setEnableRotate] = useState(true)
     const tileScale = [0.94, 0.94, 0.94]
     const tileSize = 2
-    
+
+    const[boardGameMatrix,setBoardGameMatrix]=useState(Array(11).fill([[],[],[],[],[],[],[],[],[],[],[]],0,11))
+  
+
     // TILE DRAGGING
-    const [currentPosition, setCurrentPosition] = useState([0, 0, -2])
+    console.log(boardGameMatrix);
+    const [currentPosition, setCurrentPosition] = useState({x:0,y:0,z:2})
     const [placedPosition, setPlacedPosition] = useState([])
     const draggedTileRef = useRef({localMatrix: []})
     const starterTileRef = useRef({ position: [ 0, 0, 0]})
 
     useEffect(() => {
         const useEffectPosition = snapToGrid(currentPosition)
-        console.log(currentPosition, "currentPosition EFFECT");
-        console.log(useEffectPosition, "useEffectPosition");
+        // console.log(currentPosition, "currentPosition EFFECT");
+        // console.log(useEffectPosition, "useEffectPosition");
         // console.log(draggedTileRef.current.position)
+        console.log(tiledata,'tiledata');
         setPlacedPosition([useEffectPosition.x, useEffectPosition.y, useEffectPosition.z])
+        console.log(useEffectPosition);
+        if(useEffectPosition){
+       
+        
+        
+        setBoardGameMatrix((currBoard)=>{
+           const newboard=[...currBoard]
+          
+           newboard[useEffectPosition.x+5]=[[],[],[],[],[],[],[],[],[],[],[]]
+           newboard[useEffectPosition.x+5][useEffectPosition.z+5]=tiledata
+           return newboard
+        })
+    }
     }, [currentPosition])
-
+    
     const snapToGrid = (currentPosition) => {
         // console.log(currentPosition.x, "snaptoGrid curr");
         return {
@@ -56,8 +77,7 @@ function GameBoard() {
         setEnableRotate(false);
     };
 
-    console.log(draggedTileRef, "RENDER");
-    console.log(placedPosition, "placedPost");
+  
 
     return (
         <div className={styles.gameBoard}>
@@ -91,6 +111,7 @@ function GameBoard() {
                 }}
                 
                 onDragEnd={() => {
+                    console.log(draggedTileRef.current.localMatrix,'local');
                     setEnableRotate(true)
                     setCurrentPosition(draggedTileRef.current.localMatrix)
                 }}
