@@ -1,9 +1,8 @@
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-export default function TileD(props) {
+const TileD = React.forwardRef((props, ref) => {
   const { nodes, materials } = useGLTF('/tileD.glb')
-  console.log(materials, 'tileD');
   return (
     <group {...props} dispose={null}>
       <group position={[0, 0.35, 0]} scale={[1, 0.1, 1]}>
@@ -11,20 +10,74 @@ export default function TileD(props) {
           castShadow
           receiveShadow
           geometry={nodes.Cube017.geometry}
-          material={materials['Material.001']}
+          material={materials.Grass}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Cube017_1.geometry}
-          material={materials['Wood.011']}
+          material={materials.City_floor}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodes.Cube017_2.geometry}
-          material={materials['Stone_Light.001']}
+          material={materials.Road}
         />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Cube017_3.geometry}
+          material={materials.City_edge}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Cube017_4.geometry}
+          material={materials.Grass_edge}
+        />
+        <group position={[-0.183, 1.002, -0.483]} rotation={[0, 0.374, 0]} scale={[0.3, 3, 0.3]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube051.geometry}
+            material={materials['Wood.013']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube051_1.geometry}
+            material={materials.Metal_Light}
+          />
+        </group>
+        <group position={[-0.209, 1.044, -0.516]} rotation={[0, 1.502, 0]} scale={[0.3, 3, 0.3]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001.geometry}
+            material={materials.Wood_Light}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001_1.geometry}
+            material={materials['Wood.012']}
+          />
+        </group>
+        <group position={[-0.161, 1.044, -0.515]} rotation={[0, 0.374, 0]} scale={[0.3, 3, 0.3]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube052.geometry}
+            material={materials.Wood_Light}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube052_1.geometry}
+            material={materials['Wood.012']}
+          />
+        </group>
         <mesh
           castShadow
           receiveShadow
@@ -199,7 +252,7 @@ export default function TileD(props) {
             material={materials['Stone.006']}
           />
         </group>
-        <group position={[-0.529, 0.882, 0.607]} scale={[0.3, 3, 0.3]}>
+        <group position={[-0.388, 0.882, 0.521]} scale={[0.3, 3, 0.3]}>
           <mesh
             castShadow
             receiveShadow
@@ -213,7 +266,7 @@ export default function TileD(props) {
             material={materials.Green}
           />
         </group>
-        <group position={[-0.654, 0.847, 0.51]} scale={[0.3, 3, 0.3]}>
+        <group position={[-0.513, 0.847, 0.424]} scale={[0.3, 3, 0.3]}>
           <mesh
             castShadow
             receiveShadow
@@ -227,7 +280,7 @@ export default function TileD(props) {
             material={materials.Green}
           />
         </group>
-        <group position={[-0.565, 0.882, 0.785]} scale={[0.3, 3, 0.3]}>
+        <group position={[-0.423, 0.882, 0.698]} scale={[0.3, 3, 0.3]}>
           <mesh
             castShadow
             receiveShadow
@@ -241,7 +294,7 @@ export default function TileD(props) {
             material={materials.Green}
           />
         </group>
-        <group position={[-0.654, 0.847, 0.654]} scale={[0.3, 3, 0.3]}>
+        <group position={[-0.513, 0.847, 0.567]} scale={[0.3, 3, 0.3]}>
           <mesh
             castShadow
             receiveShadow
@@ -255,7 +308,7 @@ export default function TileD(props) {
             material={materials.Green}
           />
         </group>
-        <group position={[-0.697, 0.882, 0.835]} scale={[0.3, 3, 0.3]}>
+        <group position={[-0.555, 0.882, 0.749]} scale={[0.3, 3, 0.3]}>
           <mesh
             castShadow
             receiveShadow
@@ -269,7 +322,7 @@ export default function TileD(props) {
             material={materials.Green}
           />
         </group>
-        <group position={[-0.786, 0.847, 0.706]} scale={[0.3, 3, 0.3]}>
+        <group position={[-0.644, 0.847, 0.62]} scale={[0.3, 3, 0.3]}>
           <mesh
             castShadow
             receiveShadow
@@ -283,7 +336,7 @@ export default function TileD(props) {
             material={materials.Green}
           />
         </group>
-        <group position={[-0.841, 0.882, 0.571]} scale={[0.3, 3, 0.3]}>
+        <group position={[-0.7, 0.882, 0.485]} scale={[0.3, 3, 0.3]}>
           <mesh
             castShadow
             receiveShadow
@@ -297,7 +350,7 @@ export default function TileD(props) {
             material={materials.Green}
           />
         </group>
-        <group position={[-0.822, 0.847, 0.431]} scale={[0.3, 3, 0.3]}>
+        <group position={[-0.68, 0.847, 0.344]} scale={[0.3, 3, 0.3]}>
           <mesh
             castShadow
             receiveShadow
@@ -309,6 +362,20 @@ export default function TileD(props) {
             receiveShadow
             geometry={nodes.Cylinder011_1.geometry}
             material={materials.Green}
+          />
+        </group>
+        <group position={[-0.163, 0.882, -0.59]} rotation={[0, 0.374, 0]} scale={[0.3, 3, 0.3]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cylinder034.geometry}
+            material={materials['Wood.004']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cylinder034_1.geometry}
+            material={materials['Green.001']}
           />
         </group>
         <group position={[0.559, 0.915, -0.586]} rotation={[0, 0.755, 0]} scale={[0.4, 3.3, 0.45]}>
@@ -456,6 +523,8 @@ export default function TileD(props) {
       </group>
     </group>
   )
-}
+})
 
 useGLTF.preload('/tileD.glb')
+
+export default TileD
