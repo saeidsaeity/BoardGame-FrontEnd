@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { useEffect, useRef, useState } from 'react'
 import { DragControls, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
+import { UI } from './UI.jsx'
+import { GameEngineProvider } from '../../Context/useGameEngine.jsx'
 
 // asset loader
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js'
@@ -60,7 +62,9 @@ function GameBoard() {
     console.log(placedPosition, "placedPost");
 
     return (
+        <GameEngineProvider>
         <div className={styles.gameBoard}>
+        <UI/>
         <Canvas shadows camera={{ fov: 60, position: [0, 5, 10] }}>
             <ambientLight intensity={0.5} />
             <directionalLight
@@ -122,6 +126,7 @@ function GameBoard() {
             <gridHelper args={[50, 25, 'black', 'red']} />
         </Canvas>
         </div>
+        </GameEngineProvider>
     );
 }
 
