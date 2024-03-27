@@ -38,40 +38,41 @@ function GameBoard() {
   // TILE DRAGGING
   console.log(boardGameMatrix);
   const [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0, z: 0 });
-  const [placedPosition, setPlacedPosition] = useState([]);
+  const [placedPosition, setPlacedPosition] = useState([0,0,2]);
   const draggedTileRef = useRef({ localMatrix: [] });
   const starterTileRef = useRef({ position: [0, 0, 0] });
 
   //rotatiom
   const [tileRotation, setTileRotation] = useState(0);
-  useEffect(() => {
-    const useEffectPosition = snapToGrid(currentPosition);
-    console.log(currentPosition, "currentPosition EFFECT");
-    console.log(useEffectPosition, "useEffectPosition");
-    // console.log(draggedTileRef.current.position)
-    console.log(tiledata, "tiledata");
-    setPlacedPosition([
-      useEffectPosition.x,
-      useEffectPosition.y,
-      useEffectPosition.z,
-    ]);
-    console.log(useEffectPosition);
-    if (useEffectPosition) {
-      setBoardGameMatrix((currBoard) => {
-        console.log('here');
-         const newboard = JSON.parse(JSON.stringify(currBoard))
-        
-        if (newboard[useEffectPosition.x+5] === undefined) {
-        newboard[useEffectPosition.x+5]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
-        }
-        tiledata.orientation=tileRotation*(180/Math.PI)
-        console.log(useEffectPosition.x);
-        newboard[useEffectPosition.x+5][useEffectPosition.z+5] = tiledata;
-        return newboard;
-      });
-    }
-  }, [currentPosition]);
-
+//   useEffect(() => {
+//     const useEffectPosition = snapToGrid(currentPosition);
+//     console.log(currentPosition, "currentPosition EFFECT");
+//     console.log(useEffectPosition, "useEffectPosition");
+//     // console.log(draggedTileRef.current.position)
+//     console.log(tiledata, "tiledata");
+//     setPlacedPosition([
+//       useEffectPosition.x,
+//       useEffectPosition.y,
+//       useEffectPosition.z,
+//     ]);
+//     console.log(useEffectPosition);
+   
+//   }, [currentPosition]);
+  useEffect(()=>{
+   
+        setBoardGameMatrix((currBoard) => {
+          
+             const newboard = JSON.parse(JSON.stringify(currBoard))
+           
+            newboard[placedPosition[5]]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
+            
+            tiledata.orientation=tileRotation*(180/Math.PI)
+            
+            newboard[5][5] = tiledata;
+            return newboard;
+          });
+     
+  },[])
   const snapToGrid = (currentPosition) => {
     // console.log(currentPosition.x, "snaptoGrid curr");
     return {
@@ -80,6 +81,29 @@ function GameBoard() {
       z: Math.round(currentPosition.z / tileSize) * tileSize,
     };
   };
+  const confirmTilePlacement = ()=>{
+    const snappedPosition = snapToGrid(currentPosition);
+    
+    setPlacedPosition([
+        snappedPosition.x,
+        snappedPosition.y,
+        snappedPosition.z,
+    ]);
+    
+        setBoardGameMatrix((currBoard) => {
+          console.log('here');
+           const newboard = JSON.parse(JSON.stringify(currBoard))
+          
+          if (newboard[placedPosition[0]/2+5] === undefined) {
+          newboard[placedPosition[0]/2+5]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
+          }
+          tiledata.orientation=tileRotation*(180/Math.PI)
+          console.log(placedPosition[0]);
+          newboard[placedPosition[0]/2+5][placedPosition[2]/2+5] = tiledata;
+          return newboard;
+        });
+      
+  }
 
   const handleDragStart = () => {
     setEnableRotate(false);
@@ -96,6 +120,7 @@ function GameBoard() {
       >
         Press to Rotate
       </button>
+      <button onClick={()=>{confirmTilePlacement()}}className={styles.confirmbutton}>Confirm Tile</button>
       <Canvas shadows camera={{ fov: 60, position: [0, 5, 10] }}>
         <ambientLight intensity={0.5} />
         <directionalLight
@@ -138,12 +163,12 @@ function GameBoard() {
             }
           }}
         >
-          {/* <TileA
+          <TileA
             position={placedPosition}
             scale={tileScale}
             ref={draggedTileRef}
             rotation-y={tileRotation}
-          /> */}
+          />
         </DragControls>
 {/* 
         <TileB
