@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-three/drei": "^9.102.6",
     "@react-three/fiber": "^8.16.0",
+    "gsap": "^3.12.5",
     "install": "^0.13.0",
     "leva": "^0.9.35",
     "npm": "^10.5.0",
