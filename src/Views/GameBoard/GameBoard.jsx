@@ -1,7 +1,9 @@
-import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
-import { DragControls, OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import * as THREE from 'three'
+import { useEffect, useRef, useState } from 'react'
+import { DragControls, OrbitControls } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
+import { UI } from './UI.jsx'
+import { GameEngineProvider } from '../../Context/useGameEngine.jsx'
 
 // asset loader
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -105,11 +107,8 @@ function GameBoard() {
       
   }
 
-  const handleDragStart = () => {
-    setEnableRotate(false);
-  };
-
   return (
+    <GameEngineProvider>
     <div className={styles.gameBoard}>
       <button className={styles.button}
         onClick={() => {
@@ -211,11 +210,12 @@ function GameBoard() {
           rotation-y={Math.PI * 0.5}
         /> */}
 
-        <axesHelper args={[5]} />
-        <gridHelper args={[50, 25, "black", "red"]} />
-      </Canvas>
-    </div>
-  );
+            <axesHelper args={[5]} />
+            <gridHelper args={[50, 25, 'black', 'red']} />
+        </Canvas>
+        </div>
+        </GameEngineProvider>
+    );
 }
 
 export default GameBoard;

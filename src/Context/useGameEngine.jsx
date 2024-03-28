@@ -4,13 +4,13 @@ import { setState, getState } from 'playroomkit'
 import { randInt } from 'three/src/math/MathUtils'
 import { useControls } from 'leva'
 
-
+'drawTile'
 
 const GameEngineContext = createContext()
 
 const TIME_PHASE_TILE_DRAW = 5
-const TIME_PHASE_TILE_PLACE = 20
-const TIME_PHASE_MEEPLE_PLACE = 20
+const TIME_PHASE_TILE_PLACE = 'Waiting for player to end place tile phase'
+const TIME_PHASE_MEEPLE_PLACE = 'Waiting for player to end place citizen phase'
 const TIME_PHASE_CALCULATE_POINTS = 10
 
 export const GameEngineProvider = ({ children }) => {
@@ -30,15 +30,6 @@ export const GameEngineProvider = ({ children }) => {
     const players = usePlayersList(true)
     players.sort((p1,p2) => {p1.id.localeCompare(p2.id)})
 
-    const gameState = {
-        timer,
-        turnPhase,
-        turn,
-        playerTurn,
-        tileDeck,
-        players
-    }
-
     // give every player a tile
     // needs to be adapted to give just current player
     // a tile
@@ -49,7 +40,6 @@ export const GameEngineProvider = ({ children }) => {
             const randomIndex = randInt(0, newTileDeck.length - 1)
             tile.push(newTileDeck[randomIndex])
             newTileDeck.splice(randomIndex, 1)
-            player.setState('tile', tile)
         })
         setTileDeck(newTileDeck, true)
     }
@@ -59,6 +49,7 @@ export const GameEngineProvider = ({ children }) => {
         if (isHost()) {
             console.log('StartGame')
             setTimer(TIME_PHASE_TILE_DRAW, true)
+            console.log(timer)
             setPlayerTurn(0, true)
             setTurn(1, true)
 
@@ -84,12 +75,13 @@ export const GameEngineProvider = ({ children }) => {
 
             // give player a tile
             givePlayerTile()
-            setTurnPhase('drawTile', true)
+            setTurnPhase('Draw Tile', true)
         }
     }
     
     // invoke startgame upon loading
     useEffect(() => {
+        console.log('in use effect')
         startGame()
     }, [])
 
@@ -98,7 +90,8 @@ export const GameEngineProvider = ({ children }) => {
         // change playerTurn to the next player or player 0
         // if at last player
         console.log(players)
-        const nextPlayer = getState('timer') + 1
+        let nextPlayer = getState('playerTurn') + 1
+        if (nextPlayer === players.length) {nextPlayer = 0}
         console.log('player turn: ', nextPlayer)
         setPlayerTurn(nextPlayer)
         const nextTurn = getState('turn') + 1
@@ -112,43 +105,48 @@ export const GameEngineProvider = ({ children }) => {
     const phaseEnd = () => {
         console.log('turn phase', getState('turnPhase'))
         let newTime = 0
+        console.log(getState('turnPhase'))
         switch (getState('turnPhase')) {
             case 'start':
+                console.log('case: start')
                 console.log('in lobby')
-                setTurnPhase('drawTile', true)
+                setTurnPhase('Draw Tile', true)
                 newTime = TIME_PHASE_TILE_DRAW
                 setTimer(newTime)
                 break
-            case 'drawTile':
+            case 'Draw Tile':
                 // check if any tiles are left/no tiles are playable
                 // if so, game ends, calculates remaining points (maybe
                 // via meeples?) and declares winner, maybe have a new game
                 // button
-
+                console.log('case: Draw Tile')
 
                 // whatever logic for between draw and place phases
-                setTurnPhase('placeTile', true)
+                setTurnPhase('Place Tile', true)
                 newTime = TIME_PHASE_TILE_PLACE
                 setTimer(newTime)
                 break
-            case 'placeTile':
+            case 'Place Tile':
+                console.log('case: Place Tile')
                 // main logic of tile being placed
-                setTurnPhase('meeplePlace', true)
+                setTurnPhase('Place Citizen', true)
                 newTime = TIME_PHASE_MEEPLE_PLACE
                 setTimer(newTime)
                 break
-            case 'meeplePlace':
+            case 'Place Citizen':
+                console.log('case: Place Citizen')
                 // main logic of meeple being placed
-                setTurnPhase('calculatePoints', true)
+                setTurnPhase('Calculate Points', true)
                 newTime = TIME_PHASE_CALCULATE_POINTS
                 setTimer(newTime)
                 break
-            case 'calculatePoints':
+            case 'Calculate Points':
+                console.log('case: Calculate Points')
                 // main logic of road/city/monestary checks
 
                 // some way to change playerTurn to next player
                 nextPlayerTurn()
-                setTurnPhase('drawTile', true)
+                setTurnPhase('Draw Tile', true)
                 newTime = TIME_PHASE_TILE_DRAW
                 setTimer(newTime)
                 break
@@ -167,9 +165,12 @@ export const GameEngineProvider = ({ children }) => {
     const runTimer = () => {
         timerInterval.current = setInterval(() => {
             if (!isHost()) {return}
+            if (typeof getState('timer') === 'string') {return}
             if (paused) {return}
             let newTime = getState("timer") - 1
-            console.log("Timer: ", newTime)
+            //console.log("Timer: ", newTime)
+            console.log(getState('turnPhase'))
+            console.log(newTime)
 
             if (newTime <= 0) {
                 phaseEnd()
@@ -187,6 +188,16 @@ export const GameEngineProvider = ({ children }) => {
         runTimer()
         return clearTimer
     }), [turnPhase, paused]
+
+    const gameState = {
+        timer,
+        turnPhase,
+        turn,
+        playerTurn,
+        tileDeck,
+        players,
+        phaseEnd
+    }
     
     return (
         <GameEngineContext.Provider value={{

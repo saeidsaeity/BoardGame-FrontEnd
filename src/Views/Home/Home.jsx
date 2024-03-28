@@ -68,9 +68,11 @@ function Home() {
   }, []);
 
   function hostGameHandler() {
-    insertCoin().then(() => {
-      navigate("/gameboard");
-    });
+    console.log('enter hostGameHandler')
+    navigate("/lobby")
+    // insertCoin().then(() => {
+    //   navigate("/gameboard");
+    // });
   }
   return (
     <div className={styles.fullpage}>
