@@ -13,9 +13,6 @@ import TileA from "../../assets/tiles/tileA.jsx";
 import TileB from "../../assets/tiles/tileB.jsx";
 import TileC from "../../assets/tiles/tileC.jsx";
 import TileD from "../../assets/tiles/tileD.jsx";
-
-// styling
-import styles from "./GameBoard.module.css";
 import TileE from "../../assets/tiles/tileE.jsx";
 import TileF from "../../assets/tiles/tileF.jsx";
 import TileG from "../../assets/tiles/tileG.jsx";
@@ -24,6 +21,9 @@ import TileI from "../../assets/tiles/tileI.jsx";
 import TileJ from "../../assets/tiles/tileJ.jsx";
 import TileK from "../../assets/tiles/tileK.jsx";
 import TileL from "../../assets/tiles/tileL.jsx";
+
+// styling
+import styles from "./GameBoard.module.css";
 
 //test
 import { tiledata } from "./testboarddata.js";
@@ -43,7 +43,7 @@ function GameBoard() {
 
   // TILE DRAGGING
   const [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0, z: 0 });
-  const [placedPosition, setPlacedPosition] = useState([0,0,2]);
+  const [placedPosition, setPlacedPosition] = useState([0,4,2]);
 
   const draggedTileRef = useRef({ localMatrix: [] });
   const tile = useRef()
@@ -55,7 +55,7 @@ function GameBoard() {
 
   const tileJump = () => {
     console.log('jump');
-    tile.current.applyImpulse({ x: 0, y: 3, z: 0})
+    tile.current.applyImpulse({ x: 0, y: 5, z: 0})
     tile.current.applyTorqueImpulse({ x: 0, y: 2, z: 0})
   }
   
@@ -105,8 +105,8 @@ function GameBoard() {
     });
   }
 
-  console.log("rendered");
-  console.log(boardGameMatrix);
+  // console.log("rendered");
+  // console.log(boardGameMatrix);
 
   // JSX BEGINS //
   return (
@@ -135,7 +135,7 @@ function GameBoard() {
         shadows 
         camera={{ fov: 60, position: [0, 5, 10] }}
       >
-        <Physics>
+        <Physics debug>
         
         <ambientLight intensity={0.1} />
 
@@ -184,7 +184,7 @@ function GameBoard() {
           }}
         >
           
-        <RigidBody ref={tile} >
+        <RigidBody ref={tile} canSleep={ false } restitution={ 0.2 }>
           <TileA
             position={placedPosition}
             scale={tileScale}
@@ -208,6 +208,18 @@ function GameBoard() {
             <meshStandardMaterial color="#8f4111" />
           </mesh>
         </RigidBody>
+
+        {/* <RigidBody ref={tile} canSleep={ false } restitution={ 0.2 }>
+          <TileC
+            position={[0,0,4]}
+            scale={tileScale}
+            ref={draggedTileRef}
+            rotation-y={tileRotation}
+            onCollisionExit={ () => { console.log('collision exit') } }
+            onSleep = { () => { console.log('sleep') } }
+            onWake = { () => { console.log( 'wake' ) } }
+          />
+        </RigidBody> */}
 
         </Physics>
 
