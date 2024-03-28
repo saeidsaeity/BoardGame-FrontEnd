@@ -1,9 +1,13 @@
 
+
 import { useEffect, useRef, useState } from "react";
 import { DragControls, OrbitControls, Sky } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
 import { Perf } from 'r3f-perf'
 import { Physics, RigidBody } from '@react-three/rapier'
+import * as THREE from 'three'
+import { Canvas } from '@react-three/fiber'
+import { UI } from './UI.jsx'
+import { GameEngineProvider } from '../../Context/useGameEngine.jsx'
 
 // asset loader
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -105,11 +109,10 @@ function GameBoard() {
     });
   }
 
-  // console.log("rendered");
-  // console.log(boardGameMatrix);
 
-  // JSX BEGINS //
   return (
+    <GameEngineProvider>
+    <UI/>
     <div className={styles.gameBoard}>
       <button className={styles.button}
         onClick={() => {
@@ -265,10 +268,11 @@ function GameBoard() {
         <Perf position="top-left"/>
         <axesHelper args={[5]} />
         <gridHelper args={[50, 25, "black", "red"]} />
+        </Canvas>
+        </div>
+        </GameEngineProvider>
+    );
 
-      </Canvas>
-    </div>
-  );
 }
 
 export default GameBoard;
