@@ -38,8 +38,20 @@ function GameBoard() {
   const tileSize = 2;
   
   const [boardGameMatrix, setBoardGameMatrix] = useState(
-    Array(11).fill([[], [], [], [], [], [], [], [], [], [], []], 0, 11)
-    );
+    [[[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]],
+    [[],[],[],[],[],[],[],[],[],[],[]]]
+    )
+    
     
 
   // CAMERA  
@@ -70,7 +82,7 @@ function GameBoard() {
       
           const newboard = JSON.parse(JSON.stringify(currBoard))
         
-        newboard[placedPosition[5]]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
+        newboard[placedPosition[5]]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[],[]]))
         
         tiledata.orientation=tileRotation*(180/Math.PI)
         
@@ -88,7 +100,7 @@ function GameBoard() {
     };
   };
 
-
+  console.log(boardGameMatrix);
   const confirmTilePlacement = ()=>{
     const snappedPosition = snapToGrid(currentPosition);
     setPlacedPosition([
@@ -103,11 +115,70 @@ function GameBoard() {
         newboard[placedPosition[0]/2+5]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[]]))
       }
       tiledata.orientation=tileRotation*(180/Math.PI)
-      newboard[placedPosition[0]/2+5][placedPosition[2]/2+5] = tiledata;
+      newboard[placedPosition[0]/2+5][placedPosition[2]/2+5] = [tiledata];
       console.log(newboard, "newboard");
       return newboard;
     });
   }
+  const tileColourLogic=(i,j)=>{
+    // console.log(boardGameMatrix[i+5][j+5],boardGameMatrix[i+6][j+5],boardGameMatrix[i+5][j+6]);
+    if(i===-5 || j=== -5){
+      if(boardGameMatrix[i+5][j+5]?.length === 0 && ( boardGameMatrix[i+6][j+5]?.length>0 ||boardGameMatrix[i+5][j+6]?.length>0 ) ){
+        return 0x32CD32
+      }
+      else{
+        return  0xffffff
+      }
+    }
+    else if(boardGameMatrix[i+5][j+5]?.length === 0 && (boardGameMatrix[i+4][j+5]?.length>0 || boardGameMatrix[i+5][j+4]?.length>0 || boardGameMatrix[i+6][j+5]?.length>0 ||boardGameMatrix[i+5][j+6]?.length>0 ) ){
+    //   console.log('i am here');
+      return 0x32CD32
+     }
+     else{
+     console.log('no colour');
+     return  0xffffff
+     }
+
+
+
+  }
+  const grid =[]
+  for (let i = -5; i < 6; i++) {
+    for (let j = -5; j < 6; j++) {
+        // Create the tile
+        const position = new THREE.Vector3(i, 0, j)
+        const tile = (
+            <mesh
+                key={`${i}-${j}-tile`}
+                onClick={()=>{console.log(position);
+                  setBoardGameMatrix((currBoard) => {
+      
+                    const newboard = JSON.parse(JSON.stringify(currBoard))
+                  
+                  newboard[placedPosition[5]]=JSON.parse(JSON.stringify([[],[],[],[],[],[],[],[],[],[],[],[]]))
+                  
+                  tiledata.orientation=tileRotation*(180/Math.PI)
+                  
+                  newboard[i+5][j+5] = [tiledata];
+                  return newboard;
+                });
+                  
+                }}
+                position={[i * tileSize, 0, j * tileSize]}
+                scale={tileScale}
+
+                
+            >
+                <boxGeometry args={[tileSize, 0.1, tileSize]} />
+                <meshBasicMaterial color={tileColourLogic(i,j)} />
+            </mesh>
+        );
+        grid.push(tile);
+
+              }
+
+            }
+
 
 
   return (
@@ -157,7 +228,7 @@ function GameBoard() {
           enableRotate={enableRotate}
           maxPolarAngle = { ( Math.PI / 2 ) - 0.1}
         />
-
+{/* 
         <DragControls
           autoTransform={true}
           axisLock={"y"}
@@ -185,7 +256,7 @@ function GameBoard() {
               setEnableRotate(true);
             }
           }}
-        >
+        > */}
           
         <RigidBody ref={tile} canSleep={ false } restitution={ 0.2 }>
           <TileA
@@ -199,17 +270,18 @@ function GameBoard() {
           />
         </RigidBody>
 
-        </DragControls>
+        {/* </DragControls> */}
         
         <RigidBody>
           <TileD position={[0, 4, 0]} scale={tileScale} ref={starterTileRef} />
         </RigidBody>
 
         <RigidBody type="fixed">
-          <mesh receiveShadow position-y={ -0.3 } >
+          {/* <mesh receiveShadow position-y={ -0.3 } >
             <boxGeometry args={ [ 25, 0.5, 25 ] } />
             <meshStandardMaterial color="#8f4111" />
-          </mesh>
+          </mesh> */}
+          {grid}
         </RigidBody>
 
         {/* <RigidBody ref={tile} canSleep={ false } restitution={ 0.2 }>
@@ -270,7 +342,7 @@ function GameBoard() {
         <gridHelper args={[50, 25, "black", "red"]} />
         </Canvas>
         </div>
-        </GameEngineProvider>
+         </GameEngineProvider>
     );
 
 }

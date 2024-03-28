@@ -3,14 +3,10 @@
 // import type { Pawn } from './pieces/pawn'
 // import type { Rook } from './pieces/rook'
 
-const postion = { x: number; y: number }
 
-const board = Tile[][]
 
-const tile = {
-  position: position,
-  type: "tileA"
-}
+
+
 
  const createTile = (position, piece) => {
   return {
