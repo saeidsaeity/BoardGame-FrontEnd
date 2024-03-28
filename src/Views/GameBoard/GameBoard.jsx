@@ -36,6 +36,7 @@ import styles from './GameBoard.module.css';
 //test
 import { tileData } from './testboarddata.js';
 import { useControls } from 'leva';
+import Menu from '../../components/Menu/Menu.jsx';
 
 const GameBoard = () => {
 
@@ -54,6 +55,7 @@ const GameBoard = () => {
   });
 
   // States
+  const [showMenu, setShowMenu] = useState(false)
   const [newTilePosition, setNewTilePosition] = useState([]);
   const [newTile2DPosition, setNewTile2DPosition] = useState([]);
   const [relaseTile, setReleaseTile] = useState(false);
@@ -72,6 +74,7 @@ const GameBoard = () => {
     [[], [], [], [], [], [], [], [], [], [], []],
     [[], [], [], [], [], [], [], [], [], [], []],
   ]);
+
   console.log(boardGameMatrix)
 
   useEffect(() => {
@@ -100,6 +103,7 @@ const GameBoard = () => {
         tileRotation={tileRotation}
         setTileRotation={setTileRotation}
       />
+      
       <div className={styles.gameBoard}>
         <button
           className={styles.button}
@@ -115,13 +119,15 @@ const GameBoard = () => {
           Confirm
         </button>
 
-        <button
-          onClick={() => {
+        <button onClick={() => {
             // tileJump();
-            setTileRotation((currRotation) => {currRotation - Math.PI / 2})
+            setTileRotation((currRotation) => {
+              return currRotation - Math.PI / 2
+            })
           }}
           className={styles.confirmbutton}
         >Rotate</button>
+
         <Canvas shadows camera={{ fov: 100, position: [0, 8, 16] }}>
           <Physics >
             <ambientLight intensity={0.4} />
@@ -164,13 +170,14 @@ const GameBoard = () => {
             ) : null}
 
             <RigidBody type="fixed">
-              <mesh receiveShadow position-y={ -0.3 } >
+              <mesh position-y={ -0.3 } >
                 <boxGeometry args={ [ 25, 0.5, 25 ] } />
                 <meshStandardMaterial color="#8f4111" />
               </mesh>
               {grid}
             </RigidBody>
           </Physics>
+
           {/* HELPERS */}
           {/* <Perf position="top-left" /> */}
           {/* <axesHelper args={[5]} />
