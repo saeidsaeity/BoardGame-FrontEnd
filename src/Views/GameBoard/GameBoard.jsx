@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber';
 import { UI } from './UI.jsx';
 import { GameEngineProvider } from '../../Context/useGameEngine.jsx';
-
+import { getTile } from '../../api.js';
 // asset loader
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
@@ -28,12 +28,13 @@ import TileL from '../../assets/tiles/tileL.jsx';
 import styles from './GameBoard.module.css';
 
 //test
-import { tiledata } from './testboarddata.js';
+import { tileData } from './testboarddata.js';
 import { useControls } from 'leva';
 
 function GameBoard() {
   const tileScale = [0.94, 0.94, 0.94];
   const tileSize = 2;
+ 
 
   const [boardGameMatrix, setBoardGameMatrix] = useState([
     [[], [], [], [], [], [], [], [], [], [], []],
@@ -49,6 +50,7 @@ function GameBoard() {
     [[], [], [], [], [], [], [], [], [], [], []],
     [[], [], [], [], [], [], [], [], [], [], []],
   ]);
+  console.log(boardGameMatrix)
 
   // CAMERA
   const [enableRotate, setEnableRotate] = useState(true);
@@ -75,20 +77,29 @@ function GameBoard() {
     tile.current.applyImpulse({ x: 0, y: 10, z: 0 });
     tile.current.applyTorqueImpulse({ x: 0, y: 0.94, z: 0 });
   };
+  //Generate Random tile function
+   const randomTileGenerator=async ()=>{
+    
+    const randInt= Math.floor(Math.random() * 24);
+    const char=String.fromCharCode(randInt + 64);
+    const randomTile=await getTile(char)
+    return randomTile
+}
+    
+    
+    
+
+   
 
   //rotation
   const [tileRotation, setTileRotation] = useState(0);
   useEffect(() => {
     setBoardGameMatrix((currBoard) => {
       const newboard = JSON.parse(JSON.stringify(currBoard));
+     
+      tileData.orientation = tileRotation * (180 / Math.PI);
 
-      newboard[placedPosition[5]] = JSON.parse(
-        JSON.stringify([[], [], [], [], [], [], [], [], [], [], [], []])
-      );
-
-      tiledata.orientation = tileRotation * (180 / Math.PI);
-
-      newboard[5][5] = [tiledata];
+      newboard[5][5] = [tileData];
       return newboard;
     });
   }, []);
@@ -215,8 +226,8 @@ function GameBoard() {
           onClick={() => {
             setBoardGameMatrix((currBoard) => {
               const newboard = JSON.parse(JSON.stringify(currBoard));
-              tiledata.orientation = tileRotation * (180 / Math.PI);
-              newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [tiledata];
+              tileData.orientation = tileRotation * (180 / Math.PI);
+              newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [tileData];
               return newboard;
             });
           }}
