@@ -81,11 +81,30 @@ function GameBoard() {
    const randomTileGenerator=async ()=>{
     
     const randInt= Math.floor(Math.random() * 24);
-    const char=String.fromCharCode(randInt + 64);
-    const randomTile=await getTile(char)
-    return randomTile
-}
+    const tileType=String.fromCharCode(randInt + 64);
+    const randomTile=await getTile(tileType)
     
+     return randomTile
+}
+   const newTileArray=[] 
+const drawEventHandler=(tileType)=>{
+  
+  const TileName= 'Tile' + tileType
+ const renderNewTile= (<RigidBody ref={tile} 
+  canSleep={false}  
+  position={newTilePosition}
+  rotation={[ 0, tileRotation , 0 ]}
+>
+  <TileName
+    scale={tileScale}
+  />
+</RigidBody> )
+  newTileArray.push(renderNewTile)
+    
+
+   
+
+}
     
     
 
@@ -104,38 +123,13 @@ function GameBoard() {
     });
   }, []);
 
-  const dropTile = () => {
+  
 
-  }
 
-  // console.log(boardGameMatrix);
-
-  const confirmTilePlacement = () => {
-    const snappedPosition = snapToGrid(currentPosition);
-    setPlacedPosition([
-      snappedPosition.x,
-      snappedPosition.y,
-      snappedPosition.z,
-    ]);
-
-    setBoardGameMatrix((currBoard) => {
-      const newboard = JSON.parse(JSON.stringify(currBoard));
-      if (newboard[placedPosition[0] / 2 + 5] === undefined) {
-        newboard[placedPosition[0] / 2 + 5] = JSON.parse(
-          JSON.stringify([[], [], [], [], [], [], [], [], [], [], []])
-        );
-      }
-      tiledata.orientation = tileRotation * (180 / Math.PI);
-      newboard[placedPosition[0] / 2 + 5][placedPosition[2] / 2 + 5] = [
-        tiledata,
-      ];
-      console.log(newboard, 'newboard');
-      return newboard;
-    });
-  };
+ 
 
   const tileColourLogic = (i, j) => {
-    // console.log(boardGameMatrix[i+5][j+5],boardGameMatrix[i+6][j+5],boardGameMatrix[i+5][j+6]);
+   
     if (i === -5 || j === -5) {
       if (
         boardGameMatrix[i + 5][j + 5]?.length === 0 &&
@@ -221,6 +215,7 @@ function GameBoard() {
     <GameEngineProvider>
       <UI />
       <div className={styles.gameBoard}>
+  
         <button
           className={styles.button}
           onClick={() => {
@@ -246,6 +241,16 @@ function GameBoard() {
           className={styles.confirmbutton}
         >
           Rotate
+        </button>
+        <button
+          
+          onClick={() => {
+          const randomTile=randomTileGenerator()
+          drawEventHandler(randomTile.tile_type)
+
+          }}
+        >
+          Get Tile
         </button>
 
         <Canvas shadows camera={{ fov: 60, position: [0, 5, 10] }}>
@@ -294,17 +299,7 @@ function GameBoard() {
               />
             </RigidBody>
 
-            {relaseTile ? (
-              <RigidBody ref={tile} 
-                canSleep={false}  
-                position={newTilePosition}
-                rotation={[ 0, tileRotation , 0 ]}
-              >
-                <TileD
-                  scale={tileScale}
-                />
-              </RigidBody>
-            ) : null}
+            {relaseTile ?   newTileArray : null}
 
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={ -0.3 } >
