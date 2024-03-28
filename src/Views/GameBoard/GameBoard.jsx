@@ -60,6 +60,8 @@ function GameBoard() {
   const [newTile2DPosition, setNewTile2DPosition] = useState([]);
   const [relaseTile, setReleaseTile] = useState(false);
 
+  const [ isNewTile, setIsNewTile ] = useState(false)
+
   const draggedTileRef = useRef({ localMatrix: [] });
   const tile = useRef();
   const starterTileRef = useRef({ position: [0, 0, 0] });
@@ -71,7 +73,7 @@ function GameBoard() {
   const tileJump = () => {
     console.log('jump');
     tile.current.applyImpulse({ x: 0, y: 10, z: 0 });
-    tile.current.applyTorqueImpulse({ x: 0, y: 1, z: 0 });
+    tile.current.applyTorqueImpulse({ x: 0, y: 0.94, z: 0 });
   };
 
   //rotation
@@ -144,7 +146,8 @@ function GameBoard() {
       return 0x32cd32;
     } else {
       console.log('no colour');
-      return 0xffffff;
+      // does not colour all cells?
+      return 0xc3c3c3;
     }
   };
 
@@ -224,7 +227,7 @@ function GameBoard() {
         <button
           onClick={() => {
             // confirmTilePlacement()
-            tileJump();
+            // tileJump();
             setTileRotation((currRotation) => {
               return currRotation - Math.PI / 2;
             });
@@ -281,20 +284,22 @@ function GameBoard() {
             </RigidBody>
 
             {relaseTile ? (
-              <RigidBody ref={tile} canSleep={false}>
+              <RigidBody ref={tile} 
+                canSleep={false}  
+                position={newTilePosition}
+                rotation={[ 0, tileRotation , 0 ]}
+              >
                 <TileD
-                  position={newTilePosition}
                   scale={tileScale}
-                  rotation-y={tileRotation}
                 />
               </RigidBody>
             ) : null}
 
             <RigidBody type="fixed">
-              {/* <mesh receiveShadow position-y={ -0.3 } >
+              <mesh receiveShadow position-y={ -0.3 } >
                 <boxGeometry args={ [ 25, 0.5, 25 ] } />
                 <meshStandardMaterial color="#8f4111" />
-              </mesh> */}
+              </mesh>
               {grid}
             </RigidBody>
 
@@ -312,7 +317,7 @@ function GameBoard() {
           </Physics>
 
           {/* HELPERS */}
-          <Perf position="top-left" />
+          {/* <Perf position="top-left" /> */}
           <axesHelper args={[5]} />
           <gridHelper args={[50, 25, 'black', 'red']} />
         </Canvas>
