@@ -49,7 +49,7 @@ export const createGameBoard = (
           scale={tileScale}
         >
           <boxGeometry args={[tileSize, 0.1, tileSize]} />
-          <meshBasicMaterial color={tileColourLogic(i, j, boardGameMatrix)} />
+          <meshPhongMaterial color={tileColourLogic(i, j, boardGameMatrix)} transparent={true} opacity={0.2}/>
         </mesh>
       );
       grid.push(tile);
@@ -67,7 +67,7 @@ export const tileColourLogic = (i, j, boardGameMatrix) => {
       ) {
         return 0x32cd32;
       } else {
-        return 0xffffff;
+        return 0xc3c3c3;
       }
     } else if (
       boardGameMatrix[i + 5][j + 5]?.length === 0 &&
