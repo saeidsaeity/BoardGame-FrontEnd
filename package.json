@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-three/drei": "^9.102.6",
     "@react-three/fiber": "^8.16.0",
+    "@react-three/rapier": "1.1",
     "gsap": "^3.12.5",
     "install": "^0.13.0",
     "leva": "^0.9.35",
@@ -32,6 +33,7 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "r3f-perf": "^7.1.2",
     "vite": "^5.2.0"
   }
 }
