@@ -12,7 +12,7 @@ const TIME_PHASE_TILE_DRAW = 5
 const TIME_PHASE_TILE_PLACE = 'Waiting for player to end place tile phase'
 const TIME_PHASE_MEEPLE_PLACE = 'Waiting for player to end place citizen phase'
 const TIME_PHASE_CALCULATE_POINTS = 10
-
+UI/>
 export const GameEngineProvider = ({ children }) => {
 
     // Game States
@@ -168,9 +168,6 @@ export const GameEngineProvider = ({ children }) => {
             if (typeof getState('timer') === 'string') {return}
             if (paused) {return}
             let newTime = getState("timer") - 1
-            //console.log("Timer: ", newTime)
-            console.log(getState('turnPhase'))
-            console.log(newTime)
 
             if (newTime <= 0) {
                 phaseEnd()

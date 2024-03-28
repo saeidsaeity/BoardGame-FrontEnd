@@ -109,6 +109,7 @@ function GameBoard() {
 
   return (
     <GameEngineProvider>
+    <UI/>
     <div className={styles.gameBoard}>
       <button className={styles.button}
         onClick={() => {
