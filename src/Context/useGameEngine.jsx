@@ -12,7 +12,7 @@ const TIME_PHASE_TILE_DRAW = 5
 const TIME_PHASE_TILE_PLACE = 'Waiting for player to end place tile phase'
 const TIME_PHASE_MEEPLE_PLACE = 'Waiting for player to end place citizen phase'
 const TIME_PHASE_CALCULATE_POINTS = 10
-UI/>
+
 export const GameEngineProvider = ({ children }) => {
 
     // Game States
