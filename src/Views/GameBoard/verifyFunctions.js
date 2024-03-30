@@ -26,8 +26,10 @@ const assetInDirection = (tile, directionNum) => {
     // convert the orientation into a number from 0-3
     const turn = tile.orientation/90
 
-    // orientation added (mod 4) to get asset direction
-    const assetDir = (directionNum + turn) % 4
+    // orientation minused to get asset direction
+    let assetDir = (directionNum - turn)
+    if (assetDir < 0) {assetDir += 4}
+
 
     // return asset in that direction
     return tile.assets[assetDir]
@@ -70,10 +72,49 @@ const adjacentTileCoords = (tile, directionNum) => {
 
 
 
-const checkTilePlacement = (tile) => {
-    for (i=0; i<=3; i++) {
-        // get adjacent tile in direction
-    }
+const checkSide = (tile, directionNum, matrix) => {
+    // get coordinates for the tile on that side
+    const sideTileCoords = adjacentTileCoords(tile, directionNum)
+
+    // check tile is not off the grid
+    if (sideTileCoords.row < 0 ||
+        sideTileCoords.row > 10 ||
+        sideTileCoords.column < 0 ||
+        sideTileCoords.column > 10)
+        {return true}
+
+    // get the tile on that side
+    let sideTile = matrix[sideTileCoords.row][sideTileCoords.column]
+    
+    // return true if there is no adjacent tile in that direction
+    if (sideTile.length === 0) {return true}
+    else {sideTile = sideTile[0]}
+
+    // get asset of tile
+    const tileAsset = assetInDirection(tile, directionNum)
+
+    // get corresponding asset of side tile
+    const sideDirectionNum = (directionNum + 2) % 4
+    const sideTileAsset = assetInDirection(sideTile, sideDirectionNum)
+
+    // return true if assets are the same:
+    return tileAsset.asset === sideTileAsset.asset
 }
 
-module.exports = { assetInDirection, adjacentTileCoords }
+
+
+const checkTilePlacement = (tile, matrix) => {
+    for (i=0; i<=3; i++) {
+        if (!checkSide(tile, i, matrix)) {
+            return false
+        }
+    }
+    return true
+}
+
+module.exports = { 
+    assetInDirection, 
+    adjacentTileCoords,
+    checkSide,
+    checkTilePlacement
+}
