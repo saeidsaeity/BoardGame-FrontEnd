@@ -2,43 +2,42 @@ import * as THREE from 'three';
 
 export const createGameBoard = (
   boardGameMatrix, 
-  tileSize, tileScale, 
+  tileSize, 
+  tileScale, 
   setReleaseTile,
   setNewTilePosition,
-  setNewTile2DPosition,setNewTile,setNewTileData
+  setNewTile2DPosition,
+  setNewTile,
+  setNewTileData,
+  turnPhase
   ) => {
-    function tileChecks(x,z,i,j){
-      setReleaseTile(true);
-        setNewTilePosition([
-          x * tileSize,
-          4,
-          z * tileSize,
-        ]);
-        setNewTile((currTile) => {
-          if(currTile ===  undefined){
-            return currTile
+
+  function tileChecks(x,z,i,j){
+    setReleaseTile(true);
+      setNewTilePosition([
+        x * tileSize,
+        4,
+        z * tileSize,
+      ]);
+      setNewTile((currTile) => {
+        if(currTile ===  undefined){
+          return currTile
+        }
+        const updatedTile = {
+          ...currTile,
+          props: {
+            ...currTile.props,
+            position: [
+              x * tileSize,
+              4,
+              z * tileSize,
+            ]
           }
-          const updatedTile = {
-            ...currTile,
-            props: {
-              ...currTile.props,
-              position: [
-                x * tileSize,
-                4,
-                z * tileSize,
-              ]
-            }
-          };
-          return updatedTile; 
-        });
-        setNewTile2DPosition([i + 5, j + 5]);
-
-    }
-    
-
-
-
-
+        };
+        return updatedTile; 
+      });
+      setNewTile2DPosition([i + 5, j + 5]);
+  }
 
   const grid = [];
   for (let i = -5; i < 6; i++) {
@@ -49,8 +48,11 @@ export const createGameBoard = (
         <mesh
           key={`${i}-${j}-tile`}
           onClick={() => {
-            console.log(position);
-           
+            // console.log(position);
+            if(turnPhase !== 'Place Tile') {
+              console.log('You can not place during the citizen phase!');
+              return []
+            }
             if (i === -5 || j === -5) {
               // board edge case
               if (

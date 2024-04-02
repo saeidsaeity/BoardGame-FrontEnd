@@ -13,7 +13,8 @@
     height: 20rem;
     position: absolute;
     top: 0;
-    right: 0;
+    right: 1rem;
+    animation: canvasAnimation 5s 1 ease-in;
 }
 
 .nextPhase{
@@ -63,3 +64,20 @@
     background-color: #45a049; /* Darker Green */
   }
   
+  @keyframes canvasAnimation {
+    0% {
+        transform: translate(20rem, 0);
+    }
+    80%{
+        transform: translate(-0.5rem, 0);
+    }
+    90%{
+        transform: translate(0.25rem, 0);
+    }
+    95%{
+        transform: translate(-0.1rem, 0);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+  }
