@@ -34,6 +34,7 @@ const GameBoard = () => {
   // TILE DRAGGING
   const tile = useRef();
   // States
+  const [ citizenPosition, setCitizenPosition ] = useState([ -0.6, 7, 0.6])
   const [ sunPosition, setSunPosition ] = useState([150, 150, -250])
   const [showMenu, setShowMenu] = useState(false)
   const [newTilePosition, setNewTilePosition] = useState([12,4,0]);
@@ -54,6 +55,7 @@ const GameBoard = () => {
     [[], [], [], [], [], [], [], [], [], [], []],
     [[], [], [], [], [], [], [], [], [], [], []],
   ]);
+
   // CAMERA
   const [newTileArray, setNewTileArray] = useState([]);
   const [newTile, setNewTile] = useState();
@@ -223,7 +225,15 @@ const GameBoard = () => {
             </RigidBody>
 
 
-            <RigidBody gravityScale={0.5} position={ [ 0.6, 5, 2]} scale={0.095} friction={1} mass={10} rotation={[ 0 ,0 ,0 ]} canSleep={false} >
+            <RigidBody 
+              gravityScale={0.5} 
+              position={citizenPosition} 
+              scale={0.095} 
+              friction={1} 
+              mass={10} 
+              rotation={[ 0 ,0 ,0 ]} 
+              canSleep={false} 
+            >
               <CitizenRed />
             </RigidBody>
             {releaseTile ? newTile : null}
