@@ -16,18 +16,18 @@ export const tileData = {
         location: null
     },
     assets: {
-        north: {
+        0: {
             asset: 'road',
             connects: ['south']
         },
-        east: {
+        1: {
             asset: 'city',
             connects: []
         },
-        south: {
+        2: {
             asset: 'road',
             connects: ['north']
         },
-        west: {}
+        3: {}
     }
 }
