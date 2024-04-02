@@ -9,30 +9,30 @@ export const createGameBoard = (
   ) => {
     function tileChecks(x,z,i,j){
       setReleaseTile(true);
-                  setNewTilePosition([
-                    x * tileSize,
-                    4,
-                    z * tileSize,
-                  ]);
-                  setNewTile((currTile) => {
-                    if(currTile ===  undefined){
-                      return currTile
-                    }
-                    const updatedTile = {
-                      ...currTile,
-                      props: {
-                        ...currTile.props,
-                        position: [
-                          x * tileSize,
-                          4,
-                          z * tileSize,
-                        ]
-                      }
-                    };
-                    return updatedTile; 
-                  });
-                  setNewTile2DPosition([i + 5, j + 5]);
-  
+        setNewTilePosition([
+          x * tileSize,
+          4,
+          z * tileSize,
+        ]);
+        setNewTile((currTile) => {
+          if(currTile ===  undefined){
+            return currTile
+          }
+          const updatedTile = {
+            ...currTile,
+            props: {
+              ...currTile.props,
+              position: [
+                x * tileSize,
+                4,
+                z * tileSize,
+              ]
+            }
+          };
+          return updatedTile; 
+        });
+        setNewTile2DPosition([i + 5, j + 5]);
+
     }
     
 

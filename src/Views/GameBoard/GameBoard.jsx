@@ -3,7 +3,7 @@ import { Cloud, Clouds, OrbitControls, Sky } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
-import { GameEngineProvider } from "../../Context/useGameEngine.jsx";
+import { GameEngineProvider, useGameEngine } from "../../Context/useGameEngine.jsx";
 import PopUp from '../../components/popUpRules.jsx';
 // Components
 import { UI } from "../../components/Ui/UI.jsx";
@@ -34,6 +34,7 @@ const GameBoard = () => {
   // TILE DRAGGING
   const tile = useRef();
   // States
+  const [ newTileType, setNewTileType ] = useState()
   const [ citizenPosition, setCitizenPosition ] = useState([ -0.6, 7, 0.6])
   const [ sunPosition, setSunPosition ] = useState([150, 150, -250])
   const [showMenu, setShowMenu] = useState(false)
@@ -61,6 +62,10 @@ const GameBoard = () => {
   const [newTile, setNewTile] = useState();
   const droptile = true;
   const [newTileData, setNewTileData] = useState();
+
+
+  console.log(newTile, "LATEST NEW TILE");
+
   const drawEventHandler = async (tileType) => {
     const TileComponent = await import(
       `../../assets/tiles/tile${tileType}.jsx`
@@ -75,21 +80,30 @@ const GameBoard = () => {
         <TileComponent.default scale={tileScale} />
       </RigidBody>
     );
-
+    
     setNewTile(renderNewTile);
-    setReleaseTile(true);
+    // setReleaseTile(true);
     // console.log(renderNewTile);
   };
+
   useEffect(() => {
     setBoardGameMatrix((currBoard) => {
       const newboard = JSON.parse(JSON.stringify(currBoard));
-
-      
       tileData.grid_id={row:5,column:5}
       newboard[5][5] = [tileData];
       return newboard;
     });
   }, []);
+
+  const {
+    turn,
+    turnPhase,
+    playerTurn,
+    timer,
+    players,
+    phaseEnd
+} = useGameEngine()
+
   const grid = createGameBoard(
     boardGameMatrix,
     tileSize,
@@ -102,91 +116,29 @@ const GameBoard = () => {
   );
   // RENDERING STARTS HERE //
   return (
-    <GameEngineProvider>
+    <>
       <UI
+        newTileType={newTileType}
+        newTile={newTile}
         setBoardGameMatrix={setBoardGameMatrix}
         tileRotation={tileRotation}
         setTileRotation={setTileRotation}
+        boardGameMatrix={boardGameMatrix}
+        checkTilePlacement={checkTilePlacement}
+        setNewTileArray={setNewTileArray}
+        setReleaseTile={setReleaseTile}
+        setNewTile={setNewTile}
+        randomTileGenerator={randomTileGenerator}
+        setNewTileData={setNewTileData}
+        drawEventHandler={drawEventHandler}
+        setNewTileType={setNewTileType}
+        newTileData={newTileData}
+        newTile2DPosition={newTile2DPosition}
       />
 
       <div className={styles.gameBoard}>
-        <PopUp/>
-        <button
-          className={styles.button}
-          onClick={() => {
-            if (checkTilePlacement(newTileData, boardGameMatrix)) {
-              setBoardGameMatrix((currBoard) => {
-                const newboard = JSON.parse(JSON.stringify(currBoard));
-
-                newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [
-                  newTileData,
-                ];
-                return newboard;
-              });
-              setNewTileArray((currArray) => {
-                return [...currArray, newTile];
-              });
-              setReleaseTile(false);
-            } else {
-              console.log("tile not been placed");
-            }
-            // console.log(newTileArray);
-          }}
-        >
-          Confirm
-        </button>
-
-        <button
-          onClick={() => {
-            // tileJump();
-            setTileRotation((currRotation) => {
-              if(currRotation<-2*Math.PI){
-                return -Math.PI/2
-              }
-              return currRotation - Math.PI / 2;
-            });
-            console.log(tileRotation);
-            newTileData.orientation = (tileRotation -Math.PI / 2)*-1*(180 / Math.PI)%360;
-            
-            console.log(newTile);
-            setNewTile((currTile) => {
-              if (currTile === undefined) {
-                return currTile;
-              }
-              const updatedTile = {
-                ...currTile,
-                props: {
-                  ...currTile.props,
-                  rotation: [0, tileRotation - Math.PI / 2, 0],
-                },
-              };
-              return updatedTile;
-            });
-          }}
-          className={styles.confirmbutton}
-        >
-          Rotate
-        </button>
-
-        <button
-          onClick={async () => {
-            console.log(releaseTile, "heeeeeeeeeereeeeee");
-            const randomTile = await randomTileGenerator();
-            console.log(randomTile.tile_type);
-            setNewTileData(randomTile);
-            drawEventHandler(randomTile.tile_type);
-            console.log(newTile, "newtile");
-            setReleaseTile(true);
-            console.log("here");
-            console.log(newTile.props.position), "hello";
-          }}
-          className={styles.getTile}
-        >
-          Get Tile
-        </button>
         <Canvas shadows camera={{ fov: 70, position: [0, 8, 14] }}>
           <Physics >
-
             <ambientLight intensity={0.4} />
             <Sky 
               sunPosition={sunPosition} 
@@ -252,7 +204,7 @@ const GameBoard = () => {
           <gridHelper args={[50, 25, "black", "red"]} />
         </Canvas>
       </div>
-    </GameEngineProvider>
+    </>
   );
 };
 
