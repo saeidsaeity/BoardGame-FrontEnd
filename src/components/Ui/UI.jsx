@@ -160,6 +160,7 @@ export const UI = (
                         return [...currArray, newTile];
                     });
                         setReleaseTile(false);
+                        console.log('phase end')
                         phaseEnd()
                     } else {
                         console.log("tile not been placed");

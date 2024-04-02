@@ -17,7 +17,7 @@ export const GameEngineProvider = ({ children }) => {
 
     // Game States
     const [timer, setTimer] = useMultiplayerState('timer', 0)
-    const [turnPhase, setTurnPhase] = useMultiplayerState('turnPhase', "start")
+    const [turnPhase, setTurnPhase] = useMultiplayerState('turnPhase', "Place Tile")
     const [turn, setTurn] = useMultiplayerState('turn', 1)
     const [playerTurn, setPlayerTurn] = useMultiplayerState('playerTurn', 0)
     const [tileDeck, setTileDeck] = useMultiplayerState('tileDeck', [])
@@ -46,6 +46,8 @@ export const GameEngineProvider = ({ children }) => {
 
     // startGame resets all game states
     const startGame = () => {
+        setTurnPhase('Place Tile', true)
+        console.log(getState('turnPhase'))
         if (isHost()) {
             console.log('StartGame')
             setTimer(TIME_PHASE_TILE_DRAW, true)
@@ -68,14 +70,13 @@ export const GameEngineProvider = ({ children }) => {
                 console.log(player)
                 console.log('Setting states for player', player.id)
                 player.setState('tile', [], true)
-                player.setState('meeples', 7, true)
+                player.setState('citizens', 7, true)
                 player.setState('score', 0, true)
                 player.setState('winner', false, true)
             })
 
             // give player a tile
             givePlayerTile()
-            setTurnPhase('Draw Tile', true)
         }
     }
     
@@ -83,6 +84,7 @@ export const GameEngineProvider = ({ children }) => {
     useEffect(() => {
         console.log('in use effect')
         startGame()
+        console.log(getState('turnPhase'))
     }, [])
 
     // 
@@ -98,15 +100,16 @@ export const GameEngineProvider = ({ children }) => {
         console.log('turn: ', nextTurn)
         setTurn(nextTurn)
     }
+    //das
 
     // phaseEnd switches phase, and will likely be where we deal with
     // the logic of doing most things via calling functions: i.e.
     // drawing tile, placing tile, placing meeple, calculating points
     const phaseEnd = () => {
-        console.log('turn phase', getState('turnPhase'))
+        console.log('turn phase', turnPhase)
         let newTime = 0
         console.log(getState('turnPhase'))
-        switch (getState('turnPhase')) {
+        switch (turnPhase) {
             case 'start':
                 console.log('case: start')
                 console.log('in lobby')
