@@ -96,6 +96,7 @@ const GameBoard = () => {
   ]);
 
   console.log(boardGameMatrix);
+  console.log(GameEngineProvider);
 
   // CAMERA
   
@@ -116,7 +117,7 @@ const GameBoard = () => {
 
 
   const tileJump = () => {
-    console.log("jump");
+    // console.log("jump");
     tile.current.applyImpulse({ x: 0, y: 10, z: 0 });
     tile.current.applyTorqueImpulse({ x: 0, y: 0.94, z: 0 });
   };
@@ -127,7 +128,7 @@ const GameBoard = () => {
   const droptile = true;
   const [newTileData,setNewTileData]=useState()
   const drawEventHandler = async (tileType) => {
-    console.log(tileType);
+    // console.log(tileType);
 
     const TileComponent = await import(
       `../../assets/tiles/tile${tileType}.jsx`
@@ -145,7 +146,7 @@ const GameBoard = () => {
     
     setNewTile(renderNewTile);
     setReleaseTile(true);
-    console.log(renderNewTile);
+    // console.log(renderNewTile);
   };
 
 
@@ -198,7 +199,7 @@ const GameBoard = () => {
               return [...currArray,newTile]
             })
             setReleaseTile(false)
-            console.log(newTileArray);
+            // console.log(newTileArray);
           }}
         >
           Confirm
