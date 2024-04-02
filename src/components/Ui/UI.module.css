@@ -1,0 +1,10 @@
+.UIWrapper{
+    color: black;
+    position: absolute;
+    bottom: 1rem;
+    z-index: 5;
+    margin: 1rem;
+}
+
+
+/* "text-black drop-shadow-xl fixed top-0 left-0 right-0 bottom-0 z-10 flex flex-col pointer-events-none" */

@@ -1,3 +1,20 @@
+
+import { useEffect, useRef, useState } from 'react';
+import { Cloud, Clouds, OrbitControls, Sky } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { Physics, RigidBody } from '@react-three/rapier';
+import { Perf } from 'r3f-perf';
+
+import { GameEngineProvider } from '../../Context/useGameEngine.jsx';
+
+// Components
+import { UI } from '../../components/Ui/UI.jsx';
+
+// Functions
+import { createGameBoard, tileColourLogic, tileJump, randomTileGenerator } from '../../../utilities.jsx';
+import { getTile } from '../../api.js';
+
+// Asset loader
 import { useEffect, useRef, useState } from "react";
 import { DragControls, OrbitControls, Sky } from "@react-three/drei";
 import { Perf } from "r3f-perf";
@@ -9,6 +26,7 @@ import { GameEngineProvider } from "../../Context/useGameEngine.jsx";
 import { getTile } from "../../api.js";
 // asset loader
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+
 
 // 3D components
 import TileA from "../../assets/tiles/tileA.jsx";
@@ -31,14 +49,36 @@ import TileP from "../../assets/tiles/tileP.jsx";
 import styles from "./GameBoard.module.css";
 
 //test
-import { tileData } from "./testboarddata.js";
-import { useControls } from "leva";
+
+import { tileData } from './testboarddata.js';
+import { useControls } from 'leva';
+import Menu from '../../components/Menu/Menu.jsx';
 import tileColourLogic from "./utils/tileColourLogic.js";
 import randomTileGenerator from "./utils/randomTileGenerator.js";
-function GameBoard() {
+const GameBoard = () => {
+
   const tileScale = [0.94, 0.94, 0.94];
   const tileSize = 2;
+  
+  // CAMERA
+  const [enableRotate, setEnableRotate] = useState(true);
 
+  // TILE DRAGGING
+  const tile = useRef();
+
+  // Leva
+  const { sunPosition } = useControls('sky', {
+    sunPosition: { value: [1, 2, 3] },
+  });
+
+
+
+  // States
+  const [showMenu, setShowMenu] = useState(false)
+  const [newTilePosition, setNewTilePosition] = useState([]);
+  const [newTile2DPosition, setNewTile2DPosition] = useState([]);
+  const [relaseTile, setReleaseTile] = useState(false);
+  const [tileRotation, setTileRotation] = useState(0);
   const [boardGameMatrix, setBoardGameMatrix] = useState([
     [[], [], [], [], [], [], [], [], [], [], []],
     [[], [], [], [], [], [], [], [], [], [], []],
@@ -53,6 +93,7 @@ function GameBoard() {
     [[], [], [], [], [], [], [], [], [], [], []],
     [[], [], [], [], [], [], [], [], [], [], []],
   ]);
+
   console.log(boardGameMatrix);
 
   // CAMERA
@@ -108,18 +149,29 @@ function GameBoard() {
     console.log(renderNewTile);
   };
 
-  //rotation
-  const [tileRotation, setTileRotation] = useState(0);
+
   useEffect(() => {
     setBoardGameMatrix((currBoard) => {
       const newboard = JSON.parse(JSON.stringify(currBoard));
 
       tileData.orientation = tileRotation * (180 / Math.PI);
-
       newboard[5][5] = [tileData];
       return newboard;
     });
   }, []);
+
+  
+  const grid = createGameBoard(
+    boardGameMatrix, 
+    tileSize, 
+    tileScale, 
+    setReleaseTile, 
+    setNewTilePosition,
+    setNewTile2DPosition
+  )
+
+  // RENDERING STARTS HERE //
+
 
   function tileChecks(x,z,i,j){
     setReleaseTile(true);
@@ -190,9 +242,15 @@ function GameBoard() {
     }
   }
 
+
   return (
     <GameEngineProvider>
-      <UI />
+      <UI 
+        setBoardGameMatrix={setBoardGameMatrix} 
+        tileRotation={tileRotation}
+        setTileRotation={setTileRotation}
+      />
+      
       <div className={styles.gameBoard}>
         <button
           className={styles.button}
@@ -213,16 +271,13 @@ function GameBoard() {
           Confirm
         </button>
 
-        <button
-          onClick={() => {
-            // confirmTilePlacement()
+        <button onClick={() => {
             // tileJump();
             setTileRotation((currRotation) => {
-              return currRotation - Math.PI / 2;
-            });
+              return currRotation - Math.PI / 2
+            })
           }}
-          className={styles.confirmbutton}
-        >
+          className={styles.confirmbutton}>
           Rotate
         </button>
         <button
@@ -244,7 +299,16 @@ function GameBoard() {
           <Physics debug>
             <ambientLight intensity={0.1} />
 
+
+        <Canvas shadows camera={{ fov: 100, position: [0, 8, 16] }}>
+          <Physics >
+            <ambientLight intensity={0.4} />
             <Sky sunPosition={sunPosition} />
+            {/* <Clouds>
+              <Cloud position={[ 4, 8, -6 ]} scale={0.5} />
+              <Cloud position={[ -2, 12, 6 ]} scale={0.5}/>
+              <Cloud position={[ 4, 15, 0 ]} scale={0.5}/>
+            </Clouds> */}
 
             <directionalLight
               castShadow
@@ -255,36 +319,18 @@ function GameBoard() {
 
             <OrbitControls
               minDistance={5}
-              maxDistance={20}
+              maxDistance={30}
               enableRotate={enableRotate}
               maxPolarAngle={Math.PI / 2 - 0.1}
             />
-
-            {/* <RigidBody ref={tile} canSleep={false} restitution={0.2}>
-              <TileA
-                position={placedPosition}
-                scale={tileScale}
-                ref={draggedTileRef}
-                rotation-y={tileRotation}
-                onCollisionExit={() => {
-                  console.log('collision exit');
-                }}
-                onSleep={() => {
-                  console.log('sleep');
-                }}
-                onWake={() => {
-                  console.log('wake');
-                }}
-              />
-            </RigidBody> */}
 
             <RigidBody>
               <TileD
                 position={[0, 4, 0]}
                 scale={tileScale}
-                ref={starterTileRef}
               />
             </RigidBody>
+
 
             {releaseTile ? newTile : null}
             {releaseTile ? console.log("i am here") : null}
@@ -292,28 +338,19 @@ function GameBoard() {
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>
                 <boxGeometry args={[25, 0.5, 25]} />
+
                 <meshStandardMaterial color="#8f4111" />
               </mesh>
               {grid}
             </RigidBody>
-
-            {/* <RigidBody ref={tile} canSleep={ false } restitution={ 0.2 }>
-          <TileC
-            position={[0,0,4]}
-            scale={tileScale}
-            ref={draggedTileRef}
-            rotation-y={tileRotation}
-            onCollisionExit={ () => { console.log('collision exit') } }
-            onSleep = { () => { console.log('sleep') } }
-            onWake = { () => { console.log( 'wake' ) } }
-          />
-        </RigidBody> */}
           </Physics>
 
           {/* HELPERS */}
           {/* <Perf position="top-left" /> */}
+
           <axesHelper args={[5]} />
           <gridHelper args={[50, 25, "black", "red"]} />
+
         </Canvas>
       </div>
     </GameEngineProvider>
