@@ -14,7 +14,6 @@ export const createGameBoard = (
       const position = new THREE.Vector3(i, 0, j);
       const tile = (
         <mesh
-          receiveShadow
           key={`${i}-${j}-tile`}
           onClick={() => {
             if (i === -5 || j === -5) {
@@ -39,7 +38,7 @@ export const createGameBoard = (
                 setReleaseTile(true)
                 setNewTilePosition([
                   position.x * tileSize,
-                  4,
+                  6,
                   position.z * tileSize,
                 ]);
                 setNewTile2DPosition([i + 5, j + 5]);
@@ -49,7 +48,12 @@ export const createGameBoard = (
           scale={tileScale}
         >
           <boxGeometry args={[tileSize, 0.1, tileSize]} />
-          <meshPhongMaterial color={tileColourLogic(i, j, boardGameMatrix)} transparent={true} opacity={0.2}/>
+          <meshPhongMaterial 
+            color={tileColourLogic(i, j, boardGameMatrix)} 
+            transparent={true} 
+            opacity={0.2} 
+            receiveShadow
+          />
         </mesh>
       );
       grid.push(tile);
