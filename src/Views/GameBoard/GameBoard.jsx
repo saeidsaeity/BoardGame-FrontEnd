@@ -4,6 +4,7 @@ import { Cloud, Clouds, OrbitControls, Sky } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
+import PopUp from '../../components/popUpRules.jsx';
 
 import { GameEngineProvider } from '../../Context/useGameEngine.jsx';
 
@@ -182,6 +183,7 @@ const GameBoard = () => {
       />
       
       <div className={styles.gameBoard}>
+        <PopUp/>
         <button
           className={styles.button}
           onClick={() => {
@@ -238,6 +240,9 @@ const GameBoard = () => {
         >
           Get Tile
         </button>
+        
+
+
 
 
 
