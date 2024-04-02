@@ -15,16 +15,11 @@ import { createGameBoard,  tileJump } from '../../../utilities.jsx';
 import { getTile } from '../../api.js';
 
 // Asset loader
-
-
-
-
 import * as THREE from "three";
 
 
 // asset loader
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-
 
 // 3D components
 import TileA from "../../assets/tiles/tileA.jsx";
@@ -43,6 +38,7 @@ import TileM from "../../assets/tiles/tileM.jsx";
 import TileN from "../../assets/tiles/tileN.jsx";
 import TileO from "../../assets/tiles/tileO.jsx";
 import TileP from "../../assets/tiles/tileP.jsx";
+
 // styling
 import styles from "./GameBoard.module.css";
 
@@ -77,6 +73,7 @@ const GameBoard = () => {
 
 
   // States
+  const [ citizenPosition, setCitizenPosition ] = useState([ -0.6, 7, 0.6])
   const [ sunPosition, setSunPosition ] = useState([150, 150, -250])
   const [showMenu, setShowMenu] = useState(false)
   const [newTilePosition, setNewTilePosition] = useState([12,4,0]);
@@ -292,7 +289,15 @@ const GameBoard = () => {
             </RigidBody>
 
 
-            <RigidBody gravityScale={0.5} position={ [ 0.6, 5, 2]} scale={0.095} friction={1} mass={10} rotation={[ 0 ,0 ,0 ]} canSleep={false} >
+            <RigidBody 
+              gravityScale={0.5} 
+              position={citizenPosition} 
+              scale={0.095} 
+              friction={1} 
+              mass={10} 
+              rotation={[ 0 ,0 ,0 ]} 
+              canSleep={false} 
+            >
               <CitizenRed />
             </RigidBody>
 
