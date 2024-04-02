@@ -106,9 +106,7 @@ export const GameEngineProvider = ({ children }) => {
     // the logic of doing most things via calling functions: i.e.
     // drawing tile, placing tile, placing meeple, calculating points
     const phaseEnd = () => {
-        console.log('turn phase', turnPhase)
         let newTime = 0
-        console.log(getState('turnPhase'))
         switch (turnPhase) {
             case 'start':
                 console.log('case: start')
