@@ -24,16 +24,18 @@ Functions:
 
 export const assetInDirection = (tile, directionNum) => {
     // convert the orientation into a number from 0-3
-    console.log(tile);
-    console.log(directionNum);
+    console.log('tile: ', tile);
+    console.log('dir: ', directionNum);
     const turn = tile.orientation/90
-    console.log(turn);
+    console.log('turn: ', turn);
     // orientation minused to get asset direction
     let assetDir = (directionNum - turn)
     if (assetDir < 0) {assetDir += 4}
+    console.log('assetDir: ', assetDir)
 
 
     // return asset in that direction
+    console.log()
     return tile.assets[assetDir]
 }
 
@@ -44,30 +46,29 @@ export const assetInDirection = (tile, directionNum) => {
 export const adjacentTileCoords = (tile, directionNum) => {
     // switch case returns coordinates of the tile in that
     // direction relative to the input tile
-    console.log(tile);
     switch(directionNum) {
         case 0:
             return {
-                row: tile.grid_id.row - 1, 
-                column: tile.grid_id.column,
+                row: tile.grid_id.row, 
+                column: tile.grid_id.column -1,
             }
             break;
         case 1:
-            return {
-                row: tile.grid_id.row, 
-                column: tile.grid_id.column + 1,
-            }
-            break;
-        case 2:
             return {
                 row: tile.grid_id.row + 1, 
                 column: tile.grid_id.column,
             }
             break;
-        case 3:
+        case 2:
             return {
                 row: tile.grid_id.row, 
-                column: tile.grid_id.column - 1,
+                column: tile.grid_id.column + 1,
+            }
+            break;
+        case 3:
+            return {
+                row: tile.grid_id.row - 1, 
+                column: tile.grid_id.column,
             }
             break;
     }
@@ -77,8 +78,9 @@ export const adjacentTileCoords = (tile, directionNum) => {
 
 export const checkSide = (tile, directionNum, matrix) => {
     // get coordinates for the tile on that side
+    console.log('directionNum: ', directionNum)
     const sideTileCoords = adjacentTileCoords(tile, directionNum)
-    console.log(sideTileCoords,'sidecoords');
+    console.log('sideTileCoords: ', sideTileCoords)
     // check tile is not off the grid
     if (sideTileCoords.row < 0 ||
         sideTileCoords.row > 10 ||
@@ -88,13 +90,15 @@ export const checkSide = (tile, directionNum, matrix) => {
 
     // get the tile on that side
     let sideTile = matrix[sideTileCoords.row][sideTileCoords.column]
-    
+    console.log('sideTile: ', sideTile)
+
     // return true if there is no adjacent tile in that direction
     if (sideTile.length === 0) {return true}
     else {sideTile = sideTile[0]}
-    console.log(sideTile,'sideTile');
+    console.log('sideTile: ', sideTile);
     // get asset of tile
     const tileAsset = assetInDirection(tile, directionNum)
+    console.log('tileAsset: ', tileAsset)
 
     // get corresponding asset of side tile
     const sideDirectionNum = (directionNum + 2) % 4
@@ -109,8 +113,9 @@ export const checkSide = (tile, directionNum, matrix) => {
 
 
 export const checkTilePlacement = (tile, matrix) => {
-    console.log(tile,'current;y testing this log');
+    console.log('testing tile: ', tile);
     for (let i=0; i<=3; i++) {
+        console.log('checking direction: ', i)
         if (!checkSide(tile, i, matrix)) {
             return false
         }
