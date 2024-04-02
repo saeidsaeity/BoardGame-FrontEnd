@@ -69,11 +69,19 @@ export const createGameBoard = (
               tileChecks(position.x,position.z,i,j)
             }
           }}
+
           position={[i * tileSize, 0, j * tileSize]}
           scale={tileScale}
         >
           <boxGeometry args={[tileSize, 0.1, tileSize]} />
-          <meshBasicMaterial color={tileColourLogic(i, j,boardGameMatrix)} />
+
+          <meshPhongMaterial 
+            color={tileColourLogic(i, j, boardGameMatrix)} 
+            transparent={true} 
+            opacity={0.2} 
+            receiveShadow
+          />
+
         </mesh>
       );
       grid.push(tile);

@@ -1,10 +1,32 @@
 .UIWrapper{
     color: black;
     position: absolute;
-    bottom: 1rem;
-    z-index: 5;
-    margin: 1rem;
+    width: 100vw;
+    height: 36rem;
+    top: 0;
+    z-index: 10;
+    display: flex;
 }
 
+.canvasWrapper{
+    width: 20rem;
+    height: 20rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
 
-/* "text-black drop-shadow-xl fixed top-0 left-0 right-0 bottom-0 z-10 flex flex-col pointer-events-none" */
+.nextPhase{
+    all: unset;
+    background-color: black;
+    height: 4rem;
+    width: 6rem;
+    color: white;
+    text-align: center;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.turnInfo{
+    margin: 3rem 2rem;
+}

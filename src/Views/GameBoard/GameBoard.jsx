@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
-import { Cloud, Clouds, OrbitControls, Sky } from '@react-three/drei';
+import { Cloud, Clouds, OrbitControls, PresentationControls, Sky } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
@@ -51,8 +51,13 @@ import styles from "./GameBoard.module.css";
 import { tileData } from './testboarddata.js';
 import { useControls } from 'leva';
 import Menu from '../../components/Menu/Menu.jsx';
+
+import { CitizenRed } from '../../assets/citizens/CitizenRed.jsx';
+
+
 import tileColourLogic from "./utils/tileColourLogic.js";
 import randomTileGenerator from "./utils/randomTileGenerator.js";
+
 const GameBoard = () => {
 
   const tileScale = [0.94, 0.94, 0.94];
@@ -65,13 +70,14 @@ const GameBoard = () => {
   const tile = useRef();
 
   // Leva
-  const { sunPosition } = useControls('sky', {
-    sunPosition: { value: [1, 2, 3] },
-  });
+  // const { sunPosition } = useControls('sky', {
+  //   sunPosition: { value: [1, 2, 3] },
+  // });
 
 
 
   // States
+  const [ sunPosition, setSunPosition ] = useState([150, 150, -250])
   const [showMenu, setShowMenu] = useState(false)
   const [newTilePosition, setNewTilePosition] = useState([12,4,0]);
   const [newTile2DPosition, setNewTile2DPosition] = useState([]);
@@ -241,10 +247,19 @@ const GameBoard = () => {
 
 
 
-        <Canvas shadows camera={{ fov: 100, position: [0, 8, 16] }}>
+        <Canvas shadows camera={{ fov: 70, position: [0, 8, 14] }}>
           <Physics >
             <ambientLight intensity={0.4} />
-            <Sky sunPosition={sunPosition} />
+            <Sky 
+              sunPosition={sunPosition} 
+              distance={45000} 
+              inclination={0.6} 
+              azimuth={0.1} 
+              turbidity={1}
+              rayleigh={0.5}
+              mieDirectionalG={0.8}
+              mieCoefficient={0.005}
+            />
             {/* <Clouds>
               <Cloud position={[ 4, 8, -6 ]} scale={0.5} />
               <Cloud position={[ -2, 12, 6 ]} scale={0.5}/>
@@ -259,10 +274,12 @@ const GameBoard = () => {
             />
 
             <OrbitControls
-              minDistance={5}
+              minDistance={2}
               maxDistance={30}
               enableRotate={enableRotate}
               maxPolarAngle={Math.PI / 2 - 0.1}
+              // dampingFactor={0.8}
+              rotateSpeed={0.6}
             />
 
             <RigidBody>
@@ -272,6 +289,12 @@ const GameBoard = () => {
               />
             </RigidBody>
 
+
+            <RigidBody gravityScale={0.5} position={ [ 0, 6, 0]} scale={0.095} friction={1} mass={10} rotation={[ 0 ,0 ,0 ]} canSleep={false} >
+              <CitizenRed />
+            </RigidBody>
+
+            
 
             {releaseTile ? newTile : null}
            
