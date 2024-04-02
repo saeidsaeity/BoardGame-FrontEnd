@@ -230,6 +230,7 @@ const GameBoard = () => {
           className={styles.confirmbutton}>
           Rotate
         </button>
+
         <button
           onClick={async () => {
             console.log(releaseTile,'heeeeeeeeeereeeeee');
@@ -241,6 +242,7 @@ const GameBoard = () => {
             setReleaseTile(true);
             console.log(newTile.props.position);
           }}
+          className={styles.getTile}
         >
           Get Tile
         </button>
@@ -290,7 +292,7 @@ const GameBoard = () => {
             </RigidBody>
 
 
-            <RigidBody gravityScale={0.5} position={ [ 0, 6, 0]} scale={0.095} friction={1} mass={10} rotation={[ 0 ,0 ,0 ]} canSleep={false} >
+            <RigidBody gravityScale={0.5} position={ [ 0.6, 5, 2]} scale={0.095} friction={1} mass={10} rotation={[ 0 ,0 ,0 ]} canSleep={false} >
               <CitizenRed />
             </RigidBody>
 
