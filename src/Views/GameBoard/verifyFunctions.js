@@ -124,10 +124,53 @@ const connectingTiles = (tile, asset) => {
 }
 
 
+// returns true if tile coords are in array
+const checkIfInArray = (tileInfo, array) => {
+    // assume tile is not in array
+    let isInArray = false
+
+    // iterate through each element in the array
+    array.forEach((arrTileInfo) => {
+
+        // check if tile coords in array, if so, set isInArray to true
+        if (arrTileInfo.coords.row === tileInfo.coords.row &&
+            arrTileInfo.coords.column === tileInfo.coords.column) {
+            isInArray = true
+        }
+    })
+    
+
+    return isInArray
+}
+
+
+// this function checks whether the original
+const checkOrigTile = (tileInfo, origTile, tilesToCheck, directions) => {
+    if (tilesToCheck[0].coords.row === tileInfo.coords.row &&
+        tilesToCheck[0].coords.column === tileInfo.coords.column &&
+        origTile.disconnected === true) {
+        const arrIndex = directions.indexOf((tileInfo.dir-(origTile.orientation/90))%4)
+        directions.splice(arrIndex, 1)
+    }
+}
+
+
+
+const addToCitizen = (citObj, player) => {
+    if (player in citObj) {
+        citObj[player] += 1
+    } else {
+        citObj[player] = 1
+    }
+}
+
+
 
 const checkTileCompletes = (origTile, matrix) => {
     // for loop iterates through each direction of tile
+    console.log(origTile)
     const directions = [0, 1, 2, 3]
+    const pointsObj = {}
     directions.forEach((directionNum) => {
 
         // get tile asset for that direction
@@ -135,9 +178,24 @@ const checkTileCompletes = (origTile, matrix) => {
         
         // only proceed if asset is road or city
         if (directionAsset.asset !== undefined) {
-            console.log(directionAsset.asset)
+
+            // create citizen array to store placed citizens
+            const citizenObj = {}
+
+            // check if citizen is on placed tile
+            if (origTile.citizen.is_citizen) {
+
+                // dirNum is direction Number without orientation
+                const dirNum = directionNum-(origTile.orientation/90)
+                if (dirNum < 0) {dirNum += 4}
+
+                // check of citizen is on asset
+                if ([dirNum, ...directionAsset.connects].includes(origTile.citizen.location)) {
+                    addToCitizen(citizenObj, origTile.citizen.player)
+                }
+            }
             
-            // remove directions in directions array that connect to
+            // remove directions in directions array th            // check if citizen is on placed tileat connect to
             // the asset, as we do not want to check the same asset twice
             directionAsset.connects.forEach((direction) => {
                 const arrIndex = directions.indexOf((direction+(origTile.orientation/90))%4)
@@ -150,24 +208,22 @@ const checkTileCompletes = (origTile, matrix) => {
             const directionsToCheck = [directionNum, ...directionAsset.connects.map((direction) => {
                 return (direction+(origTile.orientation/90))%4
             })]
-            
+
             // use directionsToCheck to create tilesToCheck array, containing objects with 
             // an object containing row/column coords and direction the asset is coming from
             // e.g. [ { coords: { row: 2, column: 1 }, dir: 0 }, { coords: { row: 1, column: 0 }, dir: 1 } ]
-            const tilesToCheck = directionsToCheck.map((direction) => {
+            const tilesToCheck = [{coords: origTile.grid_id, dir: directionNum}
+                , ...directionsToCheck.map((direction) => {
                 return { coords: adjacentTileCoords(origTile, direction), dir: (direction + 2)%4}
-            })
-
-            console.log('tilesToCheck: ', tilesToCheck)
+            })]
 
             // for loop iterates through the tilesToCheck and runs a function that checks
             // whether the asset ends there, or if it continues, it adds the new tiles to
             // tilesToCheck array
-            for (let i = 0; i < tilesToCheck.length; i++) {
+            for (let i = 1; i < tilesToCheck.length; i++) {
 
                 // get next tileInfo in tilesToCheck
                 const tileInfo = tilesToCheck[i]
-                console.log('tileInfo: ', tileInfo)
 
                 // if tile does not exist, asset has not yet ended, so end the function
                 const tile = matrix[tileInfo.coords.row][tileInfo.coords.column][0]
@@ -175,22 +231,50 @@ const checkTileCompletes = (origTile, matrix) => {
 
                 // fetch asset in corresponding direction
                 const tileAsset = assetInDirection(tile, tileInfo.dir)
-                console.log('tileAsset: ', tileAsset)
+
+                // check if tile has a citizen on it
+                if (tile.citizen.is_citizen) {
+                    
+                    // get original direction without orientation
+                    const dir = tileInfo.dir-(tile.orientation/90)
+                    if (dir < 0) {dir += 4}
+
+                    console.log('citizenTile: ', tile)
+                    console.log([dir, ...tileAsset.connects])
+                    console.log('unaltered: ', tile.citizen.location)
+                    console.log((tile.citizen.location+(tile.orientation/90))%4)
+
+                    // check of citizen is on asset
+                    if ([dir, ...tileAsset.connects]
+                        .includes((tile.citizen.location))) {
+                        addToCitizen(citizenObj, tile.citizen.player)
+                        console.log(citizenObj)
+                    }
+                }                    // dirNum is direction Number without orientation
+
 
                 // add connecting tile info to tilesToCheck
                 const newTileInfo = connectingTiles(tile, tileAsset)
                 for (const info of newTileInfo) {
 
-                    // checks if tile is already in tilesToCheck
-                    // create new function that iterates through array to checl for coords
+                    // if tile is not already in array, add to array
+                    if (!checkIfInArray(info, tilesToCheck)) {
+                        tilesToCheck.push(info)
 
-                    // adds tileInfo to tilesToCheck
-                    tilesToCheck.push(info)
+                        // removes connecing asset from direction if tile is disconnected
+                    } else {
+                        checkOrigTile(info, origTile, tilesToCheck, directions)
+                    }
                 }
             }
 
-            // runs if asset is complete
-            console.log('asset is complete!')
+            // calculates points
+            let points = tilesToCheck.length
+            if (directionAsset.asset === 'city') {
+                points *= 2
+            }
+            console.log(points)
+            
         }
     })
 }
@@ -207,6 +291,7 @@ const tileD = {
     },
     tile_type: 'D',
     is_monestary: false,
+    disconnected: false,
     citizen: {
         is_citizen: false,
         asset: null,
@@ -241,6 +326,7 @@ const tileJ = {
     },
     tile_type: 'J',
     is_monestary: false,
+    disconnected: false,
     citizen: {
         is_citizen: false,
         asset: null,
@@ -275,6 +361,7 @@ const tileK = {
     },
     tile_type: 'K',
     is_monestary: false,
+    disconnected: false,
     citizen: {
         is_citizen: false,
         asset: null,
@@ -298,8 +385,142 @@ const tileK = {
     }
 }
 
+const tileI = {
+    grid_id: { row: 1, column: 1 },
+    orientation: 90,
+    corresponding_tiles: {
+        north: null,
+        east: null,
+        south: null,
+        west: null
+    },
+    tile_type: 'I',
+    is_monestary: false,
+    disconnected: true,
+    citizen: {
+        is_citizen: true,
+        asset: 'city',
+        location: 1,
+        player: 1
+    },
+    assets: {
+        0: {},
+        1: {
+            asset: 'city',
+            connects: []
+        },
+        2: {
+            asset: 'city',
+            connects: []
+        },
+        3: {}
+    }
+}
 
-checkTileCompletes(tileJ, [[[], [], []], [[], [], [tileK]], [[], [], []]])
+const tileM = {
+    grid_id: { row: 1, column: 0 },
+    orientation: 180,
+    corresponding_tiles: {
+        north: null,
+        east: null,
+        south: null,
+        west: null
+    },
+    tile_type: 'M',
+    is_monestary: false,
+    disconnected: false,
+    citizen: {
+        is_citizen: true,
+        asset: 'city',
+        location: 0,
+        player: 0
+    },
+    assets: {
+        0: {
+            asset: 'city',
+            connects: [3]
+        },
+        1: {},
+        2: {},
+        3: {
+            asset: 'city',
+            connects: [0]
+        }
+    }
+}
+
+const tileN = {
+    grid_id: { row: 2, column: 0 },
+    orientation: 90,
+    corresponding_tiles: {
+        north: null,
+        east: null,
+        south: null,
+        west: null
+    },
+    tile_type: 'N',
+    is_monestary: false,
+    disconnected: false,
+    citizen: {
+        is_citizen: true,
+        asset: 'city',
+        location: 3,
+        player: 0
+    },
+    assets: {
+        0: {
+            asset: 'city',
+            connects: [3]
+        },
+        1: {},
+        2: {},
+        3: {
+            asset: 'city',
+            connects: [0]
+        }
+    }
+}
+
+const tileO = {
+    grid_id: { row: 2, column: 1 },
+    orientation: 0,
+    corresponding_tiles: {
+        north: null,
+        east: null,
+        south: null,
+        west: null
+    },
+    tile_type: 'O',
+    is_monestary: false,
+    disconnected: false,
+    citizen: {
+        is_citizen: true,
+        asset: 'city',
+        location: 1,
+        player: 1
+    },
+    assets: {
+        0: {
+            asset: 'city',
+            connects: [3]
+        },
+        1: {
+            asset: 'road',
+            connects: [2]
+        },
+        2: {
+            asset: 'road',
+            connects: [1]
+        },
+        3: {
+            asset: 'city',
+            connects: [0]
+        }
+    }
+}
+
+
+checkTileCompletes(tileI, [[[], [], []], [[tileM], [], []], [[tileN], [tileO], []]])
 
 
 /*
