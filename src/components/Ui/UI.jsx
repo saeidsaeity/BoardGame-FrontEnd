@@ -1,14 +1,35 @@
 import { myPlayer } from "playroomkit";
 import { useGameEngine } from "../../Context/useGameEngine";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import styles from './UI.module.css'
 import { Canvas } from "@react-three/fiber";
 import { CitizenRed } from "../../assets/citizens/CitizenRed";
 import { OrbitControls, PresentationControls, SpotLight } from "@react-three/drei";
 import TileA from "../../assets/tiles/tileA";
+import PopUp from "../popUpRules";
 
-export const UI = (boardGameMatrix, setBoardGameMatrix, tileRotation, setTileRotation) => {
+export const UI = (
+    { 
+        boardGameMatrix, 
+        setBoardGameMatrix, 
+        tileRotation, 
+        setTileRotation, 
+        newTileType,
+        newTileData,
+        checkTilePlacement,
+        setNewTileArray,
+        setReleaseTile,
+        setNewTile,
+        randomTileGenerator,
+        setNewTileData,
+        drawEventHandler,
+        setNewTileType,
+        newTile2DPosition,
+        newTile
+    }) => {
+    const [ newPlayerTile, setNewPlayerTile ] = useState()
+    
     const {
         turn,
         turnPhase,
@@ -18,28 +39,37 @@ export const UI = (boardGameMatrix, setBoardGameMatrix, tileRotation, setTileRot
         phaseEnd
     } = useGameEngine()
 
+
     // const currentPlayer = players[playerTurn]
     const me = myPlayer()
     const player = players[playerTurn]
 
     // endPhaseButton ends the phase, should only be visible on
     // player's turn during placing rounds
-    const endPhaseButton = () => {
-        if (player !== me) {return <div/>}
-        if (turnPhase !== "Place Tile" && turnPhase !== "Place Citizen") {return <div/>}
-        return (
-            <button className={styles.nextPhase} onClick={() => {phaseEnd()}}>Next Phase</button>
-        )
-    }
+    // const endPhaseButton = () => {
+    //     if (player !== me) {return <div/>}
+    //     if (turnPhase !== "Place Tile" && turnPhase !== "Place Citizen") {return <div/>}
+    //     return (
+    //         <button className={styles.nextPhase} onClick={() => {phaseEnd()}}>Next Phase</button>
+    //     )
+    // }
 
-    // html/css inside this can be changed to alter UI interface
+    useEffect(() => {
+        if(newTileType !== undefined){
+            import(`../../assets/tiles/tile${newTileType}.jsx`
+              ).then((asset) => {
+                console.log(asset, 'asset');
+                const tileComp = (<asset.default />)
+                setNewPlayerTile(tileComp)
+              })
+        }
+    }, [newTileType])
+
     return (
         <div className={styles.UIWrapper}>
             <div className={styles.turnInfo}>
-                <h2>Time: {timer}</h2>
                 <h2>Turn: {turn} | Player: {player.state.profile.name} | Phase: {turnPhase}</h2>
             </div>
-            {endPhaseButton()}
             <div className={styles.canvasWrapper}>
                 <Canvas camera={{ fov: 40, position: [0, 8, 8] }}>
                     <ambientLight intensity={0.75}/>
@@ -50,7 +80,6 @@ export const UI = (boardGameMatrix, setBoardGameMatrix, tileRotation, setTileRot
                         minDistance={5}
                         maxDistance={5}
                         maxPolarAngle={Math.PI / 4}
-                        // dampingFactor={0.8}
                         rotateSpeed={0.6}
                     />
                     <PresentationControls
@@ -64,13 +93,83 @@ export const UI = (boardGameMatrix, setBoardGameMatrix, tileRotation, setTileRot
                         polar={[0, Math.PI / 4]} // Vertical limits
                         azimuth={[-Infinity, Infinity]} // Horizontal limits
                         config={{ mass: 1, tension: 170, friction: 26 }} // Spring config
-                        // domElement={events.connected} // The DOM element events for this controller will attach to
                     >
-                        <TileA />
-                    {/* <CitizenRed scale={0.2} rotation={[ -0.5, 0.1, 0]} /> */}
+                        {newPlayerTile}
                     </PresentationControls>
                 </Canvas>
             </div>
+            <PopUp/>
+            {player !== me ? 
+                null
+            :
+                <div className={styles.buttonWrapper}>
+                
+
+                <button
+                onClick={() => {
+                    setTileRotation((currRotation) => {
+                    if(currRotation <= -2*Math.PI){
+                        return currRotation + 1.5 * Math.PI
+                    }
+                    return currRotation - Math.PI / 2;
+                    });
+                    newTileData.orientation = (tileRotation -Math.PI / 2)*-1*(180 / Math.PI)%360;
+                    setNewTile((currTile) => {
+                    if (currTile === undefined) {
+                        return currTile;
+                    }
+                    const updatedTile = {
+                        ...currTile,
+                        props: {
+                        ...currTile.props,
+                        rotation: [0, tileRotation - Math.PI / 2, 0],
+                        },
+                    };
+                    return updatedTile;
+                    });
+                }}
+                className={styles.button}
+                >
+                Rotate
+                </button>
+
+                <button
+                onClick={async () => {
+                    const randomTile = await randomTileGenerator();
+                    setNewTileData(randomTile);
+                    drawEventHandler(randomTile.tile_type);
+                    setNewTileType(randomTile.tile_type)
+                }}
+                className={styles.button}
+                >
+                Get Tile
+                </button>
+                <button
+                className={styles.button}
+                onClick={() => {
+                    if (checkTilePlacement(newTileData, boardGameMatrix)) {
+                    setBoardGameMatrix((currBoard) => {
+                        const newboard = JSON.parse(JSON.stringify(currBoard));
+
+                        newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [
+                        newTileData,
+                        ];
+                        return newboard;
+                    });
+                    setNewTileArray((currArray) => {
+                        return [...currArray, newTile];
+                    });
+                        setReleaseTile(false);
+                        phaseEnd()
+                    } else {
+                        console.log("tile not been placed");
+                    }
+                }}
+                >
+                Confirm
+                </button>
+                </div>
+            }
         </div>
     )
 }
