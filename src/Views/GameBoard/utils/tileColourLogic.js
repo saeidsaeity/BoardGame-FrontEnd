@@ -3,7 +3,8 @@ const tileColourLogic = (i, j,boardGameMatrix) => {
       if (
         boardGameMatrix[i + 5][j + 5]?.length === 0 &&
         (boardGameMatrix[i + 6][j + 5]?.length > 0 ||
-          boardGameMatrix[i + 5][j + 6]?.length > 0)
+          boardGameMatrix[i + 5][j + 6]?.length > 0 || 
+          boardGameMatrix[i + 5][j + 4]?.length > 0 )
       ) {
         return 0x32cd32;
       } else {

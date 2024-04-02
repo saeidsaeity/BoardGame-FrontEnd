@@ -164,7 +164,7 @@ function GameBoard() {
             if (i === -5 || j === -5) {
               // board edge case
               if (
-                boardGameMatrix[i + 5][j + 5]?.length === 0 &&(boardGameMatrix[i + 6][j + 5]?.length > 0 || boardGameMatrix[i + 5][j + 6]?.length > 0)) {
+                boardGameMatrix[i + 5][j + 5]?.length === 0 &&(boardGameMatrix[i + 6][j + 5]?.length > 0 || boardGameMatrix[i + 5][j + 6]?.length > 0 || boardGameMatrix[i + 5][j + 4]?.length > 0 )) {
                 tileChecks(position.x,position.z,i,j)
               }
             } else if (
