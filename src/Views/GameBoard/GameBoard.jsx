@@ -11,19 +11,17 @@ import { GameEngineProvider } from '../../Context/useGameEngine.jsx';
 import { UI } from '../../components/Ui/UI.jsx';
 
 // Functions
-import { createGameBoard, tileColourLogic, tileJump, randomTileGenerator } from '../../../utilities.jsx';
+import { createGameBoard,  tileJump } from '../../../utilities.jsx';
 import { getTile } from '../../api.js';
 
 // Asset loader
-import { useEffect, useRef, useState } from "react";
-import { DragControls, OrbitControls, Sky } from "@react-three/drei";
-import { Perf } from "r3f-perf";
-import { Physics, RigidBody } from "@react-three/rapier";
+
+
+
+
 import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
-import { UI } from "./UI.jsx";
-import { GameEngineProvider } from "../../Context/useGameEngine.jsx";
-import { getTile } from "../../api.js";
+
+
 // asset loader
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
@@ -75,9 +73,9 @@ const GameBoard = () => {
 
   // States
   const [showMenu, setShowMenu] = useState(false)
-  const [newTilePosition, setNewTilePosition] = useState([]);
+  const [newTilePosition, setNewTilePosition] = useState([12,4,0]);
   const [newTile2DPosition, setNewTile2DPosition] = useState([]);
-  const [relaseTile, setReleaseTile] = useState(false);
+  const [releaseTile, setReleaseTile] = useState(false);
   const [tileRotation, setTileRotation] = useState(0);
   const [boardGameMatrix, setBoardGameMatrix] = useState([
     [[], [], [], [], [], [], [], [], [], [], []],
@@ -97,24 +95,22 @@ const GameBoard = () => {
   console.log(boardGameMatrix);
 
   // CAMERA
-  const [enableRotate, setEnableRotate] = useState(true);
+  
 
   // TILE DRAGGING
   const [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0, z: 0 });
   const [placedPosition, setPlacedPosition] = useState([0, 4, 2]);
-  const [newTilePosition, setNewTilePosition] = useState([0, 4, 0]);
-  const [newTile2DPosition, setNewTile2DPosition] = useState([]);
-  const [releaseTile, setReleaseTile] = useState(false);
+  
+
+  
 
   const [isNewTile, setIsNewTile] = useState(false);
 
   const draggedTileRef = useRef({ localMatrix: [] });
-  const tile = useRef();
+  
   const starterTileRef = useRef({ position: [0, 4, 0] });
 
-  const { sunPosition } = useControls("sky", {
-    sunPosition: { value: [1, 2, 3] },
-  });
+
 
   const tileJump = () => {
     console.log("jump");
@@ -167,81 +163,15 @@ const GameBoard = () => {
     tileScale, 
     setReleaseTile, 
     setNewTilePosition,
-    setNewTile2DPosition
+    setNewTile2DPosition,
+    setNewTile
   )
 
   // RENDERING STARTS HERE //
 
 
-  function tileChecks(x,z,i,j){
-    setReleaseTile(true);
-                setNewTilePosition([
-                  x * tileSize,
-                  4,
-                  z * tileSize,
-                ]);
-                setNewTile((currTile) => {
-                  if(currTile ===  undefined){
-                    return currTile
-                  }
-                  const updatedTile = {
-                    ...currTile,
-                    props: {
-                      ...currTile.props,
-                      position: [
-                        x * tileSize,
-                        4,
-                        z * tileSize,
-                      ]
-                    }
-                  };
-                  return updatedTile; 
-                });
-                setNewTile2DPosition([i + 5, j + 5]);
-
-  }
   
-  const grid = [];
-
-  for (let i = -5; i < 6; i++) {
-    for (let j = -5; j < 6; j++) {
-      // Create the tile
-      const position = new THREE.Vector3(i, 0, j);
-      const tile = (
-        <mesh
-          key={`${i}-${j}-tile`}
-          onClick={() => {
-            console.log(position);
-           
-            if (i === -5 || j === -5) {
-              // board edge case
-              if (
-                boardGameMatrix[i + 5][j + 5]?.length === 0 &&(boardGameMatrix[i + 6][j + 5]?.length > 0 || boardGameMatrix[i + 5][j + 6]?.length > 0 || boardGameMatrix[i + 5][j + 4]?.length > 0 )) {
-                tileChecks(position.x,position.z,i,j)
-              }
-            } else if (
-              // selected a green tile
-              boardGameMatrix[i + 5][j + 5]?.length === 0 &&
-              (boardGameMatrix[i + 4][j + 5]?.length > 0 ||
-                boardGameMatrix[i + 5][j + 4]?.length > 0 ||
-                boardGameMatrix[i + 6][j + 5]?.length > 0 ||
-                boardGameMatrix[i + 5][j + 6]?.length > 0)
-            ) {
-              //setReleaseTile(!releaseTile);
-              tileChecks(position.x,position.z,i,j)
-            }
-          }}
-          position={[i * tileSize, 0, j * tileSize]}
-          scale={tileScale}
-        >
-          <boxGeometry args={[tileSize, 0.1, tileSize]} />
-          <meshBasicMaterial color={tileColourLogic(i, j,boardGameMatrix)} />
-        </mesh>
-      );
-      grid.push(tile);
-    }
-  }
-
+  
 
   return (
     <GameEngineProvider>
@@ -276,6 +206,20 @@ const GameBoard = () => {
             setTileRotation((currRotation) => {
               return currRotation - Math.PI / 2
             })
+            console.log(newTile);
+            setNewTile((currTile) => {
+              if(currTile ===  undefined){
+                return currTile
+              }
+              const updatedTile = {
+                ...currTile,
+                props: {
+                  ...currTile.props,
+                  rotation:[0,tileRotation- Math.PI / 2,0]
+                }
+              };
+              return updatedTile; 
+            });
           }}
           className={styles.confirmbutton}>
           Rotate
@@ -295,9 +239,6 @@ const GameBoard = () => {
           Get Tile
         </button>
 
-        <Canvas shadows camera={{ fov: 60, position: [0, 5, 10] }}>
-          <Physics debug>
-            <ambientLight intensity={0.1} />
 
 
         <Canvas shadows camera={{ fov: 100, position: [0, 8, 16] }}>
@@ -333,7 +274,7 @@ const GameBoard = () => {
 
 
             {releaseTile ? newTile : null}
-            {releaseTile ? console.log("i am here") : null}
+           
             {newTileArray}
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>
