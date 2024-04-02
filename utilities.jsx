@@ -5,7 +5,7 @@ export const createGameBoard = (
   tileSize, tileScale, 
   setReleaseTile,
   setNewTilePosition,
-  setNewTile2DPosition,setNewTile
+  setNewTile2DPosition,setNewTile,setNewTileData
   ) => {
     function tileChecks(x,z,i,j){
       setReleaseTile(true);
@@ -56,6 +56,11 @@ export const createGameBoard = (
               if (
                 boardGameMatrix[i + 5][j + 5]?.length === 0 &&(boardGameMatrix[i + 6][j + 5]?.length > 0 || boardGameMatrix[i + 5][j + 6]?.length > 0 || boardGameMatrix[i + 5][j + 4]?.length > 0 )) {
                 tileChecks(position.x,position.z,i,j)
+                setNewTileData((currTileData)=>{
+                 const newtilepos = {...currTileData}
+                 newtilepos.grid_id={row:position.x,column:position.z}
+                 return newtilepos
+                })
               }
             } else if (
               // selected a green tile
@@ -67,6 +72,11 @@ export const createGameBoard = (
             ) {
               //setReleaseTile(!releaseTile);
               tileChecks(position.x,position.z,i,j)
+              setNewTileData((currTileData)=>{
+                const newtilepos = {...currTileData}
+                newtilepos.grid_id={row:position.x+5,column:position.z+5}
+                return newtilepos
+               })
             }
           }}
 
