@@ -28,13 +28,13 @@ const GameBoard = () => {
   const [enableRotate, setEnableRotate] = useState(true);
   const [sunPosition, setSunPosition ] = useState([50, 100, 150])
   //NEW TILE
-  const [newTileArray, setNewTileArray] = useState([]);
-  const [newTile, setNewTile] = useState();
-  const [newTileData, setNewTileData] = useState();
-  const [newTileType, setNewTileType ] = useState()
-  const [newTilePosition, setNewTilePosition] = useState([12,4,0]);
-  const [newTile2DPosition, setNewTile2DPosition] = useState([]);
-  const [releaseTile, setReleaseTile] = useState(false);
+  const [newTileArray, setNewTileArray] = useState([]);//all tiles
+  const [newTile, setNewTile] = useState();// the new tile mesh thing
+  const [newTileData, setNewTileData] = useState();//the tile object 
+  const [newTileType, setNewTileType ] = useState() // string of tile type
+  const [newTilePosition, setNewTilePosition] = useState([12,4,0]);//updates the postion
+  const [newTile2DPosition, setNewTile2DPosition] = useState([]);//updates the position
+  const [releaseTile, setReleaseTile] = useState(false);//mkaes it so you cant click after confirm
   const [tileRotation, setTileRotation] = useState(0);
   // Citizen
   const [citizenPosition, setCitizenPosition ] = useState([])
@@ -60,7 +60,7 @@ const GameBoard = () => {
 
   const [replaceTile,setReplaceTile]=useState(true)
 
-  console.log(newTile, "LATEST NEW TILE");
+  
 
   const drawEventHandler = async (tileType) => {
     const TileComponent = await import(`../../assets/tiles/tile${tileType}.jsx`);
@@ -73,6 +73,7 @@ const GameBoard = () => {
         <TileComponent.default scale={tileScale} />
       </RigidBody>
     );
+    console.log(renderNewTile,'render new tile');
     setNewTile(renderNewTile);
   };
 

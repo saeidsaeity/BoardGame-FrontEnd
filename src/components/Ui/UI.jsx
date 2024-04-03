@@ -75,7 +75,6 @@ export const UI = (
         }
     }, [newTileType])
 
-    console.log(showTile, "showTile");
 
     return (
         <div className={styles.UIWrapper}>
@@ -147,6 +146,7 @@ export const UI = (
 
                 <button 
                     onClick={async () => {
+                        setReleaseTile(false)
                         setShowTile(false)
                         const randomTile = await randomTileGenerator();
                         setNewTileData(randomTile);
