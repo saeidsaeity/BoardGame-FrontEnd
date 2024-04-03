@@ -201,6 +201,7 @@ const GameBoard = () => {
                 mass={1000} 
                 rotation={[ 0 ,0 ,0 ]} 
                 canSleep={true}
+                lockRotations={true}
                 restitution={0}
               >
                 <CitizenRed />
