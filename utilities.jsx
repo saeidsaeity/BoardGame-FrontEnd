@@ -9,7 +9,8 @@ export const createGameBoard = (
   setNewTile2DPosition,
   setNewTile,
   setNewTileData,
-  turnPhase
+  turnPhase,
+  isCitizenPhase
   ) => {
 
   function tileChecks(x,z,i,j){
@@ -88,7 +89,7 @@ export const createGameBoard = (
           <boxGeometry args={[tileSize, 0.1, tileSize]} />
 
           <meshPhongMaterial 
-            color={tileColourLogic(i, j, boardGameMatrix)} 
+            color={tileColourLogic(i, j, boardGameMatrix, isCitizenPhase)} 
             transparent={true} 
             opacity={0.2} 
             receiveShadow
@@ -104,7 +105,7 @@ export const createGameBoard = (
   return grid;
 }
 
-export const tileColourLogic = (i, j,boardGameMatrix) => {
+export const tileColourLogic = (i, j, boardGameMatrix, isCitizenPhase ) => {
   if (i === -5 || j === -5) {
     if (
       boardGameMatrix[i + 5][j + 5]?.length === 0 &&
@@ -114,7 +115,8 @@ export const tileColourLogic = (i, j,boardGameMatrix) => {
     ) {
       return 0x32cd32;
     } else {
-      return 0xffffff;
+      return 0x000000;
+      // return 0xffffff;
     }
   } else if (
     boardGameMatrix[i + 5][j + 5]?.length === 0 &&
@@ -124,11 +126,12 @@ export const tileColourLogic = (i, j,boardGameMatrix) => {
       boardGameMatrix[i + 5][j + 6]?.length > 0)
   ) {
     //   console.log('i am here');
-    return 0x32cd32;
+    if(isCitizenPhase === true) return 0xc3c3c3;
+    else return 0x32cd32;
   } else {
    
     // does not colour all cells?
-    return 0xc3c3c3;
+    if(isCitizenPhase === false) return 0xc3c3c3;
   }
 };
 

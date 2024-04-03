@@ -1,4 +1,4 @@
-const tileColourLogic = (i, j,boardGameMatrix) => {
+const tileColourLogic = (i, j,boardGameMatrix, isCitizenPhase) => {
     if (i === -5 || j === -5) {
       if (
         boardGameMatrix[i + 5][j + 5]?.length === 0 &&
