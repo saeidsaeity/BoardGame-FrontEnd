@@ -56,10 +56,8 @@ const GameBoard = () => {
 
 
   // CAMERA
-  const [newTileArray, setNewTileArray] = useState([]);
-  const [newTile, setNewTile] = useState();
-  const droptile = true;
-  const [newTileData, setNewTileData] = useState();
+
+
   const [replaceTile,setReplaceTile]=useState(true)
 
   console.log(newTile, "LATEST NEW TILE");
