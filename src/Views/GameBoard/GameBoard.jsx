@@ -62,7 +62,7 @@ const GameBoard = () => {
   const [newTile, setNewTile] = useState();
   const droptile = true;
   const [newTileData, setNewTileData] = useState();
-
+  const [replaceTile,setReplaceTile]=useState(true)
 
   console.log(newTile, "LATEST NEW TILE");
 
@@ -134,6 +134,8 @@ const GameBoard = () => {
         setNewTileType={setNewTileType}
         newTileData={newTileData}
         newTile2DPosition={newTile2DPosition}
+        replaceTile={replaceTile}
+        setReplaceTile={setReplaceTile}
       />
 
       <div className={styles.gameBoard}>
@@ -188,7 +190,7 @@ const GameBoard = () => {
             >
               <CitizenRed />
             </RigidBody>
-            {releaseTile ? newTile : null}
+            {releaseTile && replaceTile ? newTile : null}
             {newTileArray}
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>

@@ -26,7 +26,9 @@ export const UI = (
         drawEventHandler,
         setNewTileType,
         newTile2DPosition,
-        newTile
+        newTile,
+        replaceTile,
+        setReplaceTile
     }) => {
     const [ newPlayerTile, setNewPlayerTile ] = useState()
     
@@ -135,6 +137,7 @@ export const UI = (
 
                 <button
                 onClick={async () => {
+                    setReplaceTile(true)
                     const randomTile = await randomTileGenerator();
                     setNewTileData(randomTile);
                     drawEventHandler(randomTile.tile_type);
@@ -148,6 +151,7 @@ export const UI = (
                 className={styles.button}
                 onClick={() => {
                     if (checkTilePlacement(newTileData, boardGameMatrix)) {
+                        setReplaceTile(false)
                     setBoardGameMatrix((currBoard) => {
                         const newboard = JSON.parse(JSON.stringify(currBoard));
 
