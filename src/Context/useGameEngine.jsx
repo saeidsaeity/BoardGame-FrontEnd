@@ -2,7 +2,7 @@ import { isHost, onPlayerJoin, useMultiplayerState, usePlayersList } from 'playr
 import { createContext, useEffect, useContext, useRef } from 'react'
 import { setState, getState } from 'playroomkit'
 import { randInt } from 'three/src/math/MathUtils'
-import { useControls } from 'leva'
+// import { useControls } from 'leva'
 
 'drawTile'
 
@@ -17,7 +17,7 @@ export const GameEngineProvider = ({ children }) => {
 
     // Game States
     const [timer, setTimer] = useMultiplayerState('timer', 0)
-    const [turnPhase, setTurnPhase] = useMultiplayerState('turnPhase', "start")
+    const [turnPhase, setTurnPhase] = useMultiplayerState('turnPhase', "Place Tile")
     const [turn, setTurn] = useMultiplayerState('turn', 1)
     const [playerTurn, setPlayerTurn] = useMultiplayerState('playerTurn', 0)
     const [tileDeck, setTileDeck] = useMultiplayerState('tileDeck', [])
@@ -46,6 +46,8 @@ export const GameEngineProvider = ({ children }) => {
 
     // startGame resets all game states
     const startGame = () => {
+        setTurnPhase('Place Tile', true)
+        // console.log(getState('turnPhase'))
         if (isHost()) {
             console.log('StartGame')
             setTimer(TIME_PHASE_TILE_DRAW, true)
@@ -68,21 +70,21 @@ export const GameEngineProvider = ({ children }) => {
                 console.log(player)
                 console.log('Setting states for player', player.id)
                 player.setState('tile', [], true)
-                player.setState('meeples', 7, true)
+                player.setState('citizens', 7, true)
                 player.setState('score', 0, true)
                 player.setState('winner', false, true)
             })
 
             // give player a tile
             givePlayerTile()
-            setTurnPhase('Draw Tile', true)
         }
     }
     
     // invoke startgame upon loading
     useEffect(() => {
-        console.log('in use effect')
+        // console.log('in use effect')
         startGame()
+        // console.log(getState('turnPhase'))
     }, [])
 
     // 
@@ -98,15 +100,14 @@ export const GameEngineProvider = ({ children }) => {
         console.log('turn: ', nextTurn)
         setTurn(nextTurn)
     }
+    //das
 
     // phaseEnd switches phase, and will likely be where we deal with
     // the logic of doing most things via calling functions: i.e.
     // drawing tile, placing tile, placing meeple, calculating points
     const phaseEnd = () => {
-        console.log('turn phase', getState('turnPhase'))
         let newTime = 0
-        console.log(getState('turnPhase'))
-        switch (getState('turnPhase')) {
+        switch (turnPhase) {
             case 'start':
                 console.log('case: start')
                 console.log('in lobby')
@@ -154,9 +155,9 @@ export const GameEngineProvider = ({ children }) => {
     }
     
     // paused allows host to pause, along with Leva in app.jsx
-    const { paused } = useControls({
-        paused: false
-    })
+    // const { paused } = useControls({
+    //     paused: false
+    // })
 
     // declare timerInterval
     const timerInterval = useRef()
@@ -166,7 +167,7 @@ export const GameEngineProvider = ({ children }) => {
         timerInterval.current = setInterval(() => {
             if (!isHost()) {return}
             if (typeof getState('timer') === 'string') {return}
-            if (paused) {return}
+            // if (paused) {return}
             let newTime = getState("timer") - 1
 
             if (newTime <= 0) {
@@ -184,7 +185,7 @@ export const GameEngineProvider = ({ children }) => {
     useEffect(() => {
         runTimer()
         return clearTimer
-    }), [turnPhase, paused]
+    }), [turnPhase]
 
     const gameState = {
         timer,

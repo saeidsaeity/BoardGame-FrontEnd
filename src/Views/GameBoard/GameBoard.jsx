@@ -1,47 +1,44 @@
-import { useEffect, useRef, useState } from "react";
-import { Cloud, Clouds, OrbitControls, Sky } from "@react-three/drei";
+import { useEffect, useState } from "react";
+import { Cloud, Clouds, OrbitControls, Sky, SpotLight, Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
-import { GameEngineProvider, useGameEngine } from "../../Context/useGameEngine.jsx";
-import PopUp from '../../components/popUpRules.jsx';
+import { useGameEngine } from "../../Context/useGameEngine.jsx";
 // Components
 import { UI } from "../../components/Ui/UI.jsx";
 // Functions
 import { createGameBoard, tileJump } from "../../../utilities.jsx";
-import { getTile } from "../../api.js";
-// Asset loader
-import * as THREE from "three";
-// asset loader
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 // 3D components
 import TileD from "../../assets/tiles/tileD.jsx";
 // styling
 import styles from "./GameBoard.module.css";
 //test
 import { tileData } from "./testboarddata.js";
-import { useControls } from "leva";
-import Menu from "../../components/Menu/Menu.jsx";
-import tileColourLogic from "./utils/tileColourLogic.js";
 import randomTileGenerator from "./utils/randomTileGenerator.js";
 import { checkTilePlacement } from "./verifyFunctions.js";
 import { CitizenRed } from '../../assets/citizens/CitizenRed.jsx';
+
+
 const GameBoard = () => {
-  const tileScale = [0.94, 0.94, 0.94];
+  // STATES //
+  // TILE
+  const tileScale = [0.92, 0.92, 0.92];
   const tileSize = 2;
-  // CAMERA
+  // CAMERA & ENVIRONMENT
   const [enableRotate, setEnableRotate] = useState(true);
-  // TILE DRAGGING
-  const tile = useRef();
-  // States
-  const [ newTileType, setNewTileType ] = useState()
-  const [ citizenPosition, setCitizenPosition ] = useState([ -0.6, 7, 0.6])
-  const [ sunPosition, setSunPosition ] = useState([150, 150, -250])
-  const [showMenu, setShowMenu] = useState(false)
+  const [sunPosition, setSunPosition ] = useState([50, 100, 150])
+  //NEW TILE
+  const [newTileArray, setNewTileArray] = useState([]);
+  const [newTile, setNewTile] = useState();
+  const [newTileData, setNewTileData] = useState();
+  const [newTileType, setNewTileType ] = useState()
   const [newTilePosition, setNewTilePosition] = useState([12,4,0]);
   const [newTile2DPosition, setNewTile2DPosition] = useState([]);
   const [releaseTile, setReleaseTile] = useState(false);
   const [tileRotation, setTileRotation] = useState(0);
+  // Citizen
+  const [citizenPosition, setCitizenPosition ] = useState([])
+  // Board
   const [boardGameMatrix, setBoardGameMatrix] = useState([
     [[], [], [], [], [], [], [], [], [], [], []],
     [[], [], [], [], [], [], [], [], [], [], []],
@@ -57,6 +54,7 @@ const GameBoard = () => {
     [[], [], [], [], [], [], [], [], [], [], []],
   ]);
 
+
   // CAMERA
   const [newTileArray, setNewTileArray] = useState([]);
   const [newTile, setNewTile] = useState();
@@ -67,12 +65,9 @@ const GameBoard = () => {
   console.log(newTile, "LATEST NEW TILE");
 
   const drawEventHandler = async (tileType) => {
-    const TileComponent = await import(
-      `../../assets/tiles/tile${tileType}.jsx`
-    );
+    const TileComponent = await import(`../../assets/tiles/tile${tileType}.jsx`);
     const renderNewTile = (
       <RigidBody
-        ref={tile}
         canSleep={false}
         position={newTilePosition}
         rotation={[0, tileRotation, 0]}
@@ -80,10 +75,7 @@ const GameBoard = () => {
         <TileComponent.default scale={tileScale} />
       </RigidBody>
     );
-    
     setNewTile(renderNewTile);
-    // setReleaseTile(true);
-    // console.log(renderNewTile);
   };
 
   useEffect(() => {
@@ -112,8 +104,13 @@ const GameBoard = () => {
     setNewTilePosition,
     setNewTile2DPosition,
     setNewTile,
-    setNewTileData
+    setNewTileData,
+    turnPhase
   );
+
+  console.log(turnPhase);
+
+
   // RENDERING STARTS HERE //
   return (
     <>
@@ -134,35 +131,44 @@ const GameBoard = () => {
         setNewTileType={setNewTileType}
         newTileData={newTileData}
         newTile2DPosition={newTile2DPosition}
+
         replaceTile={replaceTile}
         setReplaceTile={setReplaceTile}
+        setCitizenPosition={setCitizenPosition}
+
       />
 
       <div className={styles.gameBoard}>
         <Canvas shadows camera={{ fov: 70, position: [0, 8, 14] }}>
-          <Physics >
-            <ambientLight intensity={0.4} />
+          <Physics debug>
+            <ambientLight intensity={0.8} />
             <Sky 
               sunPosition={sunPosition} 
-              distance={45000} 
-              inclination={0.6} 
+              distance={5000} 
+              inclination={1} 
               azimuth={0.1} 
-              turbidity={1}
-              rayleigh={0.5}
-              mieDirectionalG={0.8}
+              turbidity={0.1}
+              rayleigh={1}
+              mieDirectionalG={0.01}
               mieCoefficient={0.005}
             />
-            {/* <Clouds>
-              <Cloud position={[ 4, 8, -6 ]} scale={0.5} />
-              <Cloud position={[ -2, 12, 6 ]} scale={0.5}/>
-              <Cloud position={[ 4, 15, 0 ]} scale={0.5}/>
-            </Clouds> */}
+            <Clouds>
+              <Cloud position={[ 4, 20, -6 ]} scale={0.8} />
+              <Cloud position={[ -2, 18, 12 ]} scale={0.5}/>
+              <Cloud position={[ 4, 24, 19 ]} scale={0.9}/>
+              <Cloud position={[ -6, 20, -32 ]} scale={1.5} />
+              <Cloud position={[ 0, 43, -16 ]} scale={1.111}/>
+              <Cloud position={[ 34, 24, 0 ]} scale={1}/>
+              <Cloud position={[ -20, 20, 4 ]} scale={1.2} />
+              <Cloud position={[ 10, 18, 40 ]} scale={1}/>
+              <Cloud position={[ 20, 24, -23 ]} scale={1.64}/>
+            </Clouds>
 
             <directionalLight
               castShadow
               intensity={3}
               position={sunPosition}
-              shadow-normalBias={0.04}
+              shadow-normalBias={0.03}
             />
 
             <OrbitControls
@@ -172,6 +178,7 @@ const GameBoard = () => {
               maxPolarAngle={Math.PI / 2 - 0.1}
               // dampingFactor={0.8}
               rotateSpeed={0.6}
+              target={[0, 1, 0]}
             />
 
             <RigidBody>
@@ -179,18 +186,24 @@ const GameBoard = () => {
             </RigidBody>
 
 
-            <RigidBody 
-              gravityScale={0.5} 
-              position={citizenPosition} 
-              scale={0.095} 
-              friction={1} 
-              mass={10} 
-              rotation={[ 0 ,0 ,0 ]} 
-              canSleep={false} 
-            >
-              <CitizenRed />
-            </RigidBody>
             {releaseTile && replaceTile ? newTile : null}
+
+            {turnPhase === 'Place Citizen' && citizenPosition.length > 0 ? 
+              <RigidBody 
+                gravityScale={0.5} 
+                position={citizenPosition} 
+                scale={0.095} 
+                friction={100} 
+                mass={1000} 
+                rotation={[ 0 ,0 ,0 ]} 
+                canSleep={true}
+                restitution={3}
+              >
+                <CitizenRed />
+              </RigidBody>
+              : null
+            }
+      
             {newTileArray}
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>
@@ -201,9 +214,9 @@ const GameBoard = () => {
             </RigidBody>
           </Physics>
           {/* HELPERS */}
-          {/* <Perf position="top-left" /> */}
-          <axesHelper args={[5]} />
-          <gridHelper args={[50, 25, "black", "red"]} />
+          <Perf position="top-left" />
+          {/* <axesHelper args={[5]} />
+          <gridHelper args={[50, 25, "black", "red"]} /> */}
         </Canvas>
       </div>
     </>
