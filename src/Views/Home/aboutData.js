@@ -1,5 +1,5 @@
 const aboutText = `
-Welcome to the vibrant world of "Citizens of Newcastle"! Embark on a thrilling journey through the bustling streets and scenic landscapes of our beloved city. In this captivating game, you'll become a master architect, shaping the city's skyline with your strategic prowess and creative flair.
+Welcome to the vibrant world of "City Zen"! Embark on a thrilling journey through the bustling streets and scenic landscapes of our beloved city. In this captivating game, you'll become a master architect, shaping the city's skyline with your strategic prowess and creative flair.
 
 Gather your friends and family as you compete to claim territories, construct majestic buildings, and establish your influence across the urban sprawl. With each turn, you'll immerse yourself in a world of endless possibilities, where every decision shapes the destiny of Newcastle.
 

@@ -1,4 +1,12 @@
 .container {
+  color: gold;
     font-size: 24px;
     line-height: 2;
+    
+  }
+  h3{
+    font-size:  24px !important; 
+    color: goldenrod;
+    text-align: center;
+    
   }

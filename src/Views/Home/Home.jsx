@@ -78,7 +78,9 @@ function Home() {
     <div className={styles.fullpage}>
       <div className={styles.backgroundimage} />
       <Header />
+      <div className={styles.title}>
       <h1 className={styles.heading}>Welcome to City Zen</h1>
+      </div>
       <div className={styles.scrollableTextContainer}>
         <button className={styles.button} onClick={hostGameHandler}>
           HOST
@@ -88,7 +90,7 @@ function Home() {
         </Link> */}
         <br></br>
 
-        <h2 className={styles.scrollableText}>About:</h2>
+        <h2>About:</h2>
         <p ref={aboutRef} className={styles.about}>
           {aboutText}{' '}
         </p>
