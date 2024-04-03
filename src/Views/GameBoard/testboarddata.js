@@ -1,6 +1,6 @@
 export const tileData = {
    
-    grid_id: { x: 0, y: 0, z: 0},
+    grid_id: { row: 5, column: 5},
     orientation: 0,
     corresponding_tiles: {
         north: null,
@@ -13,21 +13,22 @@ export const tileData = {
     citizen: {
         is_citizen: false,
         asset: null,
-        location: null
+        location: null,
+        player: null
     },
     assets: {
-        north: {
+        0: {
             asset: 'road',
             connects: ['south']
         },
-        east: {
+        1: {
             asset: 'city',
             connects: []
         },
-        south: {
+        2: {
             asset: 'road',
             connects: ['north']
         },
-        west: {}
+        3: {}
     }
 }

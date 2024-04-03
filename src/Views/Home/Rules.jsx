@@ -3,7 +3,7 @@ import styles from './Rules.module.css'
 function Rules() {
   return (
     <div className={styles.rulesContainer}>
-      <h2 className={styles.subheading}>Rules for Citizens of Newcastle</h2>
+      <h2 className={styles.subheading}>Rules for City Zen</h2>
       <div>
         <strong className={styles.subheading}>Objective:</strong> Become the most influential city planner
         by strategically placing tiles and claiming territories in Newcastle.
@@ -40,7 +40,7 @@ function Rules() {
         <div>Final scoring takes place, including unfinished features.</div>
         <div>
           The player with the highest score wins the game and becomes the master
-          architect of Newcastle!
+          architect of Zen!
         </div>
       </div>
     </div>

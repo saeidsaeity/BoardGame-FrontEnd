@@ -2,7 +2,7 @@ import styles from './ProjectDescription.module.css';
 const ProjectDescription = () => {
   return (
     <div className={styles.container}>
-      <h2>Project Description: Board Game Web Application</h2>
+      <h3>Project Description: Board Game Web Application</h3>
       <p>
         Our team has developed an immersive board game web application within a
         tight timeframe of three weeks, leveraging cutting-edge technologies

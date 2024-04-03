@@ -1,7 +1,8 @@
 .subheading{
-     color: red
+     color: goldenrod
 }
 .rulesContainer{
+    text-align: center;
     font-size: 24px;
     height: 100vh; 
     overflow-y: auto; 

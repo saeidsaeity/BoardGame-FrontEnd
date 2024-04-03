@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 const TileQ = React.forwardRef((props, ref) => {
-    const { nodes, materials } = useGLTF('/tileQ.glb')
+  const { nodes, materials } = useGLTF('/tileQ.glb')
   return (
     <group {...props} dispose={null}>
       <group position={[0, 0.35, 0]} scale={[1, 0.1, 1]}>
@@ -22,18 +22,12 @@ const TileQ = React.forwardRef((props, ref) => {
           castShadow
           receiveShadow
           geometry={nodes.Cube383_2.geometry}
-          material={materials.Road}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Cube383_3.geometry}
           material={materials.Grass_edge}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube383_4.geometry}
+          geometry={nodes.Cube383_3.geometry}
           material={materials.City_edge}
         />
         <group position={[-0.698, 1.002, 0.37]} scale={[0.3, 3, 0.3]}>

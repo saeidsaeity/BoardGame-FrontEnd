@@ -1,10 +1,83 @@
 .UIWrapper{
     color: black;
     position: absolute;
-    bottom: 1rem;
-    z-index: 5;
-    margin: 1rem;
+    width: 100vw;
+    height: 20rem;
+    top: 0;
+    z-index: 10;
+    display: flex;
 }
 
+.canvasWrapper{
+    width: 20rem;
+    height: 20rem;
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    animation: canvasAnimation 5s 1 ease-in;
+}
 
-/* "text-black drop-shadow-xl fixed top-0 left-0 right-0 bottom-0 z-10 flex flex-col pointer-events-none" */
+.nextPhase{
+    all: unset;
+    background-color: black;
+    height: 4rem;
+    width: 6rem;
+    color: white;
+    text-align: center;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.turnInfo{
+    margin: 3rem 2rem;
+}
+
+.buttonWrapper{
+    display: flex;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+.button {
+    z-index: 1;
+    /* position: fixed;
+    bottom:10px;
+    right: 10px; */
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 1rem;
+  }
+  
+  .button:hover {
+    background-color: #45a049; /* Darker Green */
+  }
+  
+  @keyframes canvasAnimation {
+    0% {
+        transform: translate(20rem, 0);
+    }
+    80%{
+        transform: translate(-0.5rem, 0);
+    }
+    90%{
+        transform: translate(0.25rem, 0);
+    }
+    95%{
+        transform: translate(-0.1rem, 0);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+  }
