@@ -149,7 +149,6 @@ const checkOrigTile = (tileInfo, origTile, tilesToCheck, directions, citizenObj)
     if (tilesToCheck[0].coords.row === tileInfo.coords.row &&
         tilesToCheck[0].coords.column === tileInfo.coords.column &&
         origTile.disconnected === true) {
-        console.log('origTile: ', tileInfo)
         const arrIndex = directions.indexOf((tileInfo.dir-(origTile.orientation/90))%4)
         directions.splice(arrIndex, 1)
 
@@ -158,16 +157,11 @@ const checkOrigTile = (tileInfo, origTile, tilesToCheck, directions, citizenObj)
         // original tile, the citizen will otherwise be ignored
         if (origTile.citizen.is_citizen) {
 
-            // dirNum is direction Number without orientation
-            const dirNum = tileInfo.dir-(origTile.orientation/90)
-            if (dirNum < 0) {dirNum += 4}
-
             // check of citizen is on asset
             let alteredDir = (origTile.citizen.location-(origTile.orientation/90))%4
             if (alteredDir<0) {alteredDir += 4}
-            if (alteredDir === dirNum) {
+            if (alteredDir === origTile.citizen.location) {
                 addToCitizen(citizenObj, origTile.citizen.player)
-                console.log(citizenObj)
             }
         }
     }
@@ -187,7 +181,6 @@ const addToCitizen = (citObj, player) => {
 
 const checkTileCompletes = (origTile, matrix) => {
     // for loop iterates through each direction of tile
-    console.log(origTile)
     const directions = [0, 1, 2, 3]
     const pointsObj = {}
     directions.forEach((directionNum) => {
@@ -209,15 +202,8 @@ const checkTileCompletes = (origTile, matrix) => {
                 if (dirNum < 0) {dirNum += 4}
 
                 // check of citizen is on asset
-                console.log('citizenTile: ', origTile)
-                console.log([dirNum, ...directionAsset.connects])
-                console.log('unaltered: ', origTile.citizen.location)
-                let alteredDir = (origTile.citizen.location-(origTile.orientation/90))%4
-                if (alteredDir<0) {alteredDir += 4}
-                console.log('alteredDir: ', alteredDir)
-                if ([dirNum, ...directionAsset.connects].includes(alteredDir)) {
+                if ([dirNum, ...directionAsset.connects].includes(origTile.citizen.location)) {
                     addToCitizen(citizenObj, origTile.citizen.player)
-                    console.log(citizenObj)
                 }
             }
             
@@ -253,7 +239,7 @@ const checkTileCompletes = (origTile, matrix) => {
 
                 // if tile does not exist, asset has not yet ended, so end the function
                 const tile = matrix[tileInfo.coords.row][tileInfo.coords.column][0]
-                if (tile === undefined) {console.log('returned'); return}
+                if (tile === undefined) {return}
 
                 // fetch asset in corresponding direction
                 const tileAsset = assetInDirection(tile, tileInfo.dir)
@@ -265,19 +251,10 @@ const checkTileCompletes = (origTile, matrix) => {
                     const dir = tileInfo.dir-(tile.orientation/90)
                     if (dir < 0) {dir += 4}
 
-                    console.log('citizenTile: ', tile)
-                    console.log([dir, ...tileAsset.connects])
-                    console.log('unaltered: ', tile.citizen.location)
-                    let alteredDir = (tile.citizen.location-(tile.orientation/90))%4
-                    console.log(alteredDir)
-                    if (alteredDir<0) {alteredDir += 4}
-                    console.log('alteredDir: ', alteredDir)
-
                     // check if citizen is on asset
                     if ([dir, ...tileAsset.connects]
-                        .includes(alteredDir)) {
+                        .includes(tile.citizen.location)) {
                         addToCitizen(citizenObj, tile.citizen.player)
-                        console.log('citizenObj: ', citizenObj)
                     }
                 }
 
@@ -307,7 +284,6 @@ const checkTileCompletes = (origTile, matrix) => {
             let maxcits = -1
             let maxPlayers = []
             for (let player in citizenObj) {
-                console.log(player)
                 if (citizenObj[player] > maxcits) {
                     maxcits = citizenObj[player]
                     maxPlayers = [player]
@@ -326,7 +302,6 @@ const checkTileCompletes = (origTile, matrix) => {
             })
         }
     })
-    console.log(pointsObj)
     return pointsObj
 }
 
@@ -451,7 +426,7 @@ const tileI = {
     citizen: {
         is_citizen: true,
         asset: 'city',
-        location: 3,
+        location: 1,
         player: 1
     },
     assets: {
