@@ -2,735 +2,640 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 const TileG = React.forwardRef((props, ref) => {
-    const { nodes, materials } = useGLTF('/tileG.glb')
+  const { nodes, materials } = useGLTF('/tileG.glb')
   return (
     <group {...props} dispose={null}>
-      <group position={[0, 0.35, 0]} scale={[1, 0.1, 1]}>
+      <group position={[0, 0.35, 0]} rotation={[Math.PI, 0, Math.PI]} scale={[1, 0.1, 1]}>
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube222.geometry}
-          material={materials.City_floor}
+          geometry={nodes.Cube002.geometry}
+          material={materials['Grass.001']}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube222_1.geometry}
-          material={materials.Grass}
+          geometry={nodes.Cube002_1.geometry}
+          material={materials['City_floor.001']}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube222_2.geometry}
-          material={materials.Grass_edge}
+          geometry={nodes.Cube002_2.geometry}
+          material={materials['Grass_edge.001']}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube222_3.geometry}
-          material={materials['City_edge.001']}
+          geometry={nodes.Cube002_3.geometry}
+          material={materials.City_edge}
         />
+        <group
+          position={[0.301, 1.002, 0.729]}
+          rotation={[0, Math.PI / 2, 0]}
+          scale={[0.3, 3, 0.3]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube020.geometry}
+            material={materials['Wood.015']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube020_1.geometry}
+            material={materials.Metal_Light}
+          />
+        </group>
+        <group
+          position={[0.205, 1.044, 0.846]}
+          rotation={[0, Math.PI / 2, 0]}
+          scale={[0.3, 3, 0.3]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube022.geometry}
+            material={materials.Wood_Light}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube022_1.geometry}
+            material={materials['Wood.014']}
+          />
+        </group>
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube022.geometry}
-          material={materials['Material.002']}
+          geometry={nodes.Cube012.geometry}
+          material={materials['Material.001']}
           position={[0, -2, 0]}
           scale={[0.95, 1, 0.95]}
         />
         <group
-          position={[0.766, 0.99, 0.327]}
-          rotation={[Math.PI, -1.531, Math.PI]}
+          position={[0.297, 0.924, 0.816]}
+          rotation={[-Math.PI, 0.715, -Math.PI]}
+          scale={[0.1, 1, 0.1]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube023.geometry}
+            material={materials.Stone}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube023_1.geometry}
+            material={materials.Wood}
+          />
+        </group>
+        <group
+          position={[-0.263, 0.86, 0.895]}
+          rotation={[Math.PI, -0.49, Math.PI]}
+          scale={[0.15, 1.2, 0.15]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001.geometry}
+            material={materials['Wood.010']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001_1.geometry}
+            material={materials['Wood_Light.006']}
+          />
+        </group>
+        <group
+          position={[-0.468, 0.86, 0.815]}
+          rotation={[-Math.PI, 0.669, -Math.PI]}
+          scale={[0.15, 1.2, 0.15]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube014.geometry}
+            material={materials['Wood.010']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube014_1.geometry}
+            material={materials['Wood_Light.006']}
+          />
+        </group>
+        <group position={[0.004, 0.995, -0.64]} rotation={[0, 1.523, 0]} scale={[0.18, 1.8, 0.18]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube223.geometry}
+            material={materials['Main.006']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube223_1.geometry}
+            material={materials['Walls.004']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube223_2.geometry}
+            material={materials['Stone.007']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube223_3.geometry}
+            material={materials['Wood.007']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube223_4.geometry}
+            material={materials['Wood_Light.003']}
+          />
+        </group>
+        <group position={[0.043, 0.995, 0.288]} rotation={[0, 1.523, 0]} scale={[0.18, 1.8, 0.18]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube224.geometry}
+            material={materials['Main.006']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube224_1.geometry}
+            material={materials['Walls.004']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube224_2.geometry}
+            material={materials['Stone.007']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube224_3.geometry}
+            material={materials['Wood.007']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube224_4.geometry}
+            material={materials['Wood_Light.003']}
+          />
+        </group>
+        <group
+          position={[0.087, 0.956, 0.348]}
+          rotation={[Math.PI, -0.023, Math.PI]}
           scale={[0.18, 1.8, 0.18]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube021.geometry}
-            material={materials['Main.004']}
+            geometry={nodes.Cube225.geometry}
+            material={materials['Main.003']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube021_1.geometry}
-            material={materials['Walls.002']}
+            geometry={nodes.Cube225_1.geometry}
+            material={materials['Wood.004']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube021_2.geometry}
-            material={materials['Stone.005']}
+            geometry={nodes.Cube225_2.geometry}
+            material={materials['Wood_Light.002']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube021_3.geometry}
-            material={materials['Wood.005']}
+            geometry={nodes.Cube225_3.geometry}
+            material={materials['Walls.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube021_4.geometry}
-            material={materials['Wood_Light.004']}
+            geometry={nodes.Cube225_4.geometry}
+            material={materials['Stone.004']}
           />
         </group>
         <group
-          position={[0.774, 0.99, -0.258]}
-          rotation={[Math.PI, -1.531, Math.PI]}
+          position={[-0.105, 0.956, 0.469]}
+          rotation={[Math.PI, -0.023, Math.PI]}
           scale={[0.18, 1.8, 0.18]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube089.geometry}
-            material={materials['Main.004']}
+            geometry={nodes.Cube226.geometry}
+            material={materials['Main.003']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube089_1.geometry}
-            material={materials['Walls.002']}
+            geometry={nodes.Cube226_1.geometry}
+            material={materials['Wood.004']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube089_2.geometry}
-            material={materials['Stone.005']}
+            geometry={nodes.Cube226_2.geometry}
+            material={materials['Wood_Light.002']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube089_3.geometry}
-            material={materials['Wood.005']}
+            geometry={nodes.Cube226_3.geometry}
+            material={materials['Walls.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube089_4.geometry}
-            material={materials['Wood_Light.004']}
-          />
-        </group>
-        <group position={[-0.775, 0.99, -0.313]} rotation={[0, 1.531, 0]} scale={[0.18, 1.8, 0.18]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube130.geometry}
-            material={materials['Main.004']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube130_1.geometry}
-            material={materials['Walls.002']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube130_2.geometry}
-            material={materials['Stone.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube130_3.geometry}
-            material={materials['Wood.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube130_4.geometry}
-            material={materials['Wood_Light.004']}
-          />
-        </group>
-        <group position={[-0.783, 0.99, 0.272]} rotation={[0, 1.531, 0]} scale={[0.18, 1.8, 0.18]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube132.geometry}
-            material={materials['Main.004']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube132_1.geometry}
-            material={materials['Walls.002']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube132_2.geometry}
-            material={materials['Stone.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube132_3.geometry}
-            material={materials['Wood.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube132_4.geometry}
-            material={materials['Wood_Light.004']}
-          />
-        </group>
-        <group position={[0.661, 0.952, 0.37]} rotation={[0, 0.031, 0]} scale={[0.18, 1.8, 0.18]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube097.geometry}
-            material={materials['Main.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube097_1.geometry}
-            material={materials['Wood.006']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube097_2.geometry}
-            material={materials['Wood_Light.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube097_3.geometry}
-            material={materials['Walls.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube097_4.geometry}
-            material={materials['Stone.006']}
-          />
-        </group>
-        <group position={[0.661, 0.952, -0.316]} rotation={[0, 0.031, 0]} scale={[0.18, 1.8, 0.18]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube098.geometry}
-            material={materials['Main.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube098_1.geometry}
-            material={materials['Wood.006']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube098_2.geometry}
-            material={materials['Wood_Light.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube098_3.geometry}
-            material={materials['Walls.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube098_4.geometry}
-            material={materials['Stone.006']}
-          />
-        </group>
-        <group position={[0.852, 0.952, -0.439]} rotation={[0, 0.031, 0]} scale={[0.18, 1.8, 0.18]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube101.geometry}
-            material={materials['Main.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube101_1.geometry}
-            material={materials['Wood.006']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube101_2.geometry}
-            material={materials['Wood_Light.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube101_3.geometry}
-            material={materials['Walls.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube101_4.geometry}
-            material={materials['Stone.006']}
-          />
-        </group>
-        <group position={[0.852, 0.952, 0.541]} rotation={[0, 0.031, 0]} scale={[0.18, 1.8, 0.18]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube124.geometry}
-            material={materials['Main.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube124_1.geometry}
-            material={materials['Wood.006']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube124_2.geometry}
-            material={materials['Wood_Light.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube124_3.geometry}
-            material={materials['Walls.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube124_4.geometry}
-            material={materials['Stone.006']}
+            geometry={nodes.Cube226_4.geometry}
+            material={materials['Stone.004']}
           />
         </group>
         <group
-          position={[-0.67, 0.952, -0.356]}
-          rotation={[Math.PI, -0.031, Math.PI]}
+          position={[-0.08, 0.956, -0.826]}
+          rotation={[Math.PI, -0.023, Math.PI]}
           scale={[0.18, 1.8, 0.18]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube133.geometry}
-            material={materials['Main.005']}
+            geometry={nodes.Cube227.geometry}
+            material={materials['Main.003']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube133_1.geometry}
-            material={materials['Wood.006']}
+            geometry={nodes.Cube227_1.geometry}
+            material={materials['Wood.004']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube133_2.geometry}
-            material={materials['Wood_Light.005']}
+            geometry={nodes.Cube227_2.geometry}
+            material={materials['Wood_Light.002']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube133_3.geometry}
-            material={materials['Walls.003']}
+            geometry={nodes.Cube227_3.geometry}
+            material={materials['Walls.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube133_4.geometry}
-            material={materials['Stone.006']}
+            geometry={nodes.Cube227_4.geometry}
+            material={materials['Stone.004']}
           />
         </group>
         <group
-          position={[-0.67, 0.952, 0.33]}
-          rotation={[Math.PI, -0.031, Math.PI]}
-          scale={[0.18, 1.8, 0.18]}>
+          position={[-0.073, 0.921, -0.147]}
+          rotation={[-Math.PI, 1.565, -Math.PI]}
+          scale={[0.2, 2, 0.2]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube134.geometry}
-            material={materials['Main.005']}
+            geometry={nodes.Cube228.geometry}
+            material={materials['Wood_Light.009']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube134_1.geometry}
-            material={materials['Wood.006']}
+            geometry={nodes.Cube228_1.geometry}
+            material={materials['Wood.013']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube134_2.geometry}
-            material={materials['Wood_Light.005']}
+            geometry={nodes.Cube228_2.geometry}
+            material={materials['Metal_Light.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube134_3.geometry}
-            material={materials['Walls.003']}
+            geometry={nodes.Cube228_3.geometry}
+            material={materials['Green.003']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube134_4.geometry}
-            material={materials['Stone.006']}
-          />
-        </group>
-        <group
-          position={[-0.861, 0.952, 0.453]}
-          rotation={[Math.PI, -0.031, Math.PI]}
-          scale={[0.18, 1.8, 0.18]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube135.geometry}
-            material={materials['Main.005']}
+            geometry={nodes.Cube228_4.geometry}
+            material={materials['Stone.013']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube135_1.geometry}
-            material={materials['Wood.006']}
+            geometry={nodes.Cube228_5.geometry}
+            material={materials['Yellow.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube135_2.geometry}
-            material={materials['Wood_Light.005']}
+            geometry={nodes.Cube228_6.geometry}
+            material={materials['Red.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube135_3.geometry}
-            material={materials['Walls.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube135_4.geometry}
-            material={materials['Stone.006']}
+            geometry={nodes.Cube228_7.geometry}
+            material={materials['Gold.001']}
           />
         </group>
         <group
-          position={[-0.861, 0.952, -0.527]}
-          rotation={[Math.PI, -0.031, Math.PI]}
-          scale={[0.18, 1.8, 0.18]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube136.geometry}
-            material={materials['Main.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube136_1.geometry}
-            material={materials['Wood.006']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube136_2.geometry}
-            material={materials['Wood_Light.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube136_3.geometry}
-            material={materials['Walls.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube136_4.geometry}
-            material={materials['Stone.006']}
-          />
-        </group>
-        <group position={[0.579, 0.915, -0.571]} rotation={[0, 0.755, 0]} scale={[0.4, 3.3, 0.45]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube125.geometry}
-            material={materials['Stone.008']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube125_1.geometry}
-            material={materials['Stone_Light.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube125_2.geometry}
-            material={materials['Wood.008']}
-          />
-        </group>
-        <group position={[0.585, 0.915, 0.603]} rotation={[0, -0.754, 0]} scale={[0.42, 3.3, 0.43]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube126.geometry}
-            material={materials['Stone.008']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube126_1.geometry}
-            material={materials['Stone_Light.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube126_2.geometry}
-            material={materials['Wood.008']}
-          />
-        </group>
-        <group
-          position={[-0.588, 0.915, 0.584]}
-          rotation={[Math.PI, -0.755, Math.PI]}
-          scale={[0.4, 3.3, 0.45]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube137.geometry}
-            material={materials['Stone.008']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube137_1.geometry}
-            material={materials['Stone_Light.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube137_2.geometry}
-            material={materials['Wood.008']}
-          />
-        </group>
-        <group
-          position={[-0.594, 0.915, -0.589]}
-          rotation={[-Math.PI, 0.754, -Math.PI]}
+          position={[0.581, 0.915, 0.576]}
+          rotation={[-Math.PI, 0.83, -Math.PI]}
           scale={[0.42, 3.3, 0.43]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube138.geometry}
-            material={materials['Stone.008']}
+            geometry={nodes.Cube229.geometry}
+            material={materials['Stone.003']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube138_1.geometry}
-            material={materials['Stone_Light.003']}
+            geometry={nodes.Cube229_1.geometry}
+            material={materials['Stone_Light.007']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube138_2.geometry}
-            material={materials['Wood.008']}
+            geometry={nodes.Cube229_2.geometry}
+            material={materials['Wood.003']}
           />
         </group>
         <group
-          position={[0.368, 0.982, 0.005]}
-          rotation={[-Math.PI, 1.556, -Math.PI]}
+          position={[0.592, 0.915, -0.602]}
+          rotation={[Math.PI, -0.79, Math.PI]}
+          scale={[0.42, 3.3, 0.43]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube230.geometry}
+            material={materials['Stone.003']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube230_1.geometry}
+            material={materials['Stone_Light.007']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube230_2.geometry}
+            material={materials['Wood.003']}
+          />
+        </group>
+        <group
+          position={[-0.574, 0.915, 0.584]}
+          rotation={[Math.PI, -0.79, Math.PI]}
+          scale={[0.42, 3.3, 0.43]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube231.geometry}
+            material={materials['Stone.003']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube231_1.geometry}
+            material={materials['Stone_Light.007']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube231_2.geometry}
+            material={materials['Wood.003']}
+          />
+        </group>
+        <group
+          position={[-0.598, 0.915, -0.612]}
+          rotation={[-Math.PI, 0.749, -Math.PI]}
+          scale={[0.42, 3.3, 0.43]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube232.geometry}
+            material={materials['Stone.003']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube232_1.geometry}
+            material={materials['Stone_Light.007']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube232_2.geometry}
+            material={materials['Wood.003']}
+          />
+        </group>
+        <group
+          position={[0.377, 0.982, -0.02]}
+          rotation={[-Math.PI, 1.565, -Math.PI]}
           scale={[0.42, 4.2, 0.42]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube127.geometry}
-            material={materials.Metal}
+            geometry={nodes.Cube233.geometry}
+            material={materials['Metal.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube127_1.geometry}
-            material={materials['Stone_Light.004']}
+            geometry={nodes.Cube233_1.geometry}
+            material={materials['Stone_Light.002']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube127_2.geometry}
-            material={materials['Stone.009']}
+            geometry={nodes.Cube233_2.geometry}
+            material={materials['Stone.002']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube127_3.geometry}
-            material={materials['Wood.009']}
+            geometry={nodes.Cube233_3.geometry}
+            material={materials['Wood.002']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube127_4.geometry}
-            material={materials['Main.007']}
+            geometry={nodes.Cube233_4.geometry}
+            material={materials['Main.002']}
           />
         </group>
         <group
-          position={[-0.377, 0.982, 0.009]}
-          rotation={[0, -1.556, 0]}
+          position={[-0.327, 0.934, -0.016]}
+          rotation={[-Math.PI, 1.565, -Math.PI]}
           scale={[0.42, 4.2, 0.42]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube139.geometry}
-            material={materials.Metal}
+            geometry={nodes.Cube234.geometry}
+            material={materials['Stone.012']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube139_1.geometry}
-            material={materials['Stone_Light.004']}
+            geometry={nodes.Cube234_1.geometry}
+            material={materials['Stone_Light.006']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube139_2.geometry}
-            material={materials['Stone.009']}
+            geometry={nodes.Cube234_2.geometry}
+            material={materials['Wood.012']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube139_3.geometry}
-            material={materials['Wood.009']}
+            geometry={nodes.Cube234_3.geometry}
+            material={materials['Main.009']}
+          />
+        </group>
+        <group position={[0.814, 0.388, 0.823]} rotation={[0, 0.749, 0]} scale={[0.25, 2.5, 0.25]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube235.geometry}
+            material={materials['Stone_Light.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube139_4.geometry}
-            material={materials['Main.007']}
+            geometry={nodes.Cube235_1.geometry}
+            material={materials['Stone.001']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube235_2.geometry}
+            material={materials['Wood.001']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube235_3.geometry}
+            material={materials['Main.001']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube235_4.geometry}
+            material={materials['Wood_Light.001']}
           />
         </group>
         <group
-          position={[0.804, 0.388, -0.773]}
-          rotation={[-Math.PI, 0.839, -Math.PI]}
+          position={[0.801, 0.388, -0.812]}
+          rotation={[-Math.PI, 0.804, -Math.PI]}
           scale={[0.25, 2.5, 0.25]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube128.geometry}
-            material={materials['Stone_Light.005']}
+            geometry={nodes.Cube236.geometry}
+            material={materials['Stone_Light.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube128_1.geometry}
-            material={materials['Stone.011']}
+            geometry={nodes.Cube236_1.geometry}
+            material={materials['Stone.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube128_2.geometry}
-            material={materials['Wood.011']}
+            geometry={nodes.Cube236_2.geometry}
+            material={materials['Wood.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube128_3.geometry}
-            material={materials['Main.008']}
+            geometry={nodes.Cube236_3.geometry}
+            material={materials['Main.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube128_4.geometry}
-            material={materials['Wood_Light.008']}
-          />
-        </group>
-        <group position={[0.804, 0.388, 0.807]} rotation={[0, 0.782, 0]} scale={[0.25, 2.5, 0.25]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube129.geometry}
-            material={materials['Stone_Light.005']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube129_1.geometry}
-            material={materials['Stone.011']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube129_2.geometry}
-            material={materials['Wood.011']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube129_3.geometry}
-            material={materials['Main.008']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube129_4.geometry}
-            material={materials['Wood_Light.008']}
+            geometry={nodes.Cube236_4.geometry}
+            material={materials['Wood_Light.001']}
           />
         </group>
         <group
-          position={[-0.813, 0.388, 0.787]}
-          rotation={[0, -0.839, 0]}
+          position={[-0.816, 0.388, 0.827]}
+          rotation={[0, -0.778, 0]}
           scale={[0.25, 2.5, 0.25]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube140.geometry}
-            material={materials['Stone_Light.005']}
+            geometry={nodes.Cube237.geometry}
+            material={materials['Stone_Light.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube140_1.geometry}
-            material={materials['Stone.011']}
+            geometry={nodes.Cube237_1.geometry}
+            material={materials['Stone.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube140_2.geometry}
-            material={materials['Wood.011']}
+            geometry={nodes.Cube237_2.geometry}
+            material={materials['Wood.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube140_3.geometry}
-            material={materials['Main.008']}
+            geometry={nodes.Cube237_3.geometry}
+            material={materials['Main.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube140_4.geometry}
-            material={materials['Wood_Light.008']}
+            geometry={nodes.Cube237_4.geometry}
+            material={materials['Wood_Light.001']}
           />
         </group>
         <group
-          position={[-0.813, 0.388, -0.793]}
-          rotation={[Math.PI, -0.782, Math.PI]}
+          position={[-0.817, 0.388, -0.806]}
+          rotation={[Math.PI, -0.81, Math.PI]}
           scale={[0.25, 2.5, 0.25]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube141.geometry}
-            material={materials['Stone_Light.005']}
+            geometry={nodes.Cube238.geometry}
+            material={materials['Stone_Light.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube141_1.geometry}
-            material={materials['Stone.011']}
+            geometry={nodes.Cube238_1.geometry}
+            material={materials['Stone.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube141_2.geometry}
-            material={materials['Wood.011']}
+            geometry={nodes.Cube238_2.geometry}
+            material={materials['Wood.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube141_3.geometry}
-            material={materials['Main.008']}
+            geometry={nodes.Cube238_3.geometry}
+            material={materials['Main.001']}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube141_4.geometry}
-            material={materials['Wood_Light.008']}
+            geometry={nodes.Cube238_4.geometry}
+            material={materials['Wood_Light.001']}
           />
         </group>
       </group>
