@@ -4,16 +4,19 @@ import { Cloud, Clouds, OrbitControls, Sky } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
-import PopUp from '../../components/popUpRules.jsx';
+import PopUp from '../../components/PopUp/popUpRules.jsx';
 
 import { GameEngineProvider } from '../../Context/useGameEngine.jsx';
-
+import opening from "/GameSound1.mp3";
 // Components
 import { UI } from '../../components/Ui/UI.jsx';
 
 // Functions
 import { createGameBoard,  tileJump } from '../../../utilities.jsx';
 import { getTile } from '../../api.js';
+
+
+
 
 // Asset loader
 
@@ -55,6 +58,8 @@ import Menu from '../../components/Menu/Menu.jsx';
 import tileColourLogic from "./utils/tileColourLogic.js";
 import randomTileGenerator from "./utils/randomTileGenerator.js";
 const GameBoard = () => {
+ 
+ 
 
   const tileScale = [0.94, 0.94, 0.94];
   const tileSize = 2;
@@ -73,6 +78,7 @@ const GameBoard = () => {
 
 
   // States
+    const [isOpen, setIsOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false)
   const [newTilePosition, setNewTilePosition] = useState([12,4,0]);
   const [newTile2DPosition, setNewTile2DPosition] = useState([]);
@@ -157,6 +163,12 @@ const GameBoard = () => {
     });
   }, []);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   
   const grid = createGameBoard(
     boardGameMatrix, 
@@ -181,9 +193,11 @@ const GameBoard = () => {
         tileRotation={tileRotation}
         setTileRotation={setTileRotation}
       />
+         
       
       <div className={styles.gameBoard}>
-        <PopUp/>
+ 
+   
         <button
           className={styles.button}
           onClick={() => {
@@ -241,8 +255,12 @@ const GameBoard = () => {
           Get Tile
         </button>
         
-
-
+         <div>
+      <button  onClick={() => setIsOpen(true)}>
+        See Rules
+      </button>
+      {isOpen && <PopUp setIsOpen={setIsOpen} />}
+    </div>
 
 
 
@@ -298,7 +316,9 @@ const GameBoard = () => {
           <gridHelper args={[50, 25, "black", "red"]} />
 
         </Canvas>
+  
       </div>
+
     </GameEngineProvider>
   );
 }
