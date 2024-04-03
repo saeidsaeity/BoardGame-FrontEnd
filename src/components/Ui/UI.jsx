@@ -19,14 +19,15 @@ export const UI = (
         newTileData,
         checkTilePlacement,
         setReleaseTile,
-        setNewTile,
         randomTileGenerator,
         setNewTileData,
         drawEventHandler,
         setNewTileType,
         newTile2DPosition,
         setReplaceTile,
-        setCitizenPosition
+        setCitizenPosition,
+        setNewTileMesh,
+        newTileMesh
 
     }) => {
     const [ newPlayerTile, setNewPlayerTile ] = useState()
@@ -125,8 +126,10 @@ export const UI = (
                                     return currRotation - Math.PI / 2;
                                 });
                                 newTileData.orientation = (tileRotation - Math.PI / 2)*-1*(180 / Math.PI)%360;
+                                console.log(tileRotation, "tileRotation");
+                                console.log(newTileData.orientation, "newTileData.orientation");
                                 newTileData.orientation /= 90
-                                setNewTile((currTile) => {
+                                setNewTileMesh((currTile) => {
                                     if (currTile === undefined) {
                                         return currTile;
                                     }
@@ -162,12 +165,11 @@ export const UI = (
                         <button 
                             className={styles.button}
                             onClick={() => {
+                                console.log(newTileMesh, "NEW TILE MESH");
                                 if (checkTilePlacement(newTileData, boardGameMatrix)) {
                                     setReplaceTile(false)
                                     const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
                                     newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
-                                    console.log(newTileData, "newTileData");
-                                    console.log(newerBoard, "newerBoard");
                                     setBoardGameMatrix(newerBoard)
                                     phaseEnd()
                                 } else {

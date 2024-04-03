@@ -14,14 +14,14 @@ export default randomTileGenerator
 
 
 
-export const tileChecks = (x,z,i,j,setReleaseTile, setNewTilePosition, setNewTile, setNewTile2DPosition, tileSize) => {
+export const tileChecks = (x,z,i,j,setReleaseTile, setNewTilePosition, setNewTileMesh, setNewTile2DPosition, tileSize) => {
     setReleaseTile(true);
       setNewTilePosition([
         x * tileSize,
         4,
         z * tileSize,
       ]);
-      setNewTile((currTile) => {
+      setNewTileMesh((currTile) => {
         if(currTile ===  undefined){
           return currTile
         }
@@ -65,5 +65,6 @@ export const tileChecks = (x,z,i,j,setReleaseTile, setNewTilePosition, setNewTil
       else return 0x32cd32;
     } else {
       if(isCitizenPhase === false) return 0xc3c3c3;
+      else return 0x000000;
     }
   };
