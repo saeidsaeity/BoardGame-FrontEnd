@@ -54,6 +54,16 @@ const GameBoard = () => {
     [[], [], [], [], [], [], [], [], [], [], []],
   ]);
 
+
+  // CAMERA
+  const [newTileArray, setNewTileArray] = useState([]);
+  const [newTile, setNewTile] = useState();
+  const droptile = true;
+  const [newTileData, setNewTileData] = useState();
+  const [replaceTile,setReplaceTile]=useState(true)
+
+  console.log(newTile, "LATEST NEW TILE");
+
   const drawEventHandler = async (tileType) => {
     const TileComponent = await import(`../../assets/tiles/tile${tileType}.jsx`);
     const renderNewTile = (
@@ -121,7 +131,11 @@ const GameBoard = () => {
         setNewTileType={setNewTileType}
         newTileData={newTileData}
         newTile2DPosition={newTile2DPosition}
+
+        replaceTile={replaceTile}
+        setReplaceTile={setReplaceTile}
         setCitizenPosition={setCitizenPosition}
+
       />
 
       <div className={styles.gameBoard}>
@@ -171,6 +185,9 @@ const GameBoard = () => {
               <TileD position={[0, 4, 0]} scale={tileScale} />
             </RigidBody>
 
+
+            {releaseTile && replaceTile ? newTile : null}
+
             {turnPhase === 'Place Citizen' && citizenPosition.length > 0 ? 
               <RigidBody 
                 gravityScale={0.5} 
@@ -186,8 +203,7 @@ const GameBoard = () => {
               </RigidBody>
               : null
             }
-            
-            {releaseTile ? newTile : null}
+      
             {newTileArray}
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>

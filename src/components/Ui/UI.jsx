@@ -29,7 +29,12 @@ export const UI = (
         setNewTileType,
         newTile2DPosition,
         newTile,
+        duplicatetiles,
+        replaceTile,
+        setReplaceTile,
+
         setCitizenPosition
+
     }) => {
     const [ newPlayerTile, setNewPlayerTile ] = useState()
     const [ showTile, setShowTile ] = useState(false)
@@ -139,6 +144,7 @@ export const UI = (
                     Rotate
                 </button>
 
+
                 <button 
                     onClick={async () => {
                         setShowTile(false)
@@ -147,16 +153,20 @@ export const UI = (
                         drawEventHandler(randomTile.tile_type)
                         setNewTileType(randomTile.tile_type)
                         setShowTile(true)
+                         setReplaceTile(true)
                     }}
                     className={styles.button}
+
                 >
                     {showTile ? 'Take a new tile' : 'Get Tile'}
                 </button>
+
 
                 <button 
                     className={styles.button}
                     onClick={() => {
                         if (checkTilePlacement(newTileData, boardGameMatrix)) {
+                           setReplaceTile(false)
                             setBoardGameMatrix((currBoard) => {
                                 const newboard = JSON.parse(JSON.stringify(currBoard));
                                 newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
