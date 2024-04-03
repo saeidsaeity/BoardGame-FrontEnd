@@ -43,7 +43,8 @@ export const UI = (
         boardGameMatrix,
         setBoardGameMatrix,
         setNewTileArray,
-        newTileArray
+        newTileArray,
+        gameTileCount
     } = useGameEngine()
 
     // console.log(newTileData, "newTileData");
@@ -151,7 +152,7 @@ export const UI = (
                             onClick={async () => {
                                 setReleaseTile(false)
                                 setShowTile(false)
-                                const randomTile = await randomTileGenerator();
+                                const randomTile = await randomTileGenerator(gameTileCount);
                                 setNewTileData(randomTile);
                                 drawEventHandler(randomTile.tile_type)
                                 setNewTileType(randomTile.tile_type)

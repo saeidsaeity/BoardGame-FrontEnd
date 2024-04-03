@@ -5,7 +5,6 @@ const backEndApi = axios.create({
 })
 
 export const getTile = (tileType) => {
-    console.log('in getTile: ', tileType)
     return backEndApi.get(`/api/tiles/${tileType}`)
     .then((response) => {
         return response.data

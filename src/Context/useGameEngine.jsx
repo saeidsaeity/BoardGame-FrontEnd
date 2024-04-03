@@ -42,6 +42,34 @@ export const GameEngineProvider = ({ children }) => {
         [[], [], [], [], [], [], [], [], [], [], []],
     ])
 
+    const [gameTileCount, setGameTileCount] = useMultiplayerState('gameTileCount', {
+        a: 2,
+        b: 4,
+        c: 1,
+        D: 3, // first tile already on board
+        E: 5, 
+        F: 2,
+        G: 1,
+        H: 3,
+        I: 2,
+        J: 3,
+        K: 3,
+        L: 3,
+        M: 2,
+        N: 3,
+        O: 2,
+        P: 3,
+        Q: 1,
+        R: 3,
+        S: 2,
+        T: 1,
+        U: 8, 
+        V: 9,
+        W: 4,
+        X: 1
+      })
+    
+
 
     // Create platers and sort them so all players have same order of players
     const players = usePlayersList(true)
@@ -215,7 +243,8 @@ export const GameEngineProvider = ({ children }) => {
         boardGameMatrix,
         setBoardGameMatrix,
         newTileArray,
-        setNewTileArray
+        setNewTileArray,
+        gameTileCount
     }
     
     return (

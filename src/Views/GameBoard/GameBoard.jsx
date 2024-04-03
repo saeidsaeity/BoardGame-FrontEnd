@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Cloud, Clouds, OrbitControls, Sky } from '@react-three/drei';
+import { Cloud, Clouds, OrbitControls, Sky, Stars } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
 import { useGameEngine } from '../../Context/useGameEngine.jsx';
@@ -9,30 +9,9 @@ import { UI } from '../../components/Ui/UI.jsx';
 import { GameBoardCells } from '../../components/GameBoardCells/GameBoardCells.jsx';
 import { CitizenRed } from '../../assets/citizens/CitizenRed.jsx';
 // 3D components
-// import TileA from "../../assets/tiles/tileA.jsx";
-// import TileB from "../../assets/tiles/tileB.jsx";
-// import TileC from "../../assets/tiles/tileC.jsx";
+
 import TileD from "../../assets/tiles/tileD.jsx";
-// import TileE from "../../assets/tiles/tileE.jsx";
-// import TileF from "../../assets/tiles/tileF.jsx";
-// import TileG from "../../assets/tiles/tileG.jsx";
-// import TileH from "../../assets/tiles/tileH.jsx";
-// import TileI from "../../assets/tiles/tileI.jsx";
-// import TileJ from "../../assets/tiles/tileJ.jsx";
-// import TileK from "../../assets/tiles/tileK.jsx";
-// import TileL from "../../assets/tiles/tileL.jsx";
-// import TileM from "../../assets/tiles/tileM.jsx";
-// import TileN from "../../assets/tiles/tileN.jsx";
-// import TileO from "../../assets/tiles/tileO.jsx";
-// import TileP from "../../assets/tiles/tileP.jsx";
-// import TileQ from "../../assets/tiles/tileQ.jsx";
-// import TileR from "../../assets/tiles/tileR.jsx";
-// import TileS from "../../assets/tiles/tileS.jsx";
-// import TileT from "../../assets/tiles/tileT.jsx";
-// import TileU from "../../assets/tiles/tileU.jsx";
-// import TileV from "../../assets/tiles/tileV.jsx";
-// import TileW from "../../assets/tiles/tileW.jsx";
-// import TileX from "../../assets/tiles/tileX.jsx";
+
 // Functions
 import { checkTilePlacement } from './verifyFunctions.js';
 import { randomTileGenerator } from '../../../utils.js';
@@ -205,6 +184,8 @@ const GameBoard = () => {
               <Cloud position={[10, 18, 40]} scale={1} />
               <Cloud position={[20, 24, -23]} scale={1.64} />
             </Clouds>
+
+            <Stars />
 
             <directionalLight
               castShadow

@@ -1,13 +1,22 @@
+import { useGameEngine } from './src/Context/useGameEngine';
 import { getTile } from './src/api';
 
 
-export const randomTileGenerator = async () => {
+export const randomTileGenerator = async (gameTileCount) => {
     const randInt = Math.floor((Math.random() * 23)+1);
     const tileType = String.fromCharCode(randInt + 64);
-    console.log(tileType, "tileType FUNC");
-    const randomTile = await getTile(tileType);
-    console.log(randomTile.tile_type);
-    return randomTile;
+    const tilesRemaining = gameTileCount[tileType]
+    console.log(tilesRemaining, "tilesRemaining");
+    // will keep getting new tile types even if all values remaining are 0
+    if(tilesRemaining === 0){
+      console.log("No more of this type")
+      const refreshedTileType = String.fromCharCode(randInt + 64)
+      const refreshedTile = await getTile(refreshedTileType);
+      return refreshedTile;
+    } else {
+      const randomTile = await getTile(tileType);
+      return randomTile;
+    }
 };
 
 export default randomTileGenerator
