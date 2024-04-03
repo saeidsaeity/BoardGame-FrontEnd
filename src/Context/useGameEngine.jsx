@@ -76,7 +76,7 @@ export const GameEngineProvider = ({ children }) => {
             })
 
             // give player a tile
-            givePlayerTile()
+            // givePlayerTile()
         }
     }
     
@@ -92,11 +92,11 @@ export const GameEngineProvider = ({ children }) => {
         // change playerTurn to the next player or player 0
         // if at last player
         console.log(players)
-        let nextPlayer = getState('playerTurn') + 1
+        let nextPlayer = playerTurn + 1
         if (nextPlayer === players.length) {nextPlayer = 0}
         console.log('player turn: ', nextPlayer)
         setPlayerTurn(nextPlayer)
-        const nextTurn = getState('turn') + 1
+        const nextTurn = turn + 1
         console.log('turn: ', nextTurn)
         setTurn(nextTurn)
     }
@@ -137,16 +137,16 @@ export const GameEngineProvider = ({ children }) => {
             case 'Place Citizen':
                 console.log('case: Place Citizen')
                 // main logic of meeple being placed
-                setTurnPhase('Calculate Points', true)
+                nextPlayerTurn()
+                setTurnPhase('Place Tile', true)
                 newTime = TIME_PHASE_CALCULATE_POINTS
-                setTimer(newTime)
+                //setTimer(newTime)
                 break
             case 'Calculate Points':
                 console.log('case: Calculate Points')
                 // main logic of road/city/monestary checks
 
                 // some way to change playerTurn to next player
-                nextPlayerTurn()
                 setTurnPhase('Draw Tile', true)
                 newTime = TIME_PHASE_TILE_DRAW
                 setTimer(newTime)
@@ -160,32 +160,32 @@ export const GameEngineProvider = ({ children }) => {
     // })
 
     // declare timerInterval
-    const timerInterval = useRef()
+    // const timerInterval = useRef()
 
     // runTimer counts down the timer
-    const runTimer = () => {
-        timerInterval.current = setInterval(() => {
-            if (!isHost()) {return}
-            if (typeof getState('timer') === 'string') {return}
-            // if (paused) {return}
-            let newTime = getState("timer") - 1
+    // const runTimer = () => {
+    //     timerInterval.current = setInterval(() => {
+    //         if (!isHost()) {return}
+    //         if (typeof getState('timer') === 'string') {return}
+    //         // if (paused) {return}
+    //         let newTime = getState("timer") - 1
 
-            if (newTime <= 0) {
-                phaseEnd()
-            } else {
-                setTimer(newTime, true)
-            }
-        }, 1000)
-    }
+    //         if (newTime <= 0) {
+    //             phaseEnd()
+    //         } else {
+    //             setTimer(newTime, true)
+    //         }
+    //     }, 1000)
+    // }
 
-    const clearTimer = () => {
-        clearInterval(timerInterval.current)
-    }
+    // const clearTimer = () => {
+    //     clearInterval(timerInterval.current)
+    // }
 
-    useEffect(() => {
-        runTimer()
-        return clearTimer
-    }), [turnPhase]
+    // useEffect(() => {
+    //     runTimer()
+    //     return clearTimer
+    // }), [turnPhase]
 
     const gameState = {
         timer,

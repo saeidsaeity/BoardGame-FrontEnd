@@ -103,7 +103,9 @@ function CitizenControls({ newTileData, setCitizenPosition, tileRotation,setNewT
         }}>Monastery</button> : null}
       <button className={styles.citizenButton} onClick={() => {
         console.log(newTileData);
-        if(currentAsset && currentCompass){
+        console.log(currentAsset)
+        console.log(currentCompass)
+        if(currentAsset && currentCompass + 1){
         setNewTileData((currTileData)=>{
             const changeTileData = {...currTileData}
             changeTileData.citizen.is_citizen=true
