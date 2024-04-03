@@ -25,6 +25,21 @@ export const GameEngineProvider = ({ children }) => {
     // const [grid, setGrid] = useMultiplayerState('grid', [])
     // const [gridSpaces, setGridSpaces] = useMultiplayerState('gridSpaces', [])
 
+    const [boardGameMatrix, setBoardGameMatrix] = useMultiplayerState('boardGameMatrix', [
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+    ]);
+
 
     // Create platers and sort them so all players have same order of players
     const players = usePlayersList(true)
@@ -194,7 +209,9 @@ export const GameEngineProvider = ({ children }) => {
         playerTurn,
         tileDeck,
         players,
-        phaseEnd
+        phaseEnd,
+        boardGameMatrix,
+        setBoardGameMatrix
     }
     
     return (

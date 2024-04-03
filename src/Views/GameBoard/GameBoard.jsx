@@ -39,20 +39,31 @@ const GameBoard = () => {
   // Citizen
   const [citizenPosition, setCitizenPosition ] = useState([])
   // Board
-  const [boardGameMatrix, setBoardGameMatrix] = useState([
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-  ]);
+  // const [boardGameMatrix, setBoardGameMatrix] = useState([
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  // ]);
+
+  const {
+    turn,
+    turnPhase,
+    playerTurn,
+    timer,
+    players,
+    phaseEnd,
+    boardGameMatrix,
+    setBoardGameMatrix
+} = useGameEngine()
 
 
   // CAMERA
@@ -78,22 +89,16 @@ const GameBoard = () => {
   };
 
   useEffect(() => {
+    console.log('settingBoardGameMatrix')
     setBoardGameMatrix((currBoard) => {
       const newboard = JSON.parse(JSON.stringify(currBoard));
       tileData.grid_id={row:5,column:5}
       newboard[5][5] = [tileData];
       return newboard;
-    });
+    }, true);
+    console.log('finished settingBoardGameMatrix')
+    console.log(boardGameMatrix)
   }, []);
-
-  const {
-    turn,
-    turnPhase,
-    playerTurn,
-    timer,
-    players,
-    phaseEnd
-} = useGameEngine()
 
   const grid = createGameBoard(
     boardGameMatrix,
