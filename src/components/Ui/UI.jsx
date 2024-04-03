@@ -19,17 +19,15 @@ export const UI = (
         newTileData,
         checkTilePlacement,
         setReleaseTile,
-        setNewTile,
         randomTileGenerator,
         setNewTileData,
         drawEventHandler,
         setNewTileType,
         newTile2DPosition,
-        newTile,
-        duplicatetiles,
-        replaceTile,
         setReplaceTile,
-        setCitizenPosition
+        setCitizenPosition,
+        setNewTileMesh,
+        newTileMesh
 
     }) => {
     const [ newPlayerTile, setNewPlayerTile ] = useState()
@@ -45,7 +43,8 @@ export const UI = (
         boardGameMatrix,
         setBoardGameMatrix,
         setNewTileArray,
-        newTileArray
+        newTileArray,
+        gameTileCount
     } = useGameEngine()
 
     // console.log(newTileData, "newTileData");
@@ -113,7 +112,7 @@ export const UI = (
             {turnPhase === 'Place Citizen' ?  <CitizenControls newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData}/> : null }
             {player !== me ? 
                 null
-            :
+                :
                 <div className={styles.buttonWrapper}>
                 { turnPhase === 'Place Citizen' ? 
                     null
@@ -127,8 +126,11 @@ export const UI = (
                                     }
                                     return currRotation - Math.PI / 2;
                                 });
-                                newTileData.orientation = (tileRotation -Math.PI / 2)*-1*(180 / Math.PI)%360;
-                                setNewTile((currTile) => {
+                                newTileData.orientation = (tileRotation - Math.PI / 2)*-1*(180 / Math.PI)%360;
+                                console.log(tileRotation, "tileRotation");
+                                console.log(newTileData.orientation, "newTileData.orientation");
+                                newTileData.orientation /= 90
+                                setNewTileMesh((currTile) => {
                                     if (currTile === undefined) {
                                         return currTile;
                                     }
@@ -146,13 +148,11 @@ export const UI = (
                         >
                             Rotate
                         </button>
-
-
                         <button 
                             onClick={async () => {
                                 setReleaseTile(false)
                                 setShowTile(false)
-                                const randomTile = await randomTileGenerator();
+                                const randomTile = await randomTileGenerator(gameTileCount);
                                 setNewTileData(randomTile);
                                 drawEventHandler(randomTile.tile_type)
                                 setNewTileType(randomTile.tile_type)
@@ -160,37 +160,18 @@ export const UI = (
                                 setReplaceTile(true)
                             }}
                             className={styles.button}
-
                         >
                             {showTile ? 'Take a new tile' : 'Get Tile'}
                         </button>
-
-
                         <button 
                             className={styles.button}
                             onClick={() => {
+                                console.log(newTileMesh, "NEW TILE MESH");
                                 if (checkTilePlacement(newTileData, boardGameMatrix)) {
                                     setReplaceTile(false)
-
                                     const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
-                                    newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
+                                    newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
                                     setBoardGameMatrix(newerBoard)
-
-                                    // setBoardGameMatrix((currBoard) => {
-                                    //     const newboard = JSON.parse(JSON.stringify(currBoard));
-                                    //     newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
-                                    //     return newboard;
-                                    // });
-                                    // const currTileArray = [...newTileArray, newTile]
-                                    // console.log(newTile, 'newTile');
-                                    // console.log(currTileArray, "currTileArray");
-                                    // setNewTileArray(currTileArray)
-
-                                    // setNewTileArray((currArray) => {
-                                    //     console.log([...currArray, newTile], " THIS ONE");
-                                    //     return [...currArray, newTile];
-                                    // });
-                                    // setReleaseTile(false);
                                     phaseEnd()
                                 } else {
                                     console.log("tile not been placed");
@@ -201,8 +182,7 @@ export const UI = (
                         </button>
                     </>
                 }
-                </div>
-
+            </div>
             }
         </div>
     )

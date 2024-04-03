@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./CitizenControls.module.css";
 import { useGameEngine } from "../../Context/useGameEngine";
 
-function CitizenControls({ newTileData, setCitizenPosition, tileRotation,setNewTileData }) {
+function CitizenControls({ newTileData, setCitizenPosition, tileRotation, setNewTileData }) {
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
 
@@ -43,8 +43,8 @@ function CitizenControls({ newTileData, setCitizenPosition, tileRotation,setNewT
               className={styles.citizenOption}
               onClick={() => {
 
-                console.log(compass, "compass");
-                console.log(tileRotation, "tileRotation");
+                // console.log(compass, "compass");
+                // console.log(tileRotation, "tileRotation");
                 setCurrentAsset(asset.asset)
                 setCurrentCompass(index)
                 let xCoord = newTileData.grid_id.row - 5;
@@ -65,8 +65,8 @@ function CitizenControls({ newTileData, setCitizenPosition, tileRotation,setNewT
                   if (compass === "W") yCoord -= adjustment;
                 }
                 if (integerTileRotation === 2) {
-                  console.log("i am in here 3");
-                  console.log(compass);
+                  // console.log("i am in here 3");
+                  // console.log(compass);
                   if (compass === "N") xCoord += adjustment;
                   if (compass === "E") yCoord -= adjustment;
                   if (compass === "S") xCoord -= adjustment;
@@ -100,9 +100,9 @@ function CitizenControls({ newTileData, setCitizenPosition, tileRotation,setNewT
         setCitizenPosition([xCoord * 2, 4, yCoord * 2]);
         }}>Monastery</button> : null}
       <button className={styles.citizenButton} onClick={() => {
-        console.log(newTileData);
-        console.log(currentAsset)
-        console.log(currentCompass)
+        // console.log(newTileData);
+        // console.log(currentAsset)
+        // console.log(currentCompass)
         if(currentAsset && currentCompass + 1){
         setNewTileData((currTileData)=>{
             const changeTileData = {...currTileData}
