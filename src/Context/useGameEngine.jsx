@@ -2,6 +2,7 @@ import { isHost, onPlayerJoin, useMultiplayerState, usePlayersList } from 'playr
 import { createContext, useEffect, useContext, useRef } from 'react'
 import { setState, getState } from 'playroomkit'
 import { randInt } from 'three/src/math/MathUtils'
+import { tileData } from "../Views/GameBoard/testboarddata.js";
 // import { useControls } from 'leva'
 
 'drawTile'
@@ -25,13 +26,13 @@ export const GameEngineProvider = ({ children }) => {
     // const [grid, setGrid] = useMultiplayerState('grid', [])
     // const [gridSpaces, setGridSpaces] = useMultiplayerState('gridSpaces', [])
 
-    const [boardGameMatrix, setBoardGameMatrix] = useMultiplayerState('boardGameMatrix', [
+    setState('boardGameMatrix', [
         [[], [], [], [], [], [], [], [], [], [], []],
         [[], [], [], [], [], [], [], [], [], [], []],
         [[], [], [], [], [], [], [], [], [], [], []],
         [[], [], [], [], [], [], [], [], [], [], []],
         [[], [], [], [], [], [], [], [], [], [], []],
-        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [tileData], [], [], [], [], []],
         [[], [], [], [], [], [], [], [], [], [], []],
         [[], [], [], [], [], [], [], [], [], [], []],
         [[], [], [], [], [], [], [], [], [], [], []],
@@ -102,7 +103,6 @@ export const GameEngineProvider = ({ children }) => {
         // console.log(getState('turnPhase'))
     }, [])
 
-    // 
     const nextPlayerTurn = () => {
         // change playerTurn to the next player or player 0
         // if at last player
@@ -144,6 +144,8 @@ export const GameEngineProvider = ({ children }) => {
                 break
             case 'Place Tile':
                 console.log('case: Place Tile')
+                const boardGameMatrix = getState('boardGameMatrix')
+                console.log(boardGameMatrix)
                 // main logic of tile being placed
                 setTurnPhase('Place Citizen', true)
                 newTime = TIME_PHASE_MEEPLE_PLACE
@@ -209,9 +211,7 @@ export const GameEngineProvider = ({ children }) => {
         playerTurn,
         tileDeck,
         players,
-        phaseEnd,
-        boardGameMatrix,
-        setBoardGameMatrix
+        phaseEnd
     }
     
     return (

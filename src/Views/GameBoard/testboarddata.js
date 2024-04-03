@@ -1,6 +1,6 @@
 export const tileData = {
    
-    grid_id: { x: 0, y: 0, z: 0},
+    grid_id: { row: 5, column: 5 },
     orientation: 0,
     corresponding_tiles: {
         north: null,

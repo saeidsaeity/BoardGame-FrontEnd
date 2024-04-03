@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
 import { useGameEngine } from "../../Context/useGameEngine.jsx";
+import { setState, getState } from 'playroomkit'
 // Components
 import { UI } from "../../components/Ui/UI.jsx";
 // Functions
@@ -36,6 +37,7 @@ const GameBoard = () => {
   const [newTile2DPosition, setNewTile2DPosition] = useState([]);//updates the position
   const [releaseTile, setReleaseTile] = useState(false);//mkaes it so you cant click after confirm
   const [tileRotation, setTileRotation] = useState(0);
+  const [currBoardGameMatrix, setCurrBoardGameMatrix] = useState([])
   // Citizen
   const [citizenPosition, setCitizenPosition ] = useState([])
   // Board
@@ -60,10 +62,11 @@ const GameBoard = () => {
     playerTurn,
     timer,
     players,
-    phaseEnd,
-    boardGameMatrix,
-    setBoardGameMatrix
+    phaseEnd
 } = useGameEngine()
+
+  const boardGameMatrix = getState('boardGameMatrix')
+  console.log(boardGameMatrix)
 
 
   // CAMERA
@@ -88,20 +91,19 @@ const GameBoard = () => {
     setNewTile(renderNewTile);
   };
 
+  // useEffect(() => {
+  //   const boardGameMatrix = getState('boardGameMatrix')
+  //   const newboard = JSON.parse(JSON.stringify(boardGameMatrix));
+  //   tileData.grid_id={row:5,column:5}
+  //   newboard[5][5] = [tileData];
+  //   setState('boardGameMatrix', newboard);
+  // }, []);
+
   useEffect(() => {
-    console.log('settingBoardGameMatrix')
-    setBoardGameMatrix((currBoard) => {
-      const newboard = JSON.parse(JSON.stringify(currBoard));
-      tileData.grid_id={row:5,column:5}
-      newboard[5][5] = [tileData];
-      return newboard;
-    }, true);
-    console.log('finished settingBoardGameMatrix')
-    console.log(boardGameMatrix)
-  }, []);
+    setCurrBoardGameMatrix(boardGameMatrix)
+  }, [])
 
   const grid = createGameBoard(
-    boardGameMatrix,
     tileSize,
     tileScale,
     setReleaseTile,
@@ -113,6 +115,9 @@ const GameBoard = () => {
   );
 
   console.log(turnPhase);
+  const boardGameMatrix1 = getState('boardGameMatrix')
+  console.log(boardGameMatrix1)
+  
 
 
   // RENDERING STARTS HERE //
@@ -121,10 +126,8 @@ const GameBoard = () => {
       <UI
         newTileType={newTileType}
         newTile={newTile}
-        setBoardGameMatrix={setBoardGameMatrix}
         tileRotation={tileRotation}
         setTileRotation={setTileRotation}
-        boardGameMatrix={boardGameMatrix}
         checkTilePlacement={checkTilePlacement}
         setNewTileArray={setNewTileArray}
         setReleaseTile={setReleaseTile}

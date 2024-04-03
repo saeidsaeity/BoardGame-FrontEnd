@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { useGameEngine } from './src/Context/useGameEngine';
+import { setState, getState } from 'playroomkit'
 
 export const createGameBoard = (
   tileSize, 
@@ -8,15 +9,11 @@ export const createGameBoard = (
   setNewTilePosition,
   setNewTile2DPosition,
   setNewTile,
-  setNewTileData
+  setNewTileData,
+  turnPhase
   ) => {
 
-    const {
-      turnPhase,
-      boardGameMatrix
-  } = useGameEngine()
-
-  console.log('bardGameMatrix: ', boardGameMatrix)
+  const boardGameMatrix = getState('boardGameMatrix')
 
   function tileChecks(x,z,i,j,){
     setReleaseTile(true);
@@ -106,16 +103,12 @@ export const createGameBoard = (
     }
   
     }
-  console.log('grid: ', grid)
   return grid;
 }
 
 export const tileColourLogic = (i, j) => {
 
-  const {
-    turnPhase,
-    boardGameMatrix
-  } = useGameEngine()
+  const boardGameMatrix = getState('boardGameMatrix')
 
   if (i === -5 || j === -5) {
     if (

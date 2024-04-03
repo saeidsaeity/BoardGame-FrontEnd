@@ -1,4 +1,4 @@
-import { myPlayer } from "playroomkit";
+import { myPlayer, getState, setState } from "playroomkit";
 import { useGameEngine } from "../../Context/useGameEngine";
 import { useEffect, useState } from "react";
 import { Physics, RigidBody } from "@react-three/rapier";
@@ -13,8 +13,6 @@ import CitizenControls from "../CitizenControls/CitizenControls";
 
 export const UI = (
     { 
-        boardGameMatrix, 
-        setBoardGameMatrix, 
         tileRotation, 
         setTileRotation, 
         newTileType,
@@ -36,6 +34,7 @@ export const UI = (
         setCitizenPosition
 
     }) => {
+    const boardGameMatrix = getState('boardGameMatrix')
     const [ newPlayerTile, setNewPlayerTile ] = useState()
     const [ showTile, setShowTile ] = useState(false)
     
@@ -153,7 +152,7 @@ export const UI = (
                         drawEventHandler(randomTile.tile_type)
                         setNewTileType(randomTile.tile_type)
                         setShowTile(true)
-                         setReplaceTile(true)
+                        setReplaceTile(true)
                     }}
                     className={styles.button}
 
@@ -165,13 +164,15 @@ export const UI = (
                 <button 
                     className={styles.button}
                     onClick={() => {
-                        if (checkTilePlacement(newTileData, boardGameMatrix)) {
-                           setReplaceTile(false)
-                            setBoardGameMatrix((currBoard) => {
-                                const newboard = JSON.parse(JSON.stringify(currBoard));
-                                newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
-                                return newboard;
-                            });
+                        const boardGameMatrix1 = getState('boardGameMatrix')
+                        console.log(boardGameMatrix1)
+                        if (checkTilePlacement(newTileData, boardGameMatrix1)) {
+                            setReplaceTile(false)
+                            const newboard = JSON.parse(JSON.stringify(boardGameMatrix1));
+                            newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
+                            setState('boardGameMatrix', newboard);
+                            const boardGameMatrix2 = getState('boardGameMatrix')
+                            console.log(boardGameMatrix2)
                             setNewTileArray((currArray) => {
                                 return [...currArray, newTile];
                             });
