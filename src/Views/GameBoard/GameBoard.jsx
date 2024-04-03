@@ -19,7 +19,6 @@ import { randomTileGenerator } from '../../../utils.js';
 import styles from './GameBoard.module.css';
 
 const GameBoard = () => {
-
   // TILE
   const tileScale = [0.92, 0.92, 0.92];
   const tileSize = 2;
@@ -30,6 +29,7 @@ const GameBoard = () => {
   //NEW TILE
   const [newTileMesh, setNewTileMesh] = useState(); // the new tile mesh thing
   const [newTileData, setNewTileData] = useState(); //the new tile object
+
   const [newTileType, setNewTileType] = useState(); // string of tile type
   const [newTilePosition, setNewTilePosition] = useState([12, 4, 0]); //updates the postion
 
@@ -187,7 +187,6 @@ const GameBoard = () => {
 
             <Stars />
 
-
             <directionalLight
               castShadow
               intensity={3}
@@ -264,7 +263,6 @@ const GameBoard = () => {
           {/* <axesHelper args={[5]} />
           <gridHelper args={[50, 25, "black", "red"]} /> */}
         </Canvas>
-  
       </div>
     </>
   );
