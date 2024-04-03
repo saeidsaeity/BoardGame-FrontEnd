@@ -1,0 +1,24 @@
+.CitizenControls{
+    background-color: black;
+    opacity: 50%;
+    color: white;
+    position: fixed;
+    right: 0;
+    top: 50vh;
+    width: 12rem;
+}
+
+h2{
+    font-size: 1rem;
+    text-align: center;
+}
+
+.citizenOption{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.citizenOption:hover{
+    background-color: aqua;
+    cursor: pointer;
+}

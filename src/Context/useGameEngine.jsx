@@ -2,7 +2,7 @@ import { isHost, onPlayerJoin, useMultiplayerState, usePlayersList } from 'playr
 import { createContext, useEffect, useContext, useRef } from 'react'
 import { setState, getState } from 'playroomkit'
 import { randInt } from 'three/src/math/MathUtils'
-import { useControls } from 'leva'
+// import { useControls } from 'leva'
 
 'drawTile'
 
@@ -47,7 +47,7 @@ export const GameEngineProvider = ({ children }) => {
     // startGame resets all game states
     const startGame = () => {
         setTurnPhase('Place Tile', true)
-        console.log(getState('turnPhase'))
+        // console.log(getState('turnPhase'))
         if (isHost()) {
             console.log('StartGame')
             setTimer(TIME_PHASE_TILE_DRAW, true)
@@ -82,9 +82,9 @@ export const GameEngineProvider = ({ children }) => {
     
     // invoke startgame upon loading
     useEffect(() => {
-        console.log('in use effect')
+        // console.log('in use effect')
         startGame()
-        console.log(getState('turnPhase'))
+        // console.log(getState('turnPhase'))
     }, [])
 
     // 
@@ -155,9 +155,9 @@ export const GameEngineProvider = ({ children }) => {
     }
     
     // paused allows host to pause, along with Leva in app.jsx
-    const { paused } = useControls({
-        paused: false
-    })
+    // const { paused } = useControls({
+    //     paused: false
+    // })
 
     // declare timerInterval
     const timerInterval = useRef()
@@ -167,7 +167,7 @@ export const GameEngineProvider = ({ children }) => {
         timerInterval.current = setInterval(() => {
             if (!isHost()) {return}
             if (typeof getState('timer') === 'string') {return}
-            if (paused) {return}
+            // if (paused) {return}
             let newTime = getState("timer") - 1
 
             if (newTime <= 0) {
@@ -185,7 +185,7 @@ export const GameEngineProvider = ({ children }) => {
     useEffect(() => {
         runTimer()
         return clearTimer
-    }), [turnPhase, paused]
+    }), [turnPhase]
 
     const gameState = {
         timer,

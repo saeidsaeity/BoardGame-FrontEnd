@@ -1,21 +1,21 @@
-import { Link, useNavigate } from "react-router-dom";
-import Header from "../Header";
-import useSound from "use-sound";
-import opening from "/GameSound1.mp3";
-import { MdOutlineMusicOff } from "react-icons/md";
-import { SlMusicTone } from "react-icons/sl";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { insertCoin } from "playroomkit";
-import styles from "./Home.module.css";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import aboutText from "./aboutData";
-import { gsap } from "gsap";
-import Rules from "./Rules";
-import ProjectDescription from "./ProjectDescription";
+import { Link, useNavigate } from 'react-router-dom';
+import Header from '../Header';
+import useSound from 'use-sound';
+import opening from '/GameSound1.mp3';
+import { MdOutlineMusicOff } from 'react-icons/md';
+import { SlMusicTone } from 'react-icons/sl';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { insertCoin } from 'playroomkit';
+import styles from './Home.module.css';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import aboutText from './aboutData';
+import { gsap } from 'gsap';
+import Rules from './Rules';
+import ProjectDescription from './ProjectDescription';
 gsap.registerPlugin(ScrollTrigger);
 function Home() {
   const navigate = useNavigate();
-  const [playSound] = useSound("/GameSound1.mp3");
+  const [playSound] = useSound('/GameSound1.mp3');
   const [muted, setMuted] = useState(true);
   const aboutRef = useRef(null);
 
@@ -26,24 +26,24 @@ function Home() {
   useEffect(() => {
     if (!muted) {
       setTimeout(() => {
-        console.log("Delayed for 1 second.");
-      }, "5000");
-      document.querySelector("audio").play();
-      document.querySelector("audio").volume = 0.5;
+        console.log('Delayed for 1 second.');
+      }, '5000');
+      document.querySelector('audio').play();
+      document.querySelector('audio').volume = 0.5;
     } else {
-      document.querySelector("audio").pause();
+      document.querySelector('audio').pause();
     }
   }, [muted]);
 
   useEffect(() => {
     const aboutText = aboutRef.current.innerText;
-    aboutRef.current.innerText = "";
+    aboutRef.current.innerText = '';
 
-    const letters = aboutText.split("");
+    const letters = aboutText.split('');
     letters.forEach((letter, index) => {
-      const span = document.createElement("span");
+      const span = document.createElement('span');
       span.textContent = letter;
-      span.style.opacity = "0";
+      span.style.opacity = '0';
       aboutRef.current.appendChild(span);
 
       gsap.to(span, {
@@ -56,7 +56,7 @@ function Home() {
     // Set up ScrollTrigger to finish animation when bottom two-thirds of about section is visible
     ScrollTrigger.create({
       trigger: aboutRef.current,
-      start: "bottom bottom-=33%", // Bottom two-thirds are visible
+      start: 'bottom bottom-=33%', // Bottom two-thirds are visible
       onEnterBack: () => {
         // Complete the animation when bottom two-thirds of about section is visible
         gsap.set(
@@ -68,8 +68,8 @@ function Home() {
   }, []);
 
   function hostGameHandler() {
-    console.log('enter hostGameHandler')
-    navigate("/lobby")
+    console.log('enter hostGameHandler');
+    navigate('/lobby');
     // insertCoin().then(() => {
     //   navigate("/gameboard");
     // });
@@ -78,22 +78,22 @@ function Home() {
     <div className={styles.fullpage}>
       <div className={styles.backgroundimage} />
       <Header />
-      <h1 className={styles.heading}>Welcome to Citizens of Newcastle</h1>
+      <h1 className={styles.heading}>Welcome to City Zen</h1>
       <div className={styles.scrollableTextContainer}>
         <button className={styles.button} onClick={hostGameHandler}>
           HOST
         </button>
-        <Link className={styles.linkButton} to="/join">
+        {/* <Link className={styles.linkButton} to="/join">
           Join game
-        </Link>
+        </Link> */}
         <br></br>
 
         <h2 className={styles.scrollableText}>About:</h2>
         <p ref={aboutRef} className={styles.about}>
-          {aboutText}{" "}
+          {aboutText}{' '}
         </p>
         <Rules />
-        <ProjectDescription/>
+        <ProjectDescription />
       </div>
       <button className={styles.music} onClick={toggleMute}>
         {muted ? <MdOutlineMusicOff /> : <SlMusicTone />}

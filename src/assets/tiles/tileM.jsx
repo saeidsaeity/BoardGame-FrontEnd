@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 const TileM = React.forwardRef((props, ref) => {
-    const { nodes, materials } = useGLTF('/tileM.glb')
+  const { nodes, materials } = useGLTF('/tileM.glb')
   return (
     <group {...props} dispose={null}>
       <group position={[0, 0.35, 0]} scale={[1, 0.1, 1]}>
@@ -163,6 +163,26 @@ const TileM = React.forwardRef((props, ref) => {
             material={materials['Metal_Light.002']}
           />
         </group>
+        <group position={[0.423, 0.987, -0.583]} rotation={[0, 0.536, 0]} scale={[0.56, 3.3, 0.43]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001.geometry}
+            material={materials['Stone.008']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001_1.geometry}
+            material={materials['Stone_Light.003']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001_2.geometry}
+            material={materials['Wood.008']}
+          />
+        </group>
         <group position={[-0.583, 0.915, 0.578]} rotation={[0, 0.834, 0]} scale={[0.42, 3.3, 0.43]}>
           <mesh
             castShadow
@@ -180,29 +200,6 @@ const TileM = React.forwardRef((props, ref) => {
             castShadow
             receiveShadow
             geometry={nodes.Cube312_2.geometry}
-            material={materials['Wood.008']}
-          />
-        </group>
-        <group
-          position={[0.432, 0.915, -0.592]}
-          rotation={[-2.938, -0.519, -3.112]}
-          scale={[0.571, 3.298, 0.46]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube314.geometry}
-            material={materials['Stone.008']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube314_1.geometry}
-            material={materials['Stone_Light.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube314_2.geometry}
             material={materials['Wood.008']}
           />
         </group>

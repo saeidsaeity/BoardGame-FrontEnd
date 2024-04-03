@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 const TileP = React.forwardRef((props, ref) => {
-    const { nodes, materials } = useGLTF('/tileP.glb')
+  const { nodes, materials } = useGLTF('/tileP.glb')
   return (
     <group {...props} dispose={null}>
       <group position={[0, 0.35, 0]} scale={[1, 0.1, 1]}>
@@ -341,6 +341,26 @@ const TileP = React.forwardRef((props, ref) => {
             material={materials['Metal_Light.002']}
           />
         </group>
+        <group position={[0.376, 0.987, -0.531]} rotation={[0, 0.536, 0]} scale={[0.56, 3.3, 0.43]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001.geometry}
+            material={materials['Stone.001']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001_1.geometry}
+            material={materials['Stone_Light.002']}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube001_2.geometry}
+            material={materials['Wood.001']}
+          />
+        </group>
         <group position={[-0.583, 0.915, 0.578]} rotation={[0, 0.834, 0]} scale={[0.42, 3.3, 0.43]}>
           <mesh
             castShadow
@@ -358,29 +378,6 @@ const TileP = React.forwardRef((props, ref) => {
             castShadow
             receiveShadow
             geometry={nodes.Cube431_2.geometry}
-            material={materials['Wood.008']}
-          />
-        </group>
-        <group
-          position={[0.387, 0.915, -0.53]}
-          rotation={[-2.938, -0.519, -3.112]}
-          scale={[0.571, 3.298, 0.46]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube433.geometry}
-            material={materials['Stone.008']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube433_1.geometry}
-            material={materials['Stone_Light.003']}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube433_2.geometry}
             material={materials['Wood.008']}
           />
         </group>
@@ -451,10 +448,7 @@ const TileP = React.forwardRef((props, ref) => {
             material={materials['Wood_Light.008']}
           />
         </group>
-        <group
-          position={[0.777, 0.388, -0.765]}
-          rotation={[0, -0.828, 0]}
-          scale={[0.25, 2.5, 0.25]}>
+        <group position={[0.768, 0.388, -0.778]} rotation={[0, -0.87, 0]} scale={[0.25, 2.5, 0.25]}>
           <mesh
             castShadow
             receiveShadow
