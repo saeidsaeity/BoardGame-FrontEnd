@@ -1,3 +1,19 @@
+import { getTile } from './src/api';
+
+
+export const randomTileGenerator = async () => {
+    const randInt = Math.floor((Math.random() * 23)+1);
+    const tileType = String.fromCharCode(randInt + 64);
+    console.log(tileType, "tileType FUNC");
+    const randomTile = await getTile(tileType);
+    console.log(randomTile.tile_type);
+    return randomTile;
+};
+
+export default randomTileGenerator
+
+
+
 export const tileChecks = (x,z,i,j,setReleaseTile, setNewTilePosition, setNewTile, setNewTile2DPosition, tileSize) => {
     setReleaseTile(true);
       setNewTilePosition([

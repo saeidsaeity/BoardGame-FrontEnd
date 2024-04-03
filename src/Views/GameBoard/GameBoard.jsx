@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { Cloud, Clouds, OrbitControls, Sky } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
-import { Perf } from "r3f-perf";
 import { useGameEngine } from "../../Context/useGameEngine.jsx";
+
 // Components
 import { UI } from "../../components/Ui/UI.jsx";
 import { GameBoardCells } from "../../components/GameBoardCells/GameBoardCells.jsx";
 import { CitizenRed } from '../../assets/citizens/CitizenRed.jsx';
+
 // Functions
-// import { createGameBoard } from "../../../utilities.jsx";
-import randomTileGenerator from "./utils/randomTileGenerator.js";
 import { checkTilePlacement } from "./verifyFunctions.js";
+import { randomTileGenerator } from '../../../utils.js'
 // styling
 import styles from "./GameBoard.module.css";
 
@@ -224,7 +224,7 @@ const GameBoard = () => {
             </RigidBody>
           </Physics>
           {/* HELPERS */}
-          <Perf position="top-left" />
+          {/* <Perf position="top-left" /> */}
           {/* <axesHelper args={[5]} />
           <gridHelper args={[50, 25, "black", "red"]} /> */}
         </Canvas>
