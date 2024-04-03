@@ -115,77 +115,83 @@ export const UI = (
                 null
             :
                 <div className={styles.buttonWrapper}>
-                <button 
-                    onClick={() => {
-                        setTileRotation((currRotation) => {
-                            if(currRotation <= -2*Math.PI){
-                                return currRotation + 1.5 * Math.PI
-                            }
-                            return currRotation - Math.PI / 2;
-                        });
-                        newTileData.orientation = (tileRotation -Math.PI / 2)*-1*(180 / Math.PI)%360;
-                        setNewTile((currTile) => {
-                            if (currTile === undefined) {
-                                return currTile;
-                            }
-                            const updatedTile = {
-                                ...currTile,
-                                props: {
-                                ...currTile.props,
-                                rotation: [0, tileRotation - Math.PI / 2, 0],
-                                },
-                            };
-                            return updatedTile;
-                        });
-                    }}
-                    className={styles.button}
-                >
-                    Rotate
-                </button>
+                { turnPhase === 'Place Citizen' ? 
+                    null
+                    :
+                    <>
+                        <button 
+                            onClick={() => {
+                                setTileRotation((currRotation) => {
+                                    if(currRotation <= -2*Math.PI){
+                                        return currRotation + 1.5 * Math.PI
+                                    }
+                                    return currRotation - Math.PI / 2;
+                                });
+                                newTileData.orientation = (tileRotation -Math.PI / 2)*-1*(180 / Math.PI)%360;
+                                setNewTile((currTile) => {
+                                    if (currTile === undefined) {
+                                        return currTile;
+                                    }
+                                    const updatedTile = {
+                                        ...currTile,
+                                        props: {
+                                        ...currTile.props,
+                                        rotation: [0, tileRotation - Math.PI / 2, 0],
+                                        },
+                                    };
+                                    return updatedTile;
+                                });
+                            }}
+                            className={styles.button}
+                        >
+                            Rotate
+                        </button>
 
 
-                <button 
-                    onClick={async () => {
-                        setReleaseTile(false)
-                        setShowTile(false)
-                        const randomTile = await randomTileGenerator();
-                        setNewTileData(randomTile);
-                        drawEventHandler(randomTile.tile_type)
-                        setNewTileType(randomTile.tile_type)
-                        setShowTile(true)
-                         setReplaceTile(true)
-                    }}
-                    className={styles.button}
+                        <button 
+                            onClick={async () => {
+                                setReleaseTile(false)
+                                setShowTile(false)
+                                const randomTile = await randomTileGenerator();
+                                setNewTileData(randomTile);
+                                drawEventHandler(randomTile.tile_type)
+                                setNewTileType(randomTile.tile_type)
+                                setShowTile(true)
+                                setReplaceTile(true)
+                            }}
+                            className={styles.button}
 
-                >
-                    {showTile ? 'Take a new tile' : 'Get Tile'}
-                </button>
+                        >
+                            {showTile ? 'Take a new tile' : 'Get Tile'}
+                        </button>
 
 
-                <button 
-                    className={styles.button}
-                    onClick={() => {
-                        if (checkTilePlacement(newTileData, boardGameMatrix)) {
-                           setReplaceTile(false)
-                            setBoardGameMatrix((currBoard) => {
-                                const newboard = JSON.parse(JSON.stringify(currBoard));
-                                newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
-                                return newboard;
-                            });
-                            setNewTileArray((currArray) => {
-                                return [...currArray, newTile];
-                            });
-                            setReleaseTile(false);
-                            phaseEnd()
-                        } else {
-                            console.log("tile not been placed");
-                        }
-                    }}
-                >
-                    Confirm
-                </button>
-
+                        <button 
+                            className={styles.button}
+                            onClick={() => {
+                                if (checkTilePlacement(newTileData, boardGameMatrix)) {
+                                setReplaceTile(false)
+                                    setBoardGameMatrix((currBoard) => {
+                                        const newboard = JSON.parse(JSON.stringify(currBoard));
+                                        newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
+                                        return newboard;
+                                    });
+                                    setNewTileArray((currArray) => {
+                                        return [...currArray, newTile];
+                                    });
+                                    setReleaseTile(false);
+                                    phaseEnd()
+                                } else {
+                                    console.log("tile not been placed");
+                                }
+                            }}
+                        >
+                            Confirm
+                        </button>
+                    </>
+                }
                 </div>
+
             }
         </div>
     )

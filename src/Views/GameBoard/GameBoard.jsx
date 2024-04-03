@@ -38,6 +38,7 @@ const GameBoard = () => {
   const [tileRotation, setTileRotation] = useState(0);
   // Citizen
   const [citizenPosition, setCitizenPosition ] = useState([])
+  const [ isCitizenPhase, setIsCitizenPhase ] = useState(false)
   // Board
   const [boardGameMatrix, setBoardGameMatrix] = useState([
     [[], [], [], [], [], [], [], [], [], [], []],
@@ -77,15 +78,6 @@ const GameBoard = () => {
     setNewTile(renderNewTile);
   };
 
-  useEffect(() => {
-    setBoardGameMatrix((currBoard) => {
-      const newboard = JSON.parse(JSON.stringify(currBoard));
-      tileData.grid_id={row:5,column:5}
-      newboard[5][5] = [tileData];
-      return newboard;
-    });
-  }, []);
-
   const {
     turn,
     turnPhase,
@@ -95,6 +87,18 @@ const GameBoard = () => {
     phaseEnd
 } = useGameEngine()
 
+
+  useEffect(() => {
+    setBoardGameMatrix((currBoard) => {
+      const newboard = JSON.parse(JSON.stringify(currBoard));
+      tileData.grid_id={row:5,column:5}
+      newboard[5][5] = [tileData];
+      return newboard;
+    });
+    if(turnPhase === 'Place Citizen') setIsCitizenPhase(true)
+  }, [turnPhase]);
+
+  
   const grid = createGameBoard(
     boardGameMatrix,
     tileSize,
@@ -104,7 +108,8 @@ const GameBoard = () => {
     setNewTile2DPosition,
     setNewTile,
     setNewTileData,
-    turnPhase
+    turnPhase,
+    isCitizenPhase
   );
 
   console.log(turnPhase);
