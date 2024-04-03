@@ -163,11 +163,7 @@ const GameBoard = () => {
     });
   }, []);
 
-  const [showModal, setShowModal] = useState(false);
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
 
   
   const grid = createGameBoard(
