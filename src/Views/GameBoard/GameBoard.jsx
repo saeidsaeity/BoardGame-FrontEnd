@@ -28,7 +28,7 @@ const GameBoard = () => {
   const [enableRotate, setEnableRotate] = useState(true);
   const [sunPosition, setSunPosition ] = useState([50, 100, 150])
   //NEW TILE
-  const [newTileArray, setNewTileArray] = useState([]);//all tiles
+  // const [newTileArray, setNewTileArray] = useState([]);//all tiles
   const [newTile, setNewTile] = useState();// the new tile mesh thing
   const [newTileData, setNewTileData] = useState();//the tile object 
   const [newTileType, setNewTileType ] = useState() // string of tile type
@@ -36,24 +36,26 @@ const GameBoard = () => {
   const [newTile2DPosition, setNewTile2DPosition] = useState([]);//updates the position
   const [releaseTile, setReleaseTile] = useState(false);//mkaes it so you cant click after confirm
   const [tileRotation, setTileRotation] = useState(0);
+  const [ renderTileArr, setRenderTileArr ] = useState([]);
   // Citizen
   const [citizenPosition, setCitizenPosition ] = useState([])
   const [ isCitizenPhase, setIsCitizenPhase ] = useState(false)
+  const [ isTilePhase, setIsTilePhase ] = useState(false)
   // Board
-  const [boardGameMatrix, setBoardGameMatrix] = useState([
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-    [[], [], [], [], [], [], [], [], [], [], []],
-  ]);
+  // const [boardGameMatrix, setBoardGameMatrix] = useState([
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [tileData], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  //   [[], [], [], [], [], [], [], [], [], [], []],
+  // ]);
 
 
   // CAMERA
@@ -77,6 +79,25 @@ const GameBoard = () => {
     console.log(renderNewTile,'render new tile');
     setNewTile(renderNewTile);
   };
+  
+  const renderTile = async (tileType, position, rotation) => {
+    console.log(position, "FUNC POS");
+    if(tileType !== undefined) {
+      const TileComponent = await import(`../../assets/tiles/tile${tileType}.jsx`);
+      const renderNewTile = (
+        <RigidBody
+          canSleep={false}
+          position={position}
+          rotation={[0, rotation, 0]}
+        >
+          <TileComponent.default scale={tileScale} />
+        </RigidBody>
+      );
+      console.log(renderNewTile,'render new tile');
+      return renderNewTile
+    }
+  };
+
 
   const {
     turn,
@@ -84,19 +105,53 @@ const GameBoard = () => {
     playerTurn,
     timer,
     players,
-    phaseEnd
+    phaseEnd,
+    boardGameMatrix,
+    setBoardGameMatrix,
+    newTileArray,
+    setNewTileArray
 } = useGameEngine()
 
-
   useEffect(() => {
-    setBoardGameMatrix((currBoard) => {
-      const newboard = JSON.parse(JSON.stringify(currBoard));
-      tileData.grid_id={row:5,column:5}
-      newboard[5][5] = [tileData];
-      return newboard;
-    });
-    if(turnPhase === 'Place Citizen') setIsCitizenPhase(true)
+    console.log(renderTileArr, "RENDER TILE ARR");
+    // setBoardGameMatrix((currBoard) => {
+    //   const newboard = JSON.parse(JSON.stringify(currBoard));
+    //   tileData.grid_id={row:5,column:5}
+    //   newboard[5][5] = [tileData];
+    //   return newboard;
+    // });
+    boardGameMatrix.forEach((row) =>{
+      row.forEach((col) => {
+        if(col.length > 0) {
+          // console.log(col[0].grid_id.row, "col[0].grid_id.row");
+          // console.log(col[0].orientation * Math.PI/180, "col[0].orientation");
+          const position = [(col[0].grid_id.row -5 ) * 2, 0 , (col[0].grid_id.column - 5) * 2]
+          renderTile(col[0].tile_type, position, col[0].orientation * Math.PI/180)
+          .then((renderedTile) => {
+            setRenderTileArr((currArray) => {
+              return [...currArray, renderedTile];
+            })
+          })
+          .catch((err) =>{
+            console.log(err);
+          })
+      }})
+    })
+    // const currTileArray = [...newTileArray, newTile]
+    // setNewTileArray(currTileArray)
+    // console.log(boardGameMatrix, "boardGameMatrix useEffect");
+    if(turnPhase === 'Place Tile') {
+      setIsCitizenPhase(false)
+      setIsTilePhase(true)
+    }
+    if(turnPhase === 'Place Citizen') {
+      setIsTilePhase(false)
+      setIsCitizenPhase(true)
+    }
   }, [turnPhase]);
+
+  // console.log(isCitizenPhase, "isCitizenPhase");
+  // console.log(isTilePhase, "isTilePhase");
 
   
   const grid = createGameBoard(
@@ -112,7 +167,7 @@ const GameBoard = () => {
     isCitizenPhase
   );
 
-  console.log(turnPhase);
+  
 
 
   // RENDERING STARTS HERE //
@@ -126,7 +181,6 @@ const GameBoard = () => {
         setTileRotation={setTileRotation}
         boardGameMatrix={boardGameMatrix}
         checkTilePlacement={checkTilePlacement}
-        setNewTileArray={setNewTileArray}
         setReleaseTile={setReleaseTile}
         setNewTile={setNewTile}
         randomTileGenerator={randomTileGenerator}
@@ -135,11 +189,9 @@ const GameBoard = () => {
         setNewTileType={setNewTileType}
         newTileData={newTileData}
         newTile2DPosition={newTile2DPosition}
-
         replaceTile={replaceTile}
         setReplaceTile={setReplaceTile}
         setCitizenPosition={setCitizenPosition}
-
       />
 
       <div className={styles.gameBoard}>
@@ -184,10 +236,12 @@ const GameBoard = () => {
               rotateSpeed={0.6}
               target={[0, 1, 0]}
             />
-
+{/* 
             <RigidBody>
               <TileD position={[0, 4, 0]} scale={tileScale} />
             </RigidBody>
+
+             */}
 
 
             {releaseTile && replaceTile ? newTile : null}
@@ -209,7 +263,7 @@ const GameBoard = () => {
               : null
             }
       
-            {newTileArray}
+            {renderTileArr}
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>
                 <boxGeometry args={[25, 0.5, 25]} />
