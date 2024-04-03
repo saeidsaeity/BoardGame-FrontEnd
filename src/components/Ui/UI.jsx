@@ -25,9 +25,6 @@ export const UI = (
         drawEventHandler,
         setNewTileType,
         newTile2DPosition,
-        newTile,
-        duplicatetiles,
-        replaceTile,
         setReplaceTile,
         setCitizenPosition
 
@@ -113,7 +110,7 @@ export const UI = (
             {turnPhase === 'Place Citizen' ?  <CitizenControls newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData}/> : null }
             {player !== me ? 
                 null
-            :
+                :
                 <div className={styles.buttonWrapper}>
                 { turnPhase === 'Place Citizen' ? 
                     null
@@ -127,7 +124,8 @@ export const UI = (
                                     }
                                     return currRotation - Math.PI / 2;
                                 });
-                                newTileData.orientation = (tileRotation -Math.PI / 2)*-1*(180 / Math.PI)%360;
+                                newTileData.orientation = (tileRotation - Math.PI / 2)*-1*(180 / Math.PI)%360;
+                                newTileData.orientation /= 90
                                 setNewTile((currTile) => {
                                     if (currTile === undefined) {
                                         return currTile;
@@ -146,8 +144,6 @@ export const UI = (
                         >
                             Rotate
                         </button>
-
-
                         <button 
                             onClick={async () => {
                                 setReleaseTile(false)
@@ -160,37 +156,19 @@ export const UI = (
                                 setReplaceTile(true)
                             }}
                             className={styles.button}
-
                         >
                             {showTile ? 'Take a new tile' : 'Get Tile'}
                         </button>
-
-
                         <button 
                             className={styles.button}
                             onClick={() => {
                                 if (checkTilePlacement(newTileData, boardGameMatrix)) {
                                     setReplaceTile(false)
-
                                     const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
-                                    newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
+                                    newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
+                                    console.log(newTileData, "newTileData");
+                                    console.log(newerBoard, "newerBoard");
                                     setBoardGameMatrix(newerBoard)
-
-                                    // setBoardGameMatrix((currBoard) => {
-                                    //     const newboard = JSON.parse(JSON.stringify(currBoard));
-                                    //     newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
-                                    //     return newboard;
-                                    // });
-                                    // const currTileArray = [...newTileArray, newTile]
-                                    // console.log(newTile, 'newTile');
-                                    // console.log(currTileArray, "currTileArray");
-                                    // setNewTileArray(currTileArray)
-
-                                    // setNewTileArray((currArray) => {
-                                    //     console.log([...currArray, newTile], " THIS ONE");
-                                    //     return [...currArray, newTile];
-                                    // });
-                                    // setReleaseTile(false);
                                     phaseEnd()
                                 } else {
                                     console.log("tile not been placed");
@@ -201,8 +179,7 @@ export const UI = (
                         </button>
                     </>
                 }
-                </div>
-
+            </div>
             }
         </div>
     )

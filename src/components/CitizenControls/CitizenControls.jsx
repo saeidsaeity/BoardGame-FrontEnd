@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./CitizenControls.module.css";
 import { useGameEngine } from "../../Context/useGameEngine";
 
-function CitizenControls({ newTileData, setCitizenPosition, tileRotation,setNewTileData }) {
+function CitizenControls({ newTileData, setCitizenPosition, tileRotation, setNewTileData }) {
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
 

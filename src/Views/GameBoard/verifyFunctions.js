@@ -24,8 +24,8 @@ Functions:
 
 export const assetInDirection = (tile, directionNum) => {
     // convert the orientation into a number from 0-3
-    const turn = tile.orientation/90
-
+    const turn = tile.orientation
+    console.log(turn, "turn in verify");
     // orientation minused to get asset direction
     let assetDir = (directionNum - turn)
     if (assetDir < 0) {assetDir += 4}
