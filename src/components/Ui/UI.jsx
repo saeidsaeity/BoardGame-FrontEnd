@@ -1,26 +1,23 @@
 import { myPlayer } from "playroomkit";
-import { useGameEngine } from "../../Context/useGameEngine";
 import { useEffect, useState } from "react";
-import { Physics, RigidBody } from "@react-three/rapier";
+import { Center, OrbitControls, PresentationControls, SpotLight } from "@react-three/drei";
 
-import styles from './UI.module.css'
 import { Canvas } from "@react-three/fiber";
 import { CitizenRed } from "../../assets/citizens/CitizenRed";
-import { Center, OrbitControls, PresentationControls, SpotLight } from "@react-three/drei";
-import TileA from "../../assets/tiles/tileA";
-import PopUp from "../popUpRules";
+import { useGameEngine } from "../../Context/useGameEngine";
+
 import CitizenControls from "../CitizenControls/CitizenControls";
+
+import PopUp from "../popUpRules";
+import styles from './UI.module.css'
 
 export const UI = (
     { 
-        boardGameMatrix, 
-        setBoardGameMatrix, 
         tileRotation, 
         setTileRotation, 
         newTileType,
         newTileData,
         checkTilePlacement,
-        setNewTileArray,
         setReleaseTile,
         setNewTile,
         randomTileGenerator,
@@ -32,7 +29,6 @@ export const UI = (
         duplicatetiles,
         replaceTile,
         setReplaceTile,
-
         setCitizenPosition
 
     }) => {
@@ -45,7 +41,11 @@ export const UI = (
         playerTurn,
         timer,
         players,
-        phaseEnd
+        phaseEnd,
+        boardGameMatrix,
+        setBoardGameMatrix,
+        setNewTileArray,
+        newTileArray
     } = useGameEngine()
 
     // console.log(newTileData, "newTileData");
@@ -170,16 +170,27 @@ export const UI = (
                             className={styles.button}
                             onClick={() => {
                                 if (checkTilePlacement(newTileData, boardGameMatrix)) {
-                                setReplaceTile(false)
-                                    setBoardGameMatrix((currBoard) => {
-                                        const newboard = JSON.parse(JSON.stringify(currBoard));
-                                        newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
-                                        return newboard;
-                                    });
-                                    setNewTileArray((currArray) => {
-                                        return [...currArray, newTile];
-                                    });
-                                    setReleaseTile(false);
+                                    setReplaceTile(false)
+
+                                    const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
+                                    newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
+                                    setBoardGameMatrix(newerBoard)
+
+                                    // setBoardGameMatrix((currBoard) => {
+                                    //     const newboard = JSON.parse(JSON.stringify(currBoard));
+                                    //     newboard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData,];
+                                    //     return newboard;
+                                    // });
+                                    // const currTileArray = [...newTileArray, newTile]
+                                    // console.log(newTile, 'newTile');
+                                    // console.log(currTileArray, "currTileArray");
+                                    // setNewTileArray(currTileArray)
+
+                                    // setNewTileArray((currArray) => {
+                                    //     console.log([...currArray, newTile], " THIS ONE");
+                                    //     return [...currArray, newTile];
+                                    // });
+                                    // setReleaseTile(false);
                                     phaseEnd()
                                 } else {
                                     console.log("tile not been placed");

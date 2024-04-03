@@ -2,6 +2,7 @@ import { isHost, onPlayerJoin, useMultiplayerState, usePlayersList } from 'playr
 import { createContext, useEffect, useContext, useRef } from 'react'
 import { setState, getState } from 'playroomkit'
 import { randInt } from 'three/src/math/MathUtils'
+import { tileData } from '../Views/GameBoard/testboarddata'
 // import { useControls } from 'leva'
 
 'drawTile'
@@ -21,9 +22,25 @@ export const GameEngineProvider = ({ children }) => {
     const [turn, setTurn] = useMultiplayerState('turn', 1)
     const [playerTurn, setPlayerTurn] = useMultiplayerState('playerTurn', 0)
     const [tileDeck, setTileDeck] = useMultiplayerState('tileDeck', [])
+    const [newTileArray, setNewTileArray] = useMultiplayerState('newTileArray', [])
     // const [playerTile, setPlayerTile] = useMultiplayerState('playerTile', null)
     // const [grid, setGrid] = useMultiplayerState('grid', [])
     // const [gridSpaces, setGridSpaces] = useMultiplayerState('gridSpaces', [])
+
+    const [boardGameMatrix, setBoardGameMatrix] = useMultiplayerState('boardGameMatrix', [
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [tileData], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+        [[], [], [], [], [], [], [], [], [], [], []],
+    ])
 
 
     // Create platers and sort them so all players have same order of players
@@ -194,7 +211,11 @@ export const GameEngineProvider = ({ children }) => {
         playerTurn,
         tileDeck,
         players,
-        phaseEnd
+        phaseEnd,
+        boardGameMatrix,
+        setBoardGameMatrix,
+        newTileArray,
+        setNewTileArray
     }
     
     return (

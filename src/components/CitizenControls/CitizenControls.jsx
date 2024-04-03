@@ -17,8 +17,6 @@ function CitizenControls({ newTileData, setCitizenPosition, tileRotation,setNewT
         tileArr.push(tileObj[n]);
       }
       setPlacementOptions(tileArr);
-      console.log(newTileData.is_monestary);
-      console.log(newTileData);
       if (newTileData.is_monestary === true) {
         setIsMonastery(true);
       }
