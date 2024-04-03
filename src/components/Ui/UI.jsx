@@ -110,7 +110,7 @@ export const UI = (
                 </Canvas>
             </div>
             <PopUp/>
-            {turnPhase === 'Place Citizen' ?  <CitizenControls newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation}/> : null }
+            {turnPhase === 'Place Citizen' ?  <CitizenControls newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData}/> : null }
             {player !== me ? 
                 null
             :
