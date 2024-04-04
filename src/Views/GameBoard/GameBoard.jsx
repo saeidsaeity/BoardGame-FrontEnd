@@ -100,8 +100,8 @@ const GameBoard = () => {
     // console.log(renderTileArr, 'RENDER TILE ARR');
     console.log(boardGameMatrix, 'MATRIX');
     // setting rendered tile array
-
-
+    console.log(newTileData);
+    setRenderTileArr([])
     boardGameMatrix.forEach((row) => {
       row.forEach((col) => {
         // A tile exists in Matrix cell
@@ -116,11 +116,11 @@ const GameBoard = () => {
             getRenderTileMesh(
               col[0].tile_type,
               position,
-              (col[0].orientation * Math.PI) / 180
+              ((col[0].orientation * Math.PI) / 180)
             )
               .then((tileMesh) => {
-                const gameEngineNewTileArr = [...newTileArray, tileMesh]
-                setNewTileArray(gameEngineNewTileArr)
+                // const gameEngineNewTileArr = [...newTileArray, tileMesh]
+                // setNewTileArray(gameEngineNewTileArr)
                 setRenderTileArr((currArray) => {
                   console.log(currArray, "CURRENT ARRAY");
                   return [...currArray, tileMesh];
@@ -245,9 +245,7 @@ const GameBoard = () => {
               </RigidBody>
             ) : null}
 
-            {renderTileArr.map((tile, index) => {
-              return <group key={index}>{tile}</group>;
-            })}
+            {renderTileArr}
 
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>

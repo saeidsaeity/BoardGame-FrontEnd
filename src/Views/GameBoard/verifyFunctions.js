@@ -24,12 +24,15 @@ Functions:
 
 export const assetInDirection = (tile, directionNum) => {
     // convert the orientation into a number from 0-3
-    const turn = tile.orientation
+    console.log(tile.orientation,'tile orientation 2222');
+    const turn = tile.orientation/90
     console.log(turn, "turn in verify");
     // orientation minused to get asset direction
+   
     let assetDir = (directionNum - turn)
+    console.log(assetDir,'bef');
     if (assetDir < 0) {assetDir += 4}
-
+    console.log(assetDir,'after');
 
     // return asset in that direction
     return tile.assets[assetDir]
@@ -95,6 +98,8 @@ export const checkSide = (tile, directionNum, matrix) => {
     const sideDirectionNum = (directionNum + 2) % 4
     const sideTileAsset = assetInDirection(sideTile, sideDirectionNum)
     // return true if assets are the same:
+    console.log(tileAsset,'tileAsset');
+    console.log(sideTileAsset,'sideTileAsset')
     return tileAsset.asset === sideTileAsset.asset
 }
 

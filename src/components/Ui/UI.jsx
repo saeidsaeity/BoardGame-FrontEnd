@@ -126,10 +126,11 @@ export const UI = (
                                     }
                                     return currRotation - Math.PI / 2;
                                 });
-                                newTileData.orientation = (tileRotation - Math.PI / 2)*-1*(180 / Math.PI)%360;
+        
                                 console.log(tileRotation, "tileRotation");
+                                newTileData.orientation = (tileRotation-Math.PI / 2)*-1*(180 / Math.PI)%360;
                                 console.log(newTileData.orientation, "newTileData.orientation");
-                                newTileData.orientation /= 90
+                             
                                 setNewTileMesh((currTile) => {
                                     if (currTile === undefined) {
                                         return currTile;
@@ -172,6 +173,7 @@ export const UI = (
                                     const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
                                     newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
                                     setBoardGameMatrix(newerBoard)
+                                    setTileRotation(0)
                                     phaseEnd()
                                 } else {
                                     console.log("tile not been placed");
