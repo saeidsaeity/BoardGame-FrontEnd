@@ -1,9 +1,9 @@
 import { MdAccountBox } from "react-icons/md";
 import { Link } from "react-router-dom";
-import "./Header.css"
+import styles from './Header.module.css';
 function Header(params) {
     
-    return(<div  class="card card-container">
+    return(<div  class={styles.card}>
            <h2>Log in:</h2>
         <Link to='/login'>
         <MdAccountBox size={70}  />

@@ -32,8 +32,9 @@ h2 {
  
 }
 .fullpage{
+  overflow-x: hidden;
   color:gold;
-  width: 100vw; 
+  width: 100%; 
   height: 100vh;
   text-shadow: 
     -1px -1px 0 #000,  
@@ -43,6 +44,28 @@ h2 {
   
 }
 
+.pageWrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.topBanner{
+  height: 8rem;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.introWrapper{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  height: 20rem;
+}
 
 .backgroundimage {
   position: fixed;
@@ -65,7 +88,11 @@ h2 {
 
   .scrollableTextContainer {
     overflow: hidden;
-    width: 100%;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
   .scrollableText {
@@ -129,6 +156,7 @@ h2 {
     -1px 1px 0 #000,
     1px 1px 0 #000;
   }
+  
   h2 {
     font-size: 10em; 
     color: goldenrod;

@@ -1,12 +1,16 @@
 .container {
-  color: gold;
+  color: white;
     font-size: 24px;
     line-height: 2;
-    
+    background-color: black;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   h3{
     font-size:  24px !important; 
-    color: goldenrod;
+    color: white;
     text-align: center;
     
   }

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Header from '../Header';
+import Header from '../../components/Header/Header';
 import useSound from 'use-sound';
 import opening from '/GameSound1.mp3';
 import { MdOutlineMusicOff } from 'react-icons/md';
@@ -76,30 +76,40 @@ function Home() {
   }
   return (
     <div className={styles.fullpage}>
-      <div className={styles.backgroundimage} />
-      <Header />
-      <div className={styles.title}>
-      <h1 className={styles.heading}>Welcome to City Zen</h1>
-      </div>
-      <div className={styles.scrollableTextContainer}>
-        <button className={styles.button} onClick={hostGameHandler}>
-          HOST
-        </button>
-        {/* <Link className={styles.linkButton} to="/join">
-          Join game
-        </Link> */}
-        <br></br>
+      <div className={styles.pageWrapper}>
 
-        <h2>About:</h2>
-        <p ref={aboutRef} className={styles.about}>
-          {aboutText}{' '}
-        </p>
-        <Rules />
+        <div className={styles.topBanner}>
+          <button className={styles.music} onClick={toggleMute}>
+            {muted ? <MdOutlineMusicOff /> : <SlMusicTone />}
+          </button>
+          <h1 className={styles.heading}>Welcome to City Zen</h1>
+          <Header />
+        </div>
+        <div className={styles.introWrapper}>
+          <h3>Invite your friends</h3>
+          <h3>Build your empire!</h3>
+          <button className={styles.button} onClick={hostGameHandler}>
+            Host a game!
+          </button>
+        </div>
+        <div className={styles.scrollableTextContainer}>
+          {/* <Link className={styles.linkButton} to="/join">
+            Join game
+          </Link> */}
+          <br></br>
+
+          <h2>About:</h2>
+          <p ref={aboutRef} className={styles.about}>
+            {aboutText}{' '}
+          </p>
+          <Rules />
+        </div>
         <ProjectDescription />
       </div>
-      <button className={styles.music} onClick={toggleMute}>
-        {muted ? <MdOutlineMusicOff /> : <SlMusicTone />}
-      </button>
+      
+      <div className={styles.backgroundimage} />
+
+      
       <audio autoPlay={!muted}>
         <source src="/GameSound1.mp3" type="audio/mpeg" />
       </audio>

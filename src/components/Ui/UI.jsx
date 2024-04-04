@@ -1,6 +1,6 @@
 import { myPlayer } from "playroomkit";
 import { useEffect, useState } from "react";
-import { Center, OrbitControls, PresentationControls, SpotLight } from "@react-three/drei";
+import { Center, OrbitControls, PresentationControls } from "@react-three/drei";
 
 import { Canvas } from "@react-three/fiber";
 import { CitizenRed } from "../../assets/citizens/CitizenRed";
