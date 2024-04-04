@@ -19,7 +19,7 @@ export const tileData = {
     assets: {
         0: {
             asset: 'road',
-            connects: ['south']
+            connects: [2]
         },
         1: {
             asset: 'city',
@@ -27,7 +27,7 @@ export const tileData = {
         },
         2: {
             asset: 'road',
-            connects: ['north']
+            connects: [1]
         },
         3: {}
     }

@@ -112,7 +112,6 @@ const GameBoard = () => {
     setNewTileArray,
   } = useGameEngine();
 
-  console.log(newTileArray, "newTileArray");
   const [citizenArray, setCitizenArray] = useState([]);
   const[releaseCitizen,setReleaseCitizen]=useState(true)
   useEffect(() => {

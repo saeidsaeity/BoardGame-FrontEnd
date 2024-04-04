@@ -48,6 +48,8 @@ export const UI = (
         gameTileCount
     } = useGameEngine()
 
+    console.log(players)
+
     // console.log(newTileData, "newTileData");
 
 
@@ -75,12 +77,22 @@ export const UI = (
         }
     }, [newTileType])
 
+    const playerScores = () => {
+        let playerscore = player.state.score || 0
+        return players.map((player) => {
+            return <div>
+                {player.state.profile.name}: {player.state.score}
+            </div>
+        })
+    }
+
 
     return (
         <div className={styles.UIWrapper}>
             <div className={styles.turnInfo}>
                 <h2>Turn: {turn} | Player: {player.state.profile.name} | Phase: {turnPhase}</h2>
             </div>
+            {playerScores()}
             <div className={styles.canvasWrapper}>
                 <Canvas camera={{ fov: 40, position: [0, 8, 8] }}>
                     <ambientLight intensity={1}/>

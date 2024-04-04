@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./CitizenControls.module.css";
 import { useGameEngine } from "../../Context/useGameEngine";
+import { checkTileCompletes } from "../../Views/GameBoard/verifyFunctions";
 
 function CitizenControls({
   newTileData,
@@ -132,15 +133,29 @@ function CitizenControls({
               changeTileData.citizen.is_citizen = true;
               changeTileData.citizen.asset = currentAsset;
               changeTileData.citizen.location = currentCompass;
+              changeTileData.citizen.player = playerTurn;
               const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix));
               newerBoard[newTileData.grid_id.row][newTileData.grid_id.column] =
                 [changeTileData];
               setBoardGameMatrix(newerBoard);
+              const scoreObj = checkTileCompletes(changeTileData, newerBoard)
+              // {}
+              // {0: 4}
+              // {0: 3, 1: 3}
+              for (let i = 0; i < players.length; i++) {
+                console.log(i)
+                if (scoreObj[i]) {
+                  console.log(players[i])
+                  const playerScore = players[i].state.score
+                  console.log(playerScore)
+                  console.log(playerScore + scoreObj[i])
+                  players[i].setState('score', playerScore + scoreObj[i], true)
+                }
+              }
               return changeTileData;
             });
 
             setShowCitizen(false);
-
             phaseEnd();
           }
         }}

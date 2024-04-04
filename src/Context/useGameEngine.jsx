@@ -122,6 +122,7 @@ export const GameEngineProvider = ({ children }) => {
 
             // give player a tile
             // givePlayerTile()
+            console.log(players)
         }
     }
     
