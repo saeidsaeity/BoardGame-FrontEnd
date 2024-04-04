@@ -6,6 +6,7 @@
     top: 0;
     z-index: 10;
     display: flex;
+    justify-content: space-between;
 }
 
 .canvasWrapper{
@@ -14,7 +15,7 @@
     position: absolute;
     top: 0;
     right: 1rem;
-    animation: canvasAnimation 5s 1 ease-in;
+    animation: canvasAnimation 3s 1 ease-in;
 }
 
 .nextPhase{
@@ -30,17 +31,41 @@
 
 .turnInfo{
     margin: 3rem 2rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 0.6rem;
+    padding: 1rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+
 }
+
+.turnInfo h2{
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    padding: 0;
+    max-width: unset;
+    text-align: left;
+    opacity: 80%;
+}
+
 
 .buttonWrapper{
     display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    bottom: 1rem;
-    right: 1rem;
+    bottom: 3rem;
+    right: 2rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 8rem;
+    pad: 2rem;
+    border-radius: 0.6rem;
 }
 
 .button {
     z-index: 1;
+    height: 6rem;
     /* position: fixed;
     bottom:10px;
     right: 10px; */

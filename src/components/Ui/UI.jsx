@@ -10,6 +10,7 @@ import CitizenControls from "../CitizenControls/CitizenControls";
 
 import PopUp from "../popUpRules";
 import styles from './UI.module.css'
+import TileControls from "../TileControls/TileControls";
 
 export const UI = (
     { 
@@ -51,10 +52,6 @@ export const UI = (
         scoreBoard
     } = useGameEngine()
 
-    console.log(players)
-
-    // console.log(newTileData, "newTileData");
-
 
     // const currentPlayer = players[playerTurn]
     const me = myPlayer()
@@ -81,7 +78,6 @@ export const UI = (
     }, [newTileType])
 
     const playerScores = () => {
-        console.log(scoreBoard)
         return scoreBoard.map((playerScore, index) => {
             return <div>
                 {players[index].state.profile.name}: {playerScore}
@@ -92,7 +88,10 @@ export const UI = (
     return (
         <div className={styles.UIWrapper}>
             <div className={styles.turnInfo}>
-                <h2>Turn: {turn} | Player: {player.state.profile.name} | Phase: {turnPhase}</h2>
+                <h2 style={{color: me.state.profile.color}}>{me.state.profile.name}</h2>
+                <h2>{me.id === player.id ? `It's your turn!` : `${player.state.profile.name}'s turn...` }</h2>
+                {me.id === player.id && turnPhase === 'Place Tile' ? <h2>Place a tile!</h2> : null}
+                {me.id === player.id && turnPhase === 'Place Citizen' ? <h2>Place a citizen / End turn</h2> : null}
             </div>
             {playerScores()}
             <div className={styles.canvasWrapper}>
@@ -132,72 +131,26 @@ export const UI = (
                 { turnPhase === 'Place Citizen' ? 
                     null
                     :
-                    <>
-                        <button 
-                            onClick={() => {
-                                setTileRotation((currRotation) => {
-                                    if(currRotation <= -2*Math.PI){
-                                        return currRotation + 1.5 * Math.PI
-                                    }
-                                    return currRotation - Math.PI / 2;
-                                });
-        
-                                console.log(tileRotation, "tileRotation");
-                                newTileData.orientation = (tileRotation-Math.PI / 2)*-1*(180 / Math.PI)%360;
-                                console.log(newTileData.orientation, "newTileData.orientation");
-                             
-                                setNewTileMesh((currTile) => {
-                                    if (currTile === undefined) {
-                                        return currTile;
-                                    }
-                                    const updatedTile = {
-                                        ...currTile,
-                                        props: {
-                                        ...currTile.props,
-                                        rotation: [0, tileRotation - Math.PI / 2, 0],
-                                        },
-                                    };
-                                    return updatedTile;
-                                });
-                            }}
-                            className={styles.button}
-                        >
-                            Rotate
-                        </button>
-                        <button 
-                            onClick={async () => {
-                                setReleaseTile(false)
-                                setShowTile(false)
-                                const randomTile = await randomTileGenerator(gameTileCount);
-                                setNewTileData(randomTile);
-                                drawEventHandler(randomTile.tile_type)
-                                setNewTileType(randomTile.tile_type)
-                                setShowTile(true)
-                                setReplaceTile(true)
-                            }}
-                            className={styles.button}
-                        >
-                            {showTile ? 'Take a new tile' : 'Get Tile'}
-                        </button>
-                        <button 
-                            className={styles.button}
-                            onClick={() => {
-                                console.log(newTileMesh, "NEW TILE MESH");
-                                if (checkTilePlacement(newTileData, boardGameMatrix)) {
-                                    setReplaceTile(false)
-                                    const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
-                                    newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
-                                    setBoardGameMatrix(newerBoard)
-                                    setTileRotation(0)
-                                    phaseEnd()
-                                } else {
-                                    console.log("tile not been placed");
-                                }
-                            }}
-                        >
-                            Confirm
-                        </button>
-                    </>
+                    <TileControls
+                        newTileData={newTileData}
+                        tileRotation={tileRotation}
+                        setTileRotation={setTileRotation}
+                        setReleaseTile={setReleaseTile}
+                        showTile={showTile}
+                        setShowTile={setShowTile}
+                        setNewTileData={setNewTileData}
+                        drawEventHandler={drawEventHandler}
+                        setNewTileType={setNewTileType}
+                        setReplaceTile={setReplaceTile}
+                        gameTileCount={gameTileCount}
+                        boardGameMatrix={boardGameMatrix}
+                        setBoardGameMatrix={setBoardGameMatrix}
+                        phaseEnd={phaseEnd}
+                        randomTileGenerator={randomTileGenerator}
+                        checkTilePlacement={checkTilePlacement}
+                        newTile2DPosition={newTile2DPosition}
+                        setNewTileMesh={setNewTileMesh}
+                    />
                 }
             </div>
             }

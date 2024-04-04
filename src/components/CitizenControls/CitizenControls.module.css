@@ -1,21 +1,31 @@
 .CitizenControls{
-    background-color: black;
-    opacity: 50%;
+    background-color: rgba(0, 0, 0, 0.4);
     color: white;
     position: fixed;
     right: 0;
     top: 50vh;
     width: 12rem;
+    border-radius: 0.6rem;
 }
 
-h2{
+.CitizenControls h2{
     font-size: 1rem;
     text-align: center;
+    width: 100%;
+    font-size: 1rem;
+    max-width: unset;
+    opacity: 70%;
 }
 
 .citizenOption{
     display: flex;
     justify-content: space-evenly;
+    width: 100%;
+}
+
+.citizenOption h3{
+    color: black;
+    border-radius: 0.6rem;
 }
 
 .citizenOption:hover{

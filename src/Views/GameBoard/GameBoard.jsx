@@ -1,23 +1,22 @@
-import { useEffect, useState } from "react";
-import { Cloud, Clouds, OrbitControls, Sky, Stars } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { Physics, RigidBody } from "@react-three/rapier";
-import { useGameEngine } from "../../Context/useGameEngine.jsx";
+import { useEffect, useState } from 'react';
+import { Cloud, Clouds, OrbitControls, Sky, Stars } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { Physics, RigidBody } from '@react-three/rapier';
+import { useGameEngine } from '../../Context/useGameEngine.jsx';
 
 // Components
-import { UI } from "../../components/Ui/UI.jsx";
-import { GameBoardCells } from "../../components/GameBoardCells/GameBoardCells.jsx";
-import { CitizenRed } from "../../assets/citizens/CitizenRed.jsx";
+import { UI } from '../../components/Ui/UI.jsx';
+import { GameBoardCells } from '../../components/GameBoardCells/GameBoardCells.jsx';
+import { CitizenRed } from '../../assets/citizens/CitizenRed.jsx';
 // 3D components
 
-import TileD from "../../assets/tiles/tileD.jsx";
+import TileD from '../../assets/tiles/tileD.jsx';
 
 // Functions
-import { checkTilePlacement } from "./verifyFunctions.js";
-import { randomTileGenerator } from "../../../utils.js";
+import { checkTilePlacement } from './verifyFunctions.js';
+import { randomTileGenerator } from '../../../utils.js';
 // styling
-import styles from "./GameBoard.module.css";
-import { render } from "react-dom";
+import styles from './GameBoard.module.css';
 
 const GameBoard = () => {
   // TILE
@@ -113,20 +112,17 @@ const GameBoard = () => {
   } = useGameEngine();
 
   const [citizenArray, setCitizenArray] = useState([]);
-  const[releaseCitizen,setReleaseCitizen]=useState(true)
+  const [releaseCitizen, setReleaseCitizen] = useState(true);
   useEffect(() => {
-    // console.log(renderTileArr, 'RENDER TILE ARR');
-    console.log(boardGameMatrix, "MATRIX");
     // setting rendered tile array
-    console.log(newTileData);
-    setReleaseCitizen(false)
+    setReleaseCitizen(false);
     setCitizenArray([]);
     setRenderTileArr([]);
     boardGameMatrix.forEach((row) => {
       row.forEach((col) => {
         // A tile exists in Matrix cell
         if (col.length > 0) {
-          // only render non-starting tile (which has an undefined id)
+          // only render non-starting tile
           if (col[0]._id) {
             const position = [
               (col[0].grid_id.row - 5) * 2,
@@ -141,23 +137,18 @@ const GameBoard = () => {
                 (col[0].grid_id.column - 5) * 2,
               ]).then((newcitizen) => {
                 setCitizenArray((currArray) => {
-                  console.log(currArray, "citzen array currently now");
                   return [...currArray, newcitizen];
                 });
-                setReleaseCitizen(true)
+                setReleaseCitizen(true);
               });
             }
-
             getRenderTileMesh(
               col[0].tile_type,
               position,
               (col[0].orientation * Math.PI) / 180
             )
               .then((tileMesh) => {
-                // const gameEngineNewTileArr = [...newTileArray, tileMesh]
-                // setNewTileArray(gameEngineNewTileArr)
                 setRenderTileArr((currArray) => {
-                  console.log(currArray, "CURRENT ARRAY");
                   return [...currArray, tileMesh];
                 });
               })
@@ -209,17 +200,6 @@ const GameBoard = () => {
               mieDirectionalG={0.01}
               mieCoefficient={0.005}
             />
-            <Clouds>
-              <Cloud position={[4, 20, -6]} scale={0.8} />
-              <Cloud position={[-2, 18, 12]} scale={0.5} />
-              <Cloud position={[4, 24, 19]} scale={0.9} />
-              <Cloud position={[-6, 20, -32]} scale={1.5} />
-              <Cloud position={[0, 43, -16]} scale={1.111} />
-              <Cloud position={[34, 24, 0]} scale={1} />
-              <Cloud position={[-20, 20, 4]} scale={1.2} />
-              <Cloud position={[10, 18, 40]} scale={1} />
-              <Cloud position={[20, 24, -23]} scale={1.64} />
-            </Clouds>
 
             <Stars />
 
@@ -265,7 +245,7 @@ const GameBoard = () => {
 
             {releaseTile && replaceTile ? newTileMesh : null}
 
-            {turnPhase === "Place Citizen" &&
+            {turnPhase === 'Place Citizen' &&
             citizenPosition.length > 0 &&
             showCitizen ? (
               <RigidBody
@@ -284,10 +264,10 @@ const GameBoard = () => {
             ) : null}
 
             {renderTileArr}
-            {releaseCitizen? citizenArray : null}
+            {releaseCitizen ? citizenArray : null}
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>
-                <boxGeometry args={[25, 0.5, 25]} />
+                <boxGeometry args={[22, 0.5, 22]} />
                 <meshStandardMaterial color="#8f4111" />
               </mesh>
             </RigidBody>
