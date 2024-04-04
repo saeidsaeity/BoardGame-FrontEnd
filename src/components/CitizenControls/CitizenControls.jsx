@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import styles from "./CitizenControls.module.css";
 import { useGameEngine } from "../../Context/useGameEngine";
 
-function CitizenControls({ newTileData, setCitizenPosition, tileRotation, setNewTileData }) {
+function CitizenControls({
+  newTileData,
+  setCitizenPosition,
+  tileRotation,
+  setNewTileData,
+  setShowCitizen,
+}) {
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
 
@@ -23,10 +29,18 @@ function CitizenControls({ newTileData, setCitizenPosition, tileRotation, setNew
     }
   }, [newTileData]);
 
-  const { turn, turnPhase, playerTurn, timer, players, phaseEnd } =
-    useGameEngine();
-  const[currentAsset,setCurrentAsset]=useState([])
-  const[currentCompass,setCurrentCompass]=useState([])
+  const {
+    turn,
+    turnPhase,
+    playerTurn,
+    timer,
+    players,
+    phaseEnd,
+    boardGameMatrix,
+    setBoardGameMatrix,
+  } = useGameEngine();
+  const [currentAsset, setCurrentAsset] = useState([]);
+  const [currentCompass, setCurrentCompass] = useState([]);
   return (
     <div className={styles.CitizenControls}>
       <h2>Select citizen location:</h2>
@@ -42,11 +56,11 @@ function CitizenControls({ newTileData, setCitizenPosition, tileRotation, setNew
               key={index}
               className={styles.citizenOption}
               onClick={() => {
-
+                setShowCitizen(true);
                 // console.log(compass, "compass");
                 // console.log(tileRotation, "tileRotation");
-                setCurrentAsset(asset.asset)
-                setCurrentCompass(index)
+                setCurrentAsset(asset.asset);
+                setCurrentCompass(index);
                 let xCoord = newTileData.grid_id.row - 5;
                 let yCoord = newTileData.grid_id.column - 5;
                 const integerTileRotation =
@@ -91,33 +105,46 @@ function CitizenControls({ newTileData, setCitizenPosition, tileRotation, setNew
           );
         }
       })}
-      {isMonastery === true ?
-       <button className={styles.citizenButton} onClick={()=> {  
-        let xCoord = newTileData.grid_id.row - 5;
-        let yCoord = newTileData.grid_id.column - 5;
-        xCoord -= adjustment;
-        yCoord -= adjustment;
-        setCitizenPosition([xCoord * 2, 4, yCoord * 2]);
-        }}>Monastery</button> : null}
-      <button className={styles.citizenButton} onClick={() => {
-        // console.log(newTileData);
-        // console.log(currentAsset)
-        // console.log(currentCompass)
-        if(currentAsset && currentCompass + 1){
-        setNewTileData((currTileData)=>{
-            const changeTileData = {...currTileData}
-            changeTileData.citizen.is_citizen=true
-            changeTileData.citizen.asset=currentAsset
-            changeTileData.citizen.location=currentCompass
-            return changeTileData
-            
+      {isMonastery === true ? (
+        <button
+          className={styles.citizenButton}
+          onClick={() => {
+            setShowCitizen(true);
+            let xCoord = newTileData.grid_id.row - 5;
+            let yCoord = newTileData.grid_id.column - 5;
+            xCoord -= adjustment;
+            yCoord -= adjustment;
+            setCitizenPosition([xCoord * 2, 4, yCoord * 2]);
+          }}
+        >
+          Monastery
+        </button>
+      ) : null}
+      <button
+        className={styles.citizenButton}
+        onClick={() => {
+          // console.log(newTileData);
+          // console.log(currentAsset)
+          // console.log(currentCompass)
+          if (currentAsset && currentCompass + 1) {
+            setNewTileData((currTileData) => {
+              const changeTileData = { ...currTileData };
+              changeTileData.citizen.is_citizen = true;
+              changeTileData.citizen.asset = currentAsset;
+              changeTileData.citizen.location = currentCompass;
+              const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix));
+              newerBoard[newTileData.grid_id.row][newTileData.grid_id.column] =
+                [changeTileData];
+              setBoardGameMatrix(newerBoard);
+              return changeTileData;
+            });
 
-        })
-        phaseEnd()
-    }
-       
-    
-      }}>
+            setShowCitizen(false);
+
+            phaseEnd();
+          }
+        }}
+      >
         Confirm Citizen
       </button>
       <button

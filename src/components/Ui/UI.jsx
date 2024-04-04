@@ -27,7 +27,8 @@ export const UI = (
         setReplaceTile,
         setCitizenPosition,
         setNewTileMesh,
-        newTileMesh
+        newTileMesh,
+        setShowCitizen
 
     }) => {
     const [ newPlayerTile, setNewPlayerTile ] = useState()
@@ -109,7 +110,7 @@ export const UI = (
                 </Canvas>
             </div>
             <PopUp/>
-            {turnPhase === 'Place Citizen' ?  <CitizenControls newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData}/> : null }
+            {turnPhase === 'Place Citizen' ?  <CitizenControls setShowCitizen={setShowCitizen} newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData}/> : null }
             {player !== me ? 
                 null
                 :

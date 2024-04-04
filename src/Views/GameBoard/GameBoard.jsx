@@ -1,22 +1,23 @@
-import { useEffect, useState } from 'react';
-import { Cloud, Clouds, OrbitControls, Sky, Stars } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import { Physics, RigidBody } from '@react-three/rapier';
-import { useGameEngine } from '../../Context/useGameEngine.jsx';
+import { useEffect, useState } from "react";
+import { Cloud, Clouds, OrbitControls, Sky, Stars } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { Physics, RigidBody } from "@react-three/rapier";
+import { useGameEngine } from "../../Context/useGameEngine.jsx";
 
 // Components
-import { UI } from '../../components/Ui/UI.jsx';
-import { GameBoardCells } from '../../components/GameBoardCells/GameBoardCells.jsx';
-import { CitizenRed } from '../../assets/citizens/CitizenRed.jsx';
+import { UI } from "../../components/Ui/UI.jsx";
+import { GameBoardCells } from "../../components/GameBoardCells/GameBoardCells.jsx";
+import { CitizenRed } from "../../assets/citizens/CitizenRed.jsx";
 // 3D components
 
 import TileD from "../../assets/tiles/tileD.jsx";
 
 // Functions
-import { checkTilePlacement } from './verifyFunctions.js';
-import { randomTileGenerator } from '../../../utils.js';
+import { checkTilePlacement } from "./verifyFunctions.js";
+import { randomTileGenerator } from "../../../utils.js";
 // styling
-import styles from './GameBoard.module.css';
+import styles from "./GameBoard.module.css";
+import { render } from "react-dom";
 
 const GameBoard = () => {
   // TILE
@@ -41,8 +42,7 @@ const GameBoard = () => {
   const [citizenPosition, setCitizenPosition] = useState([]);
   const [isCitizenPhase, setIsCitizenPhase] = useState(false);
   const [replaceTile, setReplaceTile] = useState(true);
-
-
+  const [showCitizen, setShowCitizen] = useState(true);
   const drawEventHandler = async (tileType) => {
     const TileComponent = await import(
       `../../assets/tiles/tile${tileType}.jsx`
@@ -74,13 +74,31 @@ const GameBoard = () => {
           rotation={[0, rotation, 0]}
           scale={tileScale}
         >
-          <TileComponent.default  />
+          <TileComponent.default />
         </RigidBody>
       );
       return renderNewTile;
     }
   };
-
+  const renderCitizen = async (position, colour) => {
+    const citizenComp = (
+      <RigidBody
+        key={position}
+        gravityScale={0.5}
+        position={position}
+        scale={0.095}
+        friction={100}
+        mass={1000}
+        rotation={[0, 0, 0]}
+        canSleep={true}
+        lockRotations={true}
+        restitution={0}
+      >
+        <CitizenRed />
+      </RigidBody>
+    );
+    return citizenComp;
+  };
   const {
     turn,
     turnPhase,
@@ -95,28 +113,46 @@ const GameBoard = () => {
   } = useGameEngine();
 
   console.log(newTileArray, "newTileArray");
-
+  const [citizenArray, setCitizenArray] = useState([]);
+  const[releaseCitizen,setReleaseCitizen]=useState(true)
   useEffect(() => {
     // console.log(renderTileArr, 'RENDER TILE ARR');
-    console.log(boardGameMatrix, 'MATRIX');
+    console.log(boardGameMatrix, "MATRIX");
     // setting rendered tile array
     console.log(newTileData);
-    setRenderTileArr([])
+    setReleaseCitizen(false)
+    setCitizenArray([]);
+    setRenderTileArr([]);
     boardGameMatrix.forEach((row) => {
       row.forEach((col) => {
         // A tile exists in Matrix cell
         if (col.length > 0) {
           // only render non-starting tile (which has an undefined id)
-          if(col[0]._id){
+          if (col[0]._id) {
             const position = [
               (col[0].grid_id.row - 5) * 2,
               0,
               (col[0].grid_id.column - 5) * 2,
             ];
+
+            if (col[0].citizen.is_citizen) {
+              renderCitizen([
+                (col[0].grid_id.row - 5) * 2,
+                4,
+                (col[0].grid_id.column - 5) * 2,
+              ]).then((newcitizen) => {
+                setCitizenArray((currArray) => {
+                  console.log(currArray, "citzen array currently now");
+                  return [...currArray, newcitizen];
+                });
+                setReleaseCitizen(true)
+              });
+            }
+
             getRenderTileMesh(
               col[0].tile_type,
               position,
-              ((col[0].orientation * Math.PI) / 180)
+              (col[0].orientation * Math.PI) / 180
             )
               .then((tileMesh) => {
                 // const gameEngineNewTileArr = [...newTileArray, tileMesh]
@@ -130,11 +166,10 @@ const GameBoard = () => {
                 console.log(err);
               });
           }
-          }
+        }
       });
     });
   }, [boardGameMatrix]);
-
 
   // RENDERING STARTS HERE //
   return (
@@ -157,6 +192,7 @@ const GameBoard = () => {
         replaceTile={replaceTile}
         setReplaceTile={setReplaceTile}
         setCitizenPosition={setCitizenPosition}
+        setShowCitizen={setShowCitizen}
       />
 
       <div className={styles.gameBoard}>
@@ -203,16 +239,16 @@ const GameBoard = () => {
               rotateSpeed={0.6}
               target={[0, 1, 0]}
             />
-            
+
             <RigidBody>
-              <TileD position={[0, 4, 0]} scale={tileScale} 
+              <TileD
+                position={[0, 4, 0]}
+                scale={tileScale}
                 restitution={0}
                 enabledTranslations={[false, true, false]}
                 enabledRotations={[false, false, false]}
               />
             </RigidBody>
-
-            
 
             <GameBoardCells
               boardGameMatrix={boardGameMatrix}
@@ -229,7 +265,9 @@ const GameBoard = () => {
 
             {releaseTile && replaceTile ? newTileMesh : null}
 
-            {turnPhase === 'Place Citizen' && citizenPosition.length > 0 ? (
+            {turnPhase === "Place Citizen" &&
+            citizenPosition.length > 0 &&
+            showCitizen ? (
               <RigidBody
                 gravityScale={0.5}
                 position={citizenPosition}
@@ -246,7 +284,7 @@ const GameBoard = () => {
             ) : null}
 
             {renderTileArr}
-
+            {releaseCitizen? citizenArray : null}
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>
                 <boxGeometry args={[25, 0.5, 25]} />
