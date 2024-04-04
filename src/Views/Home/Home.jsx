@@ -12,12 +12,27 @@ import aboutText from './aboutData';
 import { gsap } from 'gsap';
 import Rules from './Rules';
 import ProjectDescription from './ProjectDescription';
+import { Canvas } from '@react-three/fiber';
+import { Physics, RigidBody } from '@react-three/rapier';
+import { OrbitControls, Sky, Stars, Text3D } from '@react-three/drei';
+import { CitizenRed } from '../../assets/citizens/CitizenRed';
+import { CitizenBlue } from '../../assets/citizens/CitizenBlue';
+import { CitizenGreen } from '../../assets/citizens/CitizenGreen';
+import { CitizenYellow } from '../../assets/citizens/CitizenYellow';
+import { GameBoardCells } from '../../components/GameBoardCells/GameBoardCells';
+import TileD from '../../assets/tiles/tileD';
+import TileF from '../../assets/tiles/tileF';
+import TileK from '../../assets/tiles/tileK';
+import TileX from '../../assets/tiles/tileX';
 gsap.registerPlugin(ScrollTrigger);
 function Home() {
   const navigate = useNavigate();
   const [playSound] = useSound('/GameSound1.mp3');
   const [muted, setMuted] = useState(true);
   const aboutRef = useRef(null);
+  const [sunPosition, setSunPosition] = useState([-50, 0, -250]);
+  const [ citizenCount, setCitizenCount ] = useState(new Array(60).fill(0))
+
 
   const toggleMute = () => {
     setMuted(!muted);
@@ -68,23 +83,168 @@ function Home() {
   }, []);
 
   function hostGameHandler() {
-    console.log('enter hostGameHandler');
+    // console.log('enter hostGameHandler');
     navigate('/lobby');
     // insertCoin().then(() => {
     //   navigate("/gameboard");
     // });
   }
+
+  function generateRandom(min = -5, max = -5) {
+
+    let difference = max - min;
+
+    let rand = Math.random();
+
+    rand = Math.floor( rand * difference);
+
+    rand = rand + min;
+
+    return rand;
+}
+
   return (
     <div className={styles.fullpage}>
       <div className={styles.pageWrapper}>
+      
+      <div className={styles.topBanner}>
+        <button className={styles.music} onClick={toggleMute}>
+          {muted ? <MdOutlineMusicOff /> : <SlMusicTone />}
+        </button>
+        <h1 className={styles.heading}>Welcome to City Zen</h1>
+        <Header />
+      </div>
+      <div className={styles.canvasWrapper}>
+        <Canvas shadows camera={{ fov: 80, position: [0, 2, 10] }}>
+            <Physics>
+              <ambientLight intensity={1.5} />
+              <Stars />
+              <Sky
+                sunPosition={sunPosition}
+                distance={50000}
+                inclination={10}
+                azimuth={0.5}
+                turbidity={0.5}
+                rayleigh={10}
+                mieDirectionalG={0.01}
+                mieCoefficient={0.005}
+              />
 
-        <div className={styles.topBanner}>
-          <button className={styles.music} onClick={toggleMute}>
-            {muted ? <MdOutlineMusicOff /> : <SlMusicTone />}
-          </button>
-          <h1 className={styles.heading}>Welcome to City Zen</h1>
-          <Header />
-        </div>
+              <OrbitControls
+                minDistance={2}
+                maxDistance={30}
+                enableRotate={true}
+                enableZoom={false}
+                maxPolarAngle={Math.PI / 2 - 0.1}
+                dampingFactor={0.8}
+                rotateSpeed={0.6}
+                target={[0, 3, 0]}
+              />
+
+              <directionalLight
+              castShadow
+              intensity={3}
+              position={sunPosition}
+              shadow-normalBias={0.03}
+            />
+
+              {citizenCount.map(()=>{
+                return <RigidBody
+                  gravityScale={0.15}
+                  position={[(Math.random() * 10), 20, 0]}
+                  scale={0.095}
+                  friction={0.1}
+                  mass={1}
+                  rotation={[0, 0, 0]}
+                  canSleep={false}
+                  lockRotations={false}
+                  restitution={1}
+                >
+                  <CitizenRed />
+                </RigidBody>
+              })}
+
+              {citizenCount.map(()=>{
+                return <RigidBody
+                  gravityScale={0.1}
+                  position={[(Math.random() * 10), 20, 0]}
+                  scale={0.095}
+                  friction={0.1}
+                  mass={1}
+                  rotation={[0, 0, 0]}
+                  canSleep={false}
+                  lockRotations={false}
+                  restitution={1}
+                >
+                  <CitizenBlue />
+                </RigidBody>
+              })}
+
+              {citizenCount.map(()=>{
+                return <RigidBody
+                  gravityScale={0.15}
+                  position={[(Math.random() * 10), 20, 0]}
+                  scale={0.095}
+                  friction={0.1}
+                  mass={1}
+                  rotation={[0, 0, 0]}
+                  canSleep={false}
+                  lockRotations={false}
+                  restitution={1}
+                >
+                  <CitizenGreen />
+                </RigidBody>
+              })}
+
+              {citizenCount.map(()=>{
+                return <RigidBody
+                  gravityScale={0.1}
+                  position={[(Math.random() * 10), 20, 0]}
+                  scale={0.095}
+                  friction={0.1}
+                  mass={1}
+                  rotation={[0, 0, 0]}
+                  canSleep={false}
+                  lockRotations={false}
+                  restitution={1}
+                >
+                  <CitizenYellow />
+                </RigidBody>
+              })}
+
+                <RigidBody
+                  gravityScale={0.1}
+                  position={[0,0,0]}
+                  scale={0.095}
+                  friction={100}
+                  mass={100}
+                  rotation={[0, 0, 0]}
+                  canSleep={true}
+                  lockRotations={true}
+                  restitution={0}
+                >
+                  <CitizenRed />
+                </RigidBody>
+
+                <TileD position={[0,0,0]} scale={0.92}/>
+                <TileF position={[2,0,0]} scale={0.92}/>
+                <TileK position={[0,0,2]} scale={0.92}/>
+                <TileX position={[0,0,-2]} scale={0.92}/>
+
+                <RigidBody type="fixed">
+                  <mesh receiveShadow position-y={-0.3}>
+                    <boxGeometry args={[22, 0.5, 22]} />
+                    <meshStandardMaterial color="#8f4111" />
+                  </mesh>
+                </RigidBody>
+
+            </Physics>
+        </Canvas>
+      </div>
+
+
+      <div className={styles.imagewrapper}>
+        {/* <div className={styles.backgroundimage} /> */}
         <div className={styles.introWrapper}>
           <h3>Invite your friends</h3>
           <h3>Build your empire!</h3>
@@ -104,10 +264,12 @@ function Home() {
           </p>
           <Rules />
         </div>
+      </div>
+        
         <ProjectDescription />
       </div>
       
-      <div className={styles.backgroundimage} />
+      
 
       
       <audio autoPlay={!muted}>
