@@ -23,6 +23,7 @@ export const GameEngineProvider = ({ children }) => {
     const [playerTurn, setPlayerTurn] = useMultiplayerState('playerTurn', 0)
     const [tileDeck, setTileDeck] = useMultiplayerState('tileDeck', [])
     const [newTileArray, setNewTileArray] = useMultiplayerState('newTileArray', [])
+    const [scoreBoard, setScoreBoard] = useMultiplayerState('scoreBoard', [])
     // const [playerTile, setPlayerTile] = useMultiplayerState('playerTile', null)
     // const [grid, setGrid] = useMultiplayerState('grid', [])
     // const [gridSpaces, setGridSpaces] = useMultiplayerState('gridSpaces', [])
@@ -92,7 +93,7 @@ export const GameEngineProvider = ({ children }) => {
     // startGame resets all game states
     const startGame = () => {
         setTurnPhase('Place Tile', true)
-        // console.log(getState('turnPhase'))
+        console.log('in start game')
         if (isHost()) {
             console.log('StartGame')
             setTimer(TIME_PHASE_TILE_DRAW, true)
@@ -111,6 +112,8 @@ export const GameEngineProvider = ({ children }) => {
             )
 
             // give each player states
+            const scoreBoardArr = []
+            let i = 0
             players.forEach((player) => {
                 console.log(player)
                 console.log('Setting states for player', player.id)
@@ -118,7 +121,10 @@ export const GameEngineProvider = ({ children }) => {
                 player.setState('citizens', 7, true)
                 player.setState('score', 0, true)
                 player.setState('winner', false, true)
+                scoreBoardArr.push(0)
             })
+            console.log('scoreBoardArr: ', scoreBoardArr)
+            setScoreBoard(scoreBoardArr, true)
 
             // give player a tile
             // givePlayerTile()
@@ -128,7 +134,7 @@ export const GameEngineProvider = ({ children }) => {
     
     // invoke startgame upon loading
     useEffect(() => {
-        // console.log('in use effect')
+        console.log('in use effect')
         startGame()
         // console.log(getState('turnPhase'))
     }, [])
@@ -245,7 +251,8 @@ export const GameEngineProvider = ({ children }) => {
         setBoardGameMatrix,
         newTileArray,
         setNewTileArray,
-        gameTileCount
+        gameTileCount,
+        scoreBoard
     }
     
     return (

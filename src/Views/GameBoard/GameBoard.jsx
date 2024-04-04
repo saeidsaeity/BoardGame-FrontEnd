@@ -192,11 +192,12 @@ const GameBoard = () => {
         setReplaceTile={setReplaceTile}
         setCitizenPosition={setCitizenPosition}
         setShowCitizen={setShowCitizen}
+        setCitizenArray={setCitizenArray}
       />
 
       <div className={styles.gameBoard}>
         <Canvas shadows camera={{ fov: 70, position: [0, 8, 14] }}>
-          <Physics debug>
+          <Physics>
             <ambientLight intensity={1.5} />
             <Sky
               sunPosition={sunPosition}

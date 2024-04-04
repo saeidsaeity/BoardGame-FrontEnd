@@ -28,11 +28,13 @@ export const UI = (
         setCitizenPosition,
         setNewTileMesh,
         newTileMesh,
-        setShowCitizen
+        setShowCitizen,
+        setCitizenArray
 
     }) => {
     const [ newPlayerTile, setNewPlayerTile ] = useState()
     const [ showTile, setShowTile ] = useState(false)
+    const [ currScoreBoard, setCurrScoreBoard] = useState([])
     
     const {
         turn,
@@ -45,7 +47,8 @@ export const UI = (
         setBoardGameMatrix,
         setNewTileArray,
         newTileArray,
-        gameTileCount
+        gameTileCount,
+        scoreBoard
     } = useGameEngine()
 
     console.log(players)
@@ -78,14 +81,13 @@ export const UI = (
     }, [newTileType])
 
     const playerScores = () => {
-        let playerscore = player.state.score || 0
-        return players.map((player) => {
+        console.log(scoreBoard)
+        return scoreBoard.map((playerScore, index) => {
             return <div>
-                {player.state.profile.name}: {player.state.score}
+                {players[index].state.profile.name}: {playerScore}
             </div>
         })
     }
-
 
     return (
         <div className={styles.UIWrapper}>
@@ -122,7 +124,7 @@ export const UI = (
                 </Canvas>
             </div>
             <PopUp/>
-            {turnPhase === 'Place Citizen' ?  <CitizenControls setShowCitizen={setShowCitizen} newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData}/> : null }
+            {turnPhase === 'Place Citizen' ?  <CitizenControls setShowCitizen={setShowCitizen} newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData} setCitizenArray={setCitizenArray}/> : null }
             {player !== me ? 
                 null
                 :

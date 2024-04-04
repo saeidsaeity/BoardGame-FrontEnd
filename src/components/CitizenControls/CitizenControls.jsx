@@ -9,6 +9,7 @@ function CitizenControls({
   tileRotation,
   setNewTileData,
   setShowCitizen,
+  setCitizenArray
 }) {
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
@@ -154,7 +155,7 @@ function CitizenControls({
               }
               return changeTileData;
             });
-
+            setCitizenArray([])
             setShowCitizen(false);
             phaseEnd();
           }
