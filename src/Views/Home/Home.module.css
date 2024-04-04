@@ -48,6 +48,7 @@ h2 {
   flex-direction: column;
   justify-content: center;
   padding: 4rem;
+  /* z-index: -2; */
 }
 
 .topBanner{
@@ -88,7 +89,6 @@ h2 {
   background-color: #cccccc;
   background-size: cover; /* Cover the entire container */
   background-position: center; /* Center the background image */
-  z-index: -1; /* Move behind content */
   margin: 4rem auto;
 }
 
