@@ -24,15 +24,11 @@ Functions:
 
 export const assetInDirection = (tile, directionNum) => {
     // convert the orientation into a number from 0-3
-    console.log(tile.orientation,'tile orientation 2222');
     const turn = tile.orientation/90
-    console.log(turn, "turn in verify");
     // orientation minused to get asset direction
    
     let assetDir = (directionNum - turn)
-    console.log(assetDir,'bef');
     if (assetDir < 0) {assetDir += 4}
-    console.log(assetDir,'after');
 
     // return asset in that direction
     return tile.assets[assetDir]
@@ -98,8 +94,6 @@ export const checkSide = (tile, directionNum, matrix) => {
     const sideDirectionNum = (directionNum + 2) % 4
     const sideTileAsset = assetInDirection(sideTile, sideDirectionNum)
     // return true if assets are the same:
-    console.log(tileAsset,'tileAsset');
-    console.log(sideTileAsset,'sideTileAsset')
     return tileAsset.asset === sideTileAsset.asset
 }
 
@@ -131,8 +125,6 @@ export const checkIfInArray = (tileInfo, array) => {
 
     // iterate through each element in the array
     array.forEach((arrTileInfo) => {
-        console.log('arrTileInfo: ', arrTileInfo)
-        console.log('tileInfo: ', tileInfo)
         // check if tile coords in array, if so, set isInArray to true
         if (arrTileInfo.coords.row === tileInfo.coords.row &&
             arrTileInfo.coords.column === tileInfo.coords.column) {
@@ -261,12 +253,8 @@ export const checkTileCompletes = (origTile, matrix) => {
 
 
                 // add connecting tile info to tilesToCheck
-                console.log('tile', tile)
-                console.log('tileAsset', tileAsset)
                 const newTileInfo = connectingTiles(tile, tileAsset)
-                console.log(newTileInfo)
                 for (const info of newTileInfo) {
-                    console.log('info: ', info)
                     // if tile is not already in array, add to array
                     if (!checkIfInArray(info, tilesToCheck)) {
                         tilesToCheck.push(info)
@@ -304,10 +292,8 @@ export const checkTileCompletes = (origTile, matrix) => {
                     pointsObj[player] += points
                 }
             })
-            console.log('citizenObj: ', citizenObj)
         }
     })
-    console.log('pointsObj: ', pointsObj)
     return pointsObj
 }
 

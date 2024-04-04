@@ -51,8 +51,6 @@ export const UI = (
         scoreBoard
     } = useGameEngine()
 
-    console.log(players)
-
     // console.log(newTileData, "newTileData");
 
 
@@ -81,7 +79,6 @@ export const UI = (
     }, [newTileType])
 
     const playerScores = () => {
-        console.log(scoreBoard)
         return scoreBoard.map((playerScore, index) => {
             return <div>
                 {players[index].state.profile.name}: {playerScore}
@@ -142,9 +139,7 @@ export const UI = (
                                     return currRotation - Math.PI / 2;
                                 });
         
-                                console.log(tileRotation, "tileRotation");
                                 newTileData.orientation = (tileRotation-Math.PI / 2)*-1*(180 / Math.PI)%360;
-                                console.log(newTileData.orientation, "newTileData.orientation");
                              
                                 setNewTileMesh((currTile) => {
                                     if (currTile === undefined) {
@@ -182,7 +177,6 @@ export const UI = (
                         <button 
                             className={styles.button}
                             onClick={() => {
-                                console.log(newTileMesh, "NEW TILE MESH");
                                 if (checkTilePlacement(newTileData, boardGameMatrix)) {
                                     setReplaceTile(false)
                                     const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
@@ -191,7 +185,6 @@ export const UI = (
                                     setTileRotation(0)
                                     phaseEnd()
                                 } else {
-                                    console.log("tile not been placed");
                                 }
                             }}
                         >
