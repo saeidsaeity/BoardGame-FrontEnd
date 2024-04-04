@@ -43,9 +43,9 @@ export const GameEngineProvider = ({ children }) => {
     ])
 
     const [gameTileCount, setGameTileCount] = useMultiplayerState('gameTileCount', {
-        a: 2,
-        b: 4,
-        c: 1,
+        A: 2,
+        B: 4,
+        C: 1,
         D: 3, // first tile already on board
         E: 5, 
         F: 2,

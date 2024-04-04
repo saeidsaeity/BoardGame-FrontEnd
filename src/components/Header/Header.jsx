@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from './Header.module.css';
 function Header(params) {
     
-    return(<div  class={styles.card}>
+    return(<div  className={styles.card}>
            <h2>Log in:</h2>
         <Link to='/login'>
         <MdAccountBox size={70}  />

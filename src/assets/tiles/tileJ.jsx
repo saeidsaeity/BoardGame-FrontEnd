@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 const TileJ = React.forwardRef((props, ref) => {
-    const { nodes, materials } = useGLTF('/tileJ.glb')
+  const { nodes, materials } = useGLTF('/tileJ.glb')
   return (
     <group {...props} dispose={null}>
       <group position={[0, 0.35, 0]} scale={[1, 0.1, 1]}>
