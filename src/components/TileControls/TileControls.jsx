@@ -18,7 +18,8 @@ function TileControls({
     newTile2DPosition,
     boardGameMatrix,
     setBoardGameMatrix,
-    phaseEnd
+    phaseEnd,
+    me
 }) {
   return (
     <>
@@ -46,6 +47,7 @@ function TileControls({
                     return updatedTile;
                 });
             }}
+            style={{ backgroundColor: me.state.profile.color }}
             className={styles.button}
         >
             Rotate
@@ -61,11 +63,13 @@ function TileControls({
                 setShowTile(true)
                 setReplaceTile(true)
             }}
+            style={{ backgroundColor: me.state.profile.color }}
             className={styles.button}
         >
             {showTile ? 'Take a new tile' : 'Get Tile'}
         </button>
-        <button 
+        <button
+            style={{ backgroundColor: me.state.profile.color }}
             className={styles.button}
             onClick={() => {
                 if (checkTilePlacement(newTileData, boardGameMatrix)) {

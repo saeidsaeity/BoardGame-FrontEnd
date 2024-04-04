@@ -9,7 +9,8 @@ function CitizenControls({
   tileRotation,
   setNewTileData,
   setShowCitizen,
-  setCitizenArray
+  setCitizenArray,
+  me
 }) {
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
@@ -56,6 +57,7 @@ function CitizenControls({
           return (
             <button
               key={index}
+              style={{ backgroundColor: me.state.profile.color }}
               className={styles.citizenOption}
               onClick={() => {
                 setShowCitizen(true);
@@ -123,6 +125,7 @@ function CitizenControls({
         </button>
       ) : null}
       <button
+        style={{ backgroundColor: 'darkgreen' }}
         className={styles.citizenButton}
         onClick={() => {
           // console.log(newTileData);
@@ -161,13 +164,18 @@ function CitizenControls({
           }
         }}
       >
-        Confirm Citizen
+        <h3>
+          Confirm Citizen
+        </h3>
       </button>
       <button
+        style={{ backgroundColor: 'red' }}
         className={styles.citizenButton}
         onClick={() => setCitizenPosition([])}
       >
-        Don't place
+        <h3>
+          End turn
+        </h3>
       </button>
     </div>
   );

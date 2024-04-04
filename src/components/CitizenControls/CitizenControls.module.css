@@ -2,10 +2,15 @@
     background-color: rgba(0, 0, 0, 0.4);
     color: white;
     position: fixed;
-    right: 0;
-    top: 50vh;
-    width: 12rem;
+    right: 2rem;
+    bottom: 3rem;
+    width: 16rem;
     border-radius: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 2rem 2rem;
 }
 
 .CitizenControls h2{
@@ -19,16 +24,55 @@
 
 .citizenOption{
     display: flex;
-    justify-content: space-evenly;
-    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    width: 12rem;
+    height: 4rem;
+    border: none;
+    margin: 0.3rem 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 .citizenOption h3{
+    text-decoration: none;
+    font-size: 0.5rem;
+    font-weight: 500;
     color: black;
     border-radius: 0.6rem;
+    text-align: center;
 }
 
 .citizenOption:hover{
-    background-color: aqua;
+    color: white;
+    box-shadow: 0 0 10px white;
+}
+
+.citizenButton{
+    font-size: 2rem;
+    font-weight:bold;
+    width: 12rem;
+    height: 4.5rem;
+    border: none;
+    margin: 0.3rem 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition-duration: 0.4s;
     cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.citizenButton h3{
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    text-align: center;
+}
+
+.citizenButton:hover{
+    color: white;
+    box-shadow: 0 0 10px white;
 }

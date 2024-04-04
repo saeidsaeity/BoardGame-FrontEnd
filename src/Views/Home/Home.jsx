@@ -34,7 +34,7 @@ function Home() {
   const [playSound] = useSound('/GameSound1.mp3');
   const [muted, setMuted] = useState(true);
   const aboutRef = useRef(null);
-  const [sunPosition, setSunPosition] = useState([-50, 0, -250]);
+  const [sunPosition, setSunPosition] = useState([-50, 0, 250]);
   const [citizenCount, setCitizenCount] = useState(new Array(60).fill(0));
 
   const toggleMute = () => {
@@ -118,8 +118,8 @@ function Home() {
         <div className={styles.canvasWrapper}>
           <Canvas shadows camera={{ fov: 70, position: [0, 2, 8] }}>
             <Physics>
-              <ambientLight intensity={1.5} />
-              <Stars />
+              <ambientLight intensity={1.25} />
+              <Stars size={0.8} />
               <Sky
                 sunPosition={sunPosition}
                 distance={50000}
@@ -143,9 +143,15 @@ function Home() {
               />
 
               <directionalLight
-                castShadow
-                intensity={3}
+                
+                intensity={2}
                 position={sunPosition}
+                shadow-normalBias={0.03}
+              />
+              <directionalLight
+                castShadow
+                intensity={4}
+                position={[0, 23, 100]}
                 shadow-normalBias={0.03}
               />
 

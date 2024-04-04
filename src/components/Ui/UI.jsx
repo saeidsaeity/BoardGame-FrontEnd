@@ -88,16 +88,25 @@ export const UI = (
     return (
         <div className={styles.UIWrapper}>
             <div className={styles.turnInfo}>
-                <h2 style={{color: me.state.profile.color}}>{me.state.profile.name}</h2>
+                <div className={styles.profile}>
+                    <img src={me.state.profile.photo}/>
+                    <h2 style={{color: me.state.profile.color}}>{me.state.profile.name}</h2>
+                </div>
                 <h2>{me.id === player.id ? `It's your turn!` : `${player.state.profile.name}'s turn...` }</h2>
                 {me.id === player.id && turnPhase === 'Place Tile' ? <h2>Place a tile!</h2> : null}
                 {me.id === player.id && turnPhase === 'Place Citizen' ? <h2>Place a citizen / End turn</h2> : null}
             </div>
+            {players.map((player) => {
+                return <div style={{ backgroundColor: player.state.profile.color }} className={styles.eachPlayer}>
+                    <img src={player.state.profile.photo}/>
+                    <p>{player.state.profile.name}</p>
+                </div>
+            })}
             {playerScores()}
             <div className={styles.canvasWrapper}>
                 <Canvas camera={{ fov: 40, position: [0, 8, 8] }}>
-                    <ambientLight intensity={1}/>
-                    <directionalLight intensity={1.8} position={ [4, 8, 8] } castShadow/>
+                    <ambientLight intensity={1.2}/>
+                    <directionalLight intensity={3.5} position={ [4, 10, 12] } castShadow/>
                     <OrbitControls
                         enableZoom={false}
                         enableRotate={false}
@@ -123,7 +132,16 @@ export const UI = (
                 </Canvas>
             </div>
             <PopUp/>
-            {turnPhase === 'Place Citizen' ?  <CitizenControls setShowCitizen={setShowCitizen} newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData} setCitizenArray={setCitizenArray}/> : null }
+            {turnPhase === 'Place Citizen' ?  
+                <CitizenControls 
+                    setShowCitizen={setShowCitizen} 
+                    newTileData={newTileData} 
+                    setCitizenPosition={setCitizenPosition} 
+                    tileRotation={tileRotation} 
+                    setNewTileData={setNewTileData} 
+                    setCitizenArray={setCitizenArray}
+                    me={me}
+                /> : null }
             {player !== me ? 
                 null
                 :
@@ -150,6 +168,7 @@ export const UI = (
                         checkTilePlacement={checkTilePlacement}
                         newTile2DPosition={newTile2DPosition}
                         setNewTileMesh={setNewTileMesh}
+                        me={me}
                     />
                 }
             </div>
