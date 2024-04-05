@@ -12,9 +12,7 @@
 .canvasWrapper{
     width: 20rem;
     height: 20rem;
-    position: absolute;
-    top: 1rem;
-    right: 2rem;
+    margin: 1rem 1rem 0 0;
     animation: canvasAnimation 3s 1 ease-in;
 }
 

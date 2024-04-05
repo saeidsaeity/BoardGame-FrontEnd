@@ -8,7 +8,7 @@ import { useGameEngine } from "../../Context/useGameEngine";
 
 import CitizenControls from "../CitizenControls/CitizenControls";
 
-import PopUp from "../popUpRules";
+// import PopUp from "../popUpRules";
 import styles from './UI.module.css'
 import TileControls from "../TileControls/TileControls";
 
@@ -131,7 +131,7 @@ export const UI = (
                     </PresentationControls>
                 </Canvas>
             </div>
-            <PopUp/>
+            {/* <PopUp/> */}
             {turnPhase === 'Place Citizen' ?  
                 <CitizenControls 
                     setShowCitizen={setShowCitizen} 
