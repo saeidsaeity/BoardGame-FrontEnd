@@ -54,6 +54,7 @@ export const UI = (
     } = useGameEngine()
 
 
+
     // const currentPlayer = players[playerTurn]
     const me = myPlayer()
     const player = players[playerTurn]
@@ -97,6 +98,7 @@ export const UI = (
         }
     }, [newTileType])
 
+
     // const playerScores = () => {
     //     return scoreBoard.map((playerScore, index) => {
     //         return <div>
@@ -104,6 +106,7 @@ export const UI = (
     //         </div>
     //     })
     // }
+
 
     return (
         <div className={styles.UIWrapper}>
@@ -160,6 +163,7 @@ export const UI = (
                     tileRotation={tileRotation} 
                     setNewTileData={setNewTileData} 
                     setCitizenArray={setCitizenArray}
+                    setTileRotation={setTileRotation}
                     me={me}
                 /> : null }
             {player !== me ? 
@@ -169,6 +173,7 @@ export const UI = (
                 { turnPhase === 'Place Citizen' ? 
                     null
                     :
+
                     <TileControls
                         newTileData={newTileData}
                         tileRotation={tileRotation}
@@ -190,6 +195,7 @@ export const UI = (
                         setNewTileMesh={setNewTileMesh}
                         me={me}
                     />
+
                 }
             </div>
             }
