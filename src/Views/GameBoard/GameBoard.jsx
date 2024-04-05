@@ -69,7 +69,7 @@ const GameBoard = () => {
       );
       const renderNewTile = (
         <RigidBody
-          canSleep={true}
+          canSleep={false}
           position={position}
           rotation={[0, -rotation, 0]}
           scale={tileScale}

@@ -54,6 +54,7 @@ export const UI = (
     } = useGameEngine()
 
 
+
     // const currentPlayer = players[playerTurn]
     const me = myPlayer()
     const player = players[playerTurn]
@@ -98,7 +99,9 @@ export const UI = (
     }, [newTileType])
 
     const playerScores = () => {
+
         console.log(scoreBoard, "SCOREBOARD");
+
         return scoreBoard.map((playerScore, index) => {
             return <div>
                 {players[index].state.profile.name}: {playerScore}
@@ -171,6 +174,7 @@ export const UI = (
                 { turnPhase === 'Place Citizen' ? 
                     null
                     :
+
                     <TileControls
                         newTileData={newTileData}
                         tileRotation={tileRotation}
@@ -192,6 +196,7 @@ export const UI = (
                         setNewTileMesh={setNewTileMesh}
                         me={me}
                     />
+
                 }
             </div>
             }

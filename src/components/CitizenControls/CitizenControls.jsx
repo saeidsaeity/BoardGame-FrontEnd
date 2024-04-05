@@ -43,7 +43,9 @@ function CitizenControls({
     players,
     phaseEnd,
     boardGameMatrix,
+
     setBoardGameMatrix
+
   } = useGameEngine();
   // console.log(me, "ME!");
   const [currentAsset, setCurrentAsset] = useState([]);
@@ -73,7 +75,6 @@ function CitizenControls({
                 let yCoord = newTileData.grid_id.column - 5;
                 const integerTileRotation =
                   -1 * Math.floor(tileRotation / (Math.PI / 2));
-                console.log(integerTileRotation);
                 if (integerTileRotation === 0) {
                   if (compass === "N") yCoord -= adjustment;
                   if (compass === "E") xCoord += adjustment;
@@ -153,6 +154,7 @@ function CitizenControls({
                 [changeTileData];
               setBoardGameMatrix(newerBoard);
               const scoreObj = checkTileCompletes(changeTileData, newerBoard)
+
               // {}
               // {0: 4}
               // {0: 3, 1: 3}
@@ -165,7 +167,9 @@ function CitizenControls({
                   // console.log(playerScore + scoreObj[i])
                   players[i].setState('score', playerScore + scoreObj[i], true)
                 }
+
               }
+              setScoreBoard(currScoreBoard)
               return changeTileData;
             });
             setCitizenArray([])
