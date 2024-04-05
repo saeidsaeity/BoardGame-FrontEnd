@@ -5,6 +5,12 @@
   100% { opacity: 1; }
 }
 
+.loader{
+  z-index: 12;
+  background-color: #4CAF50;
+  height: 10rem;
+  width: 10rem;
+}
 
 .heading {
   unicode-bidi: unset;

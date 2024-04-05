@@ -97,16 +97,14 @@ export const UI = (
         }
     }, [newTileType])
 
-    const playerScores = () => {
-        console.log(scoreBoard, "SCOREBOARD");
-        return scoreBoard.map((playerScore, index) => {
-            return <div>
-                {players[index].state.profile.name}: {playerScore}
-            </div>
-        })
-    }
+    // const playerScores = () => {
+    //     return scoreBoard.map((playerScore, index) => {
+    //         return <div>
+    //             {players[index].state.profile.name}: {playerScore}
+    //         </div>
+    //     })
+    // }
 
-    console.log(hexToRgb(me.state.profile.color), "ME NOW");
     return (
         <div className={styles.UIWrapper}>
             <div className={styles.turnInfo}>

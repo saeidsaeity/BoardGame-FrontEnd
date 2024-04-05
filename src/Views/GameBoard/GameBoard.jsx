@@ -203,7 +203,7 @@ const GameBoard = () => {
               mieCoefficient={0.005}
             />
 
-            <Stars />
+            <Stars factor={2.5} />
 
             <directionalLight
               castShadow
@@ -219,7 +219,7 @@ const GameBoard = () => {
               maxPolarAngle={Math.PI / 2 - 0.1}
               // dampingFactor={0.8}
               rotateSpeed={0.6}
-              target={[0, 1, 0]}
+              target={[0, 2.25, 0]}
             />
 
             <RigidBody>
