@@ -40,8 +40,9 @@ function CitizenControls({
     players,
     phaseEnd,
     boardGameMatrix,
-    setBoardGameMatrix,
+    setBoardGameMatrix
   } = useGameEngine();
+  // console.log(me, "ME!");
   const [currentAsset, setCurrentAsset] = useState([]);
   const [currentCompass, setCurrentCompass] = useState([]);
   return (
@@ -138,6 +139,7 @@ function CitizenControls({
               changeTileData.citizen.asset = currentAsset;
               changeTileData.citizen.location = currentCompass;
               changeTileData.citizen.player = playerTurn;
+              changeTileData.citizen.colour = me.state.profile.color
               const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix));
               newerBoard[newTileData.grid_id.row][newTileData.grid_id.column] =
                 [changeTileData];

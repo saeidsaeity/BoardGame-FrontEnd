@@ -3,11 +3,13 @@ import { Cloud, Clouds, OrbitControls, Sky, Stars } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
 import { useGameEngine } from '../../Context/useGameEngine.jsx';
+import { myPlayer } from "playroomkit";
 
 // Components
 import { UI } from '../../components/Ui/UI.jsx';
 import { GameBoardCells } from '../../components/GameBoardCells/GameBoardCells.jsx';
 import { CitizenRed } from '../../assets/citizens/CitizenRed.jsx';
+import { CitizenBlue } from '../../assets/citizens/CitizenBlue.jsx';
 // 3D components
 
 import TileD from '../../assets/tiles/tileD.jsx';
@@ -70,7 +72,7 @@ const GameBoard = () => {
         <RigidBody
           canSleep={true}
           position={position}
-          rotation={[0, rotation, 0]}
+          rotation={[0, -rotation, 0]}
           scale={tileScale}
         >
           <TileComponent.default />
@@ -79,6 +81,7 @@ const GameBoard = () => {
       return renderNewTile;
     }
   };
+
   const renderCitizen = async (position, colour) => {
     const citizenComp = (
       <RigidBody
@@ -93,11 +96,12 @@ const GameBoard = () => {
         lockRotations={true}
         restitution={0}
       >
-        <CitizenRed />
+        <CitizenBlue color={colour}/>
       </RigidBody>
     );
     return citizenComp;
   };
+
   const {
     turn,
     turnPhase,
@@ -108,9 +112,12 @@ const GameBoard = () => {
     boardGameMatrix,
     setBoardGameMatrix,
     newTileArray,
-    setNewTileArray,
+    setNewTileArray
   } = useGameEngine();
 
+
+  const me = myPlayer()
+  console.log(me, "ME GAMEBOARD");
   const [citizenArray, setCitizenArray] = useState([]);
   const [releaseCitizen, setReleaseCitizen] = useState(true);
   useEffect(() => {
@@ -135,7 +142,7 @@ const GameBoard = () => {
                 (col[0].grid_id.row - 5) * 2,
                 4,
                 (col[0].grid_id.column - 5) * 2,
-              ]).then((newcitizen) => {
+              ], col[0].citizen.colour).then((newcitizen) => {
                 setCitizenArray((currArray) => {
                   return [...currArray, newcitizen];
                 });
@@ -247,7 +254,7 @@ const GameBoard = () => {
 
             {turnPhase === 'Place Citizen' &&
             citizenPosition.length > 0 &&
-            showCitizen ? (
+            showCitizen && me ? (
               <RigidBody
                 gravityScale={0.5}
                 position={citizenPosition}
@@ -259,7 +266,7 @@ const GameBoard = () => {
                 lockRotations={true}
                 restitution={0}
               >
-                <CitizenRed />
+                <CitizenBlue color={me.state.profile.color}/>
               </RigidBody>
             ) : null}
 

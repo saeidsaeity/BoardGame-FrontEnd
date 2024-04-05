@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export function CitizenRed(props) {
+  console.log(props.color);
   const { nodes, materials } = useGLTF('/citizenRed.glb')
   return (
     <group {...props} dispose={null}>

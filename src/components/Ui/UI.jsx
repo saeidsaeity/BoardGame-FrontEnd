@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Center, OrbitControls, PresentationControls } from "@react-three/drei";
 
 import { Canvas } from "@react-three/fiber";
-import { CitizenRed } from "../../assets/citizens/CitizenRed";
+import { CitizenBlue } from "../../assets/citizens/CitizenBlue";
 import { useGameEngine } from "../../Context/useGameEngine";
 
 import CitizenControls from "../CitizenControls/CitizenControls";
@@ -67,6 +67,15 @@ export const UI = (
     //     )
     // }
 
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16)
+        } : null;
+      }
+
     useEffect(() => {
         if(newTileType !== undefined){
             import(`../../assets/tiles/tile${newTileType}.jsx`
@@ -86,9 +95,7 @@ export const UI = (
         })
     }
 
-
-    console.log(scoreBoard, "THIS");
-    
+    console.log(hexToRgb(me.state.profile.color), "ME NOW");
     return (
         <div className={styles.UIWrapper}>
             <div className={styles.turnInfo}>
@@ -101,14 +108,12 @@ export const UI = (
                 {me.id === player.id && turnPhase === 'Place Citizen' ? <h2>Place a citizen / End turn</h2> : null}
             </div>
             {players.map((player) => {
-                console.log(player.state.score, "JUST THIS");
                 return <div style={{ backgroundColor: player.state.profile.color }} className={styles.eachPlayer}>
                     <img src={player.state.profile.photo}/>
                     <p>{player.state.profile.name}</p>
                     <p className={styles.score}>{player.state.score}</p>
                 </div>
             })}
-            {playerScores()}
             <div className={styles.canvasWrapper}>
                 <Canvas camera={{ fov: 40, position: [0, 8, 8] }}>
                     <ambientLight intensity={1.2}/>
@@ -133,7 +138,7 @@ export const UI = (
                         azimuth={[-Infinity, Infinity]} // Horizontal limits
                         config={{ mass: 1, tension: 170, friction: 26 }} // Spring config
                     >
-                        {turnPhase === 'Place Citizen' ? <Center><CitizenRed scale={0.25} rotation={[-0.8, 0, 0]}/></Center> : newPlayerTile}
+                        {turnPhase === 'Place Citizen' ? <Center><CitizenBlue scale={0.25} rotation={[-0.8, 0, 0]} color={me.state.profile.color}/></Center> : newPlayerTile}
                     </PresentationControls>
                 </Canvas>
             </div>
