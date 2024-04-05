@@ -68,15 +68,13 @@ function CitizenControls({
               className={styles.citizenOption}
               onClick={() => {
                 setShowCitizen(true);
-                // console.log(compass, "compass");
-                // console.log(tileRotation, "tileRotation");
                 setCurrentAsset(asset.asset);
                 setCurrentCompass(index);
                 let xCoord = newTileData.grid_id.row - 5;
                 let yCoord = newTileData.grid_id.column - 5;
-                console.log(tileRotation,'hello');
-                const integerTileRotation =-1 * Math.floor(tileRotation / (Math.PI / 2));
-                  console.log(integerTileRotation);
+
+                const integerTileRotation =
+                  -1 * Math.floor(tileRotation / (Math.PI / 2));
                 if (integerTileRotation === 0) {
                   if (compass === "N") yCoord -= adjustment;
                   if (compass === "E") xCoord += adjustment;
@@ -90,8 +88,6 @@ function CitizenControls({
                   if (compass === "W") yCoord -= adjustment;
                 }
                 if (integerTileRotation === 2) {
-                  // console.log("i am in here 3");
-                  // console.log(compass);
                   if (compass === "N") xCoord += adjustment;
                   if (compass === "E") yCoord -= adjustment;
                   if (compass === "S") xCoord -= adjustment;
@@ -107,8 +103,6 @@ function CitizenControls({
                   xCoord -= adjustment;
                   yCoord += adjustment;
                 }
-                console.log(xCoord, "X");
-                console.log(yCoord, "Y");
                 setCitizenPosition([xCoord * 2, 4, yCoord * 2]);
                 setCitizenControlledPosition([xCoord * 2, 4, yCoord * 2])
               }}
@@ -161,7 +155,7 @@ function CitizenControls({
               // {0: 4}
               // {0: 3, 1: 3}
               for (let i = 0; i < players.length; i++) {
-                console.log(i)
+                // console.log(i)
                 if (scoreObj[i]) {
                   // console.log(players[i])
                   const playerScore = players[i].state.score

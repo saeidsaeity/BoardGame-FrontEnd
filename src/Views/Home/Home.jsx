@@ -126,7 +126,7 @@ function Home() {
           <Canvas shadows camera={{ fov: 70, position: [0, 2, 8] }}>
             <Physics>
               <ambientLight intensity={1.25} />
-              <Stars size={0.8} />
+              <Stars factor={2.5} />
               <Sky
                 sunPosition={sunPosition}
                 distance={50000}
@@ -162,9 +162,10 @@ function Home() {
                 shadow-normalBias={0.03}
               />
 
-              {citizenCount.map(() => {
+              {citizenCount.map((arr, index) => {
                 return (
                   <RigidBody
+                    key={'A'+ index}
                     gravityScale={0.15}
                     position={[Math.random() * 10, 20, 0]}
                     scale={0.095}
@@ -180,9 +181,10 @@ function Home() {
                 );
               })}
 
-              {citizenCount.map(() => {
+              {citizenCount.map((arr, index) => {
                 return (
                   <RigidBody
+                    key={'B'+ index}
                     gravityScale={0.1}
                     position={[Math.random() * 10, 20, 5]}
                     scale={0.095}
@@ -198,9 +200,10 @@ function Home() {
                 );
               })}
 
-              {citizenCount.map(() => {
+              {citizenCount.map((arr, index) => {
                 return (
                   <RigidBody
+                    key={'C'+ index}
                     gravityScale={0.15}
                     position={[Math.random() * 10, 20, 0]}
                     scale={0.095}
@@ -216,9 +219,10 @@ function Home() {
                 );
               })}
 
-              {citizenCount.map(() => {
+              {citizenCount.map((arr, index) => {
                 return (
                   <RigidBody
+                    key={'D'+ index}
                     gravityScale={0.1}
                     position={[Math.random() * 10, 20, 3]}
                     scale={0.095}
