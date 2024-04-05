@@ -229,6 +229,7 @@ export const checkTileCompletes = (origTile, matrix) => {
 
                 // get next tileInfo in tilesToCheck
                 const tileInfo = tilesToCheck[i]
+                console.log('tileInfo: ', tileInfo)
 
                 // if tile does not exist, asset has not yet ended, so end the function
                 const tile = matrix[tileInfo.coords.row][tileInfo.coords.column][0]
@@ -241,7 +242,7 @@ export const checkTileCompletes = (origTile, matrix) => {
                 if (tile.citizen.is_citizen) {
                     
                     // get original direction without orientation
-                    const dir = tileInfo.dir-(tile.orientation/90)
+                    let dir = tileInfo.dir-(tile.orientation/90)
                     if (dir < 0) {dir += 4}
 
                     // check if citizen is on asset

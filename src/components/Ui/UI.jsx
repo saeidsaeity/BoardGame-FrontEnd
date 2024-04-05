@@ -79,6 +79,7 @@ export const UI = (
     }, [newTileType])
 
     const playerScores = () => {
+        console.log(scoreBoard)
         return scoreBoard.map((playerScore, index) => {
             return <div>
                 {players[index].state.profile.name}: {playerScore}

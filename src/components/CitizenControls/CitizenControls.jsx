@@ -145,7 +145,7 @@ function CitizenControls({
               for (let key in scoreObj) {
                 currScoreBoard[key] += scoreObj[key]
               }
-              setScoreBoard(currScoreBoard)
+              console.log(currScoreBoard)
               return changeTileData;
             });
             setCitizenArray([])
