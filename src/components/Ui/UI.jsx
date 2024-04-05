@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import { Center, OrbitControls, PresentationControls } from "@react-three/drei";
 
 import { Canvas } from "@react-three/fiber";
-import { CitizenRed } from "../../assets/citizens/CitizenRed";
+import { Citizen } from "../../assets/citizens/Citizen";
 import { useGameEngine } from "../../Context/useGameEngine";
 
 import CitizenControls from "../CitizenControls/CitizenControls";
 
-import PopUp from "../popUpRules";
+// import PopUp from "../popUpRules";
 import styles from './UI.module.css'
+import TileControls from "../TileControls/TileControls";
 
 export const UI = (
     { 
@@ -25,6 +26,7 @@ export const UI = (
         setNewTileType,
         newTile2DPosition,
         setReplaceTile,
+        citizenPosition,
         setCitizenPosition,
         setNewTileMesh,
         newTileMesh,
@@ -51,7 +53,6 @@ export const UI = (
         scoreBoard
     } = useGameEngine()
 
-    // console.log(newTileData, "newTileData");
 
 
     // const currentPlayer = players[playerTurn]
@@ -68,6 +69,25 @@ export const UI = (
     //     )
     // }
 
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16)
+        } : null;
+      }
+
+      function hexToHexadecimalNumber(hexString) {
+        // Remove the ‘#’ character if present
+        hexString = hexString.replace('#', '');
+        // Convert the hexadecimal string to a hexadecimal number
+        const hexadecimalNumber = parseInt(hexString, 16);
+        // Add the ‘0x’ prefix to the hexadecimal number
+        return 0x000000 | hexadecimalNumber;
+    }
+      
+
     useEffect(() => {
         if(newTileType !== undefined){
             import(`../../assets/tiles/tile${newTileType}.jsx`
@@ -79,6 +99,9 @@ export const UI = (
     }, [newTileType])
 
     const playerScores = () => {
+
+        console.log(scoreBoard, "SCOREBOARD");
+
         return scoreBoard.map((playerScore, index) => {
             return <div>
                 {players[index].state.profile.name}: {playerScore}
@@ -86,16 +109,29 @@ export const UI = (
         })
     }
 
+    console.log(hexToRgb(me.state.profile.color), "ME NOW");
     return (
         <div className={styles.UIWrapper}>
             <div className={styles.turnInfo}>
-                <h2>Turn: {turn} | Player: {player.state.profile.name} | Phase: {turnPhase}</h2>
+                <div className={styles.profile}>
+                    <img src={me.state.profile.photo}/>
+                    <h2 style={{color: me.state.profile.color}}>{me.state.profile.name}</h2>
+                </div>
+                <h2>{me.id === player.id ? `It's your turn!` : `${player.state.profile.name}'s turn...` }</h2>
+                {me.id === player.id && turnPhase === 'Place Tile' ? <h2>Place a tile!</h2> : null}
+                {me.id === player.id && turnPhase === 'Place Citizen' ? <h2>Place a citizen / End turn</h2> : null}
             </div>
-            {playerScores()}
+            {players.map((player) => {
+                return <div style={{ backgroundColor: player.state.profile.color }} className={styles.eachPlayer}>
+                    <img src={player.state.profile.photo}/>
+                    <p>{player.state.profile.name}</p>
+                    <p className={styles.score}>{player.state.score}</p>
+                </div>
+            })}
             <div className={styles.canvasWrapper}>
                 <Canvas camera={{ fov: 40, position: [0, 8, 8] }}>
-                    <ambientLight intensity={1}/>
-                    <directionalLight intensity={1.8} position={ [4, 8, 8] } castShadow/>
+                    <ambientLight intensity={1.2}/>
+                    <directionalLight intensity={3.5} position={ [4, 10, 12] } castShadow/>
                     <OrbitControls
                         enableZoom={false}
                         enableRotate={false}
@@ -116,12 +152,21 @@ export const UI = (
                         azimuth={[-Infinity, Infinity]} // Horizontal limits
                         config={{ mass: 1, tension: 170, friction: 26 }} // Spring config
                     >
-                        {turnPhase === 'Place Citizen' ? <Center><CitizenRed scale={0.25} rotation={[-0.8, 0, 0]}/></Center> : newPlayerTile}
+                        {turnPhase === 'Place Citizen' ? <Center><Citizen scale={0.25} rotation={[-0.8, 0, 0]} color={me.state.profile.color} citizenPosition={citizenPosition}/></Center> : newPlayerTile}
                     </PresentationControls>
                 </Canvas>
             </div>
-            <PopUp/>
-            {turnPhase === 'Place Citizen' ?  <CitizenControls setShowCitizen={setShowCitizen} newTileData={newTileData} setCitizenPosition={setCitizenPosition} tileRotation={tileRotation} setNewTileData={setNewTileData} setCitizenArray={setCitizenArray}/> : null }
+            {/* <PopUp/> */}
+            {turnPhase === 'Place Citizen' ?  
+                <CitizenControls 
+                    setShowCitizen={setShowCitizen} 
+                    newTileData={newTileData} 
+                    setCitizenPosition={setCitizenPosition} 
+                    tileRotation={tileRotation} 
+                    setNewTileData={setNewTileData} 
+                    setCitizenArray={setCitizenArray}
+                    me={me}
+                /> : null }
             {player !== me ? 
                 null
                 :
@@ -129,68 +174,29 @@ export const UI = (
                 { turnPhase === 'Place Citizen' ? 
                     null
                     :
-                    <>
-                        <button 
-                            onClick={() => {
-                                setTileRotation((currRotation) => {
-                                    if(currRotation <= -2*Math.PI){
-                                        return currRotation + 1.5 * Math.PI
-                                    }
-                                    return currRotation - Math.PI / 2;
-                                });
-        
-                                newTileData.orientation = (tileRotation-Math.PI / 2)*-1*(180 / Math.PI)%360;
-                             
-                                setNewTileMesh((currTile) => {
-                                    if (currTile === undefined) {
-                                        return currTile;
-                                    }
-                                    const updatedTile = {
-                                        ...currTile,
-                                        props: {
-                                        ...currTile.props,
-                                        rotation: [0, tileRotation - Math.PI / 2, 0],
-                                        },
-                                    };
-                                    return updatedTile;
-                                });
-                            }}
-                            className={styles.button}
-                        >
-                            Rotate
-                        </button>
-                        <button 
-                            onClick={async () => {
-                                setReleaseTile(false)
-                                setShowTile(false)
-                                const randomTile = await randomTileGenerator(gameTileCount);
-                                setNewTileData(randomTile);
-                                drawEventHandler(randomTile.tile_type)
-                                setNewTileType(randomTile.tile_type)
-                                setShowTile(true)
-                                setReplaceTile(true)
-                            }}
-                            className={styles.button}
-                        >
-                            {showTile ? 'Take a new tile' : 'Get Tile'}
-                        </button>
-                        <button 
-                            className={styles.button}
-                            onClick={() => {
-                                if (checkTilePlacement(newTileData, boardGameMatrix)) {
-                                    setReplaceTile(false)
-                                    const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
-                                    newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
-                                    setBoardGameMatrix(newerBoard)
-                                    setTileRotation(0)
-                                    phaseEnd()
-                                } else {
-                                }
-                            }}
-                        >
-                            Confirm
-                        </button>
-                    </>
+
+                    <TileControls
+                        newTileData={newTileData}
+                        tileRotation={tileRotation}
+                        setTileRotation={setTileRotation}
+                        setReleaseTile={setReleaseTile}
+                        showTile={showTile}
+                        setShowTile={setShowTile}
+                        setNewTileData={setNewTileData}
+                        drawEventHandler={drawEventHandler}
+                        setNewTileType={setNewTileType}
+                        setReplaceTile={setReplaceTile}
+                        gameTileCount={gameTileCount}
+                        boardGameMatrix={boardGameMatrix}
+                        setBoardGameMatrix={setBoardGameMatrix}
+                        phaseEnd={phaseEnd}
+                        randomTileGenerator={randomTileGenerator}
+                        checkTilePlacement={checkTilePlacement}
+                        newTile2DPosition={newTile2DPosition}
+                        setNewTileMesh={setNewTileMesh}
+                        me={me}
+                    />
+
                 }
             </div>
             }

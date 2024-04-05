@@ -6,15 +6,19 @@
     top: 0;
     z-index: 10;
     display: flex;
+    justify-content: space-between;
 }
 
 .canvasWrapper{
     width: 20rem;
     height: 20rem;
-    position: absolute;
-    top: 0;
-    right: 1rem;
-    animation: canvasAnimation 5s 1 ease-in;
+    margin: 1rem 1rem 0 0;
+    animation: canvasAnimation 3s 1 ease-in;
+}
+
+.canvasWrapper:hover{
+    color: white;
+    box-shadow: 0 0 10px white;
 }
 
 .nextPhase{
@@ -30,17 +34,74 @@
 
 .turnInfo{
     margin: 3rem 2rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 0.6rem;
+    padding: 1rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.turnInfo h2{
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    padding: 0;
+    max-width: unset;
+    text-align: left;
+    opacity: 80%;
+}
+
+.profile{
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 0 0.5rem;
+}
+
+.profile img{
+    height: 3rem;
+    margin: 0 0.5rem 0 0;
+}
+
+.eachPlayer{
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    margin: 3rem 1rem 0;
+    border-radius: 0.6rem;
+    padding: 0.5rem;
+}
+
+.eachPlayer img{
+    height: 3rem;
+}
+
+.score{
+    font-weight:bold;
+    font-size: 1.2rem;
+}
+
+.eachPlayer p {
+    margin: 0.4rem 0;
+    text-align: center;
 }
 
 .buttonWrapper{
     display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    bottom: 1rem;
-    right: 1rem;
+    bottom: 3rem;
+    right: 2rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 8rem;
+    pad: 2rem;
+    border-radius: 0.6rem;
 }
 
 .button {
     z-index: 1;
+    height: 6rem;
     /* position: fixed;
     bottom:10px;
     right: 10px; */

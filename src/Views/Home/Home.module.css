@@ -7,22 +7,35 @@
 
 
 .heading {
-  font-family: 'MedievalSharp', sans-serif;
+  unicode-bidi: unset;
   text-align: center;
-  position: relative;
-  display:;
+  margin: auto;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .heading::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  background-image: radial-gradient(circle, #fff 10%, transparent 10%);
-  background-size: 10px 10px;
   animation: sparkle 2s infinite;
+}
+
+.heading h1{
+  position: absolute;
+  margin: auto;
+  font-size: 4rem;
+}
+
+.introWrapper{
+  position: absolute;
+  top: 16rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 3rem auto;
+  height: 20rem;
+  z-index: 10;
 }
 
 h2 {
@@ -52,21 +65,14 @@ h2 {
 }
 
 .topBanner{
-  height: 8rem;
+  height: 4rem;
   background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.introWrapper{
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 3rem auto;
-  height: 20rem;
-}
+
 
 .backgroundimage {
   margin-top: 5rem;
@@ -92,47 +98,55 @@ h2 {
   margin: 4rem auto;
 }
 
-  .music{
-    position: fixed;
-    top: 20px;
-    left:20px;
-  }
+.music{
+  all: unset;
+  width: 2.5rem;
+  padding: 0.75rem 0 0.75rem 1.65rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 0.6rem;
+  cursor: pointer;
+  box-shadow: 1px 2px 5px grey;
+}
 
-  .scrollableTextContainer {
-    overflow: hidden;
-    width: 80%;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .scrollableText {
-    display: inline-block;
-    white-space: nowrap;
-    padding-right: 20px; 
-  
-  }
+.music:hover{
+  box-shadow: 1px 2px 5px black;
+}
 
-  .button {
-    background-color:#4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+.scrollableTextContainer {
+  overflow: hidden;
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   
-  .button:hover {
-    background-color: #45a049; /* Darker Green */
-  }
+}
+
+.scrollableText {
+  display: inline-block;
+  white-space: nowrap;
+  padding-right: 20px; 
+
+}
+
+.button {
+  background-color: rgba(0, 0, 0, 0.75); 
+  border: none;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  padding: 0.75rem 2rem;
+  cursor: pointer;
+  border-radius: 0.6rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  padding: 1rem 1.5rem;
+  box-shadow: 0px 0px 10px grey;
+}
+
+.button:hover {
+  box-shadow: 0px 0px 10px white;
+}
+
 .paragraph{
   line-height: 3;
 }
@@ -180,5 +194,5 @@ h2 {
    
   }
 .canvasWrapper{
-  height: 50vh;
+  height: 60rem;
 }

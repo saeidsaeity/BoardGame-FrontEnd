@@ -5,14 +5,17 @@ import { checkTileCompletes } from "../../Views/GameBoard/verifyFunctions";
 
 function CitizenControls({
   newTileData,
+  citizenPosition, // maybe a context?
   setCitizenPosition,
   tileRotation,
   setNewTileData,
   setShowCitizen,
-  setCitizenArray
+  setCitizenArray,
+  me
 }) {
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
+  const [ citizenControlledPosition, setCitizenControlledPosition ] = useState()
 
   // const adjustment = 0.25
   const adjustment = 0.3;
@@ -31,6 +34,7 @@ function CitizenControls({
     }
   }, [newTileData]);
 
+
   const {
     turn,
     turnPhase,
@@ -39,10 +43,11 @@ function CitizenControls({
     players,
     phaseEnd,
     boardGameMatrix,
-    setBoardGameMatrix,
-    scoreBoard,
-    setScoreBoard
+
+    setBoardGameMatrix
+
   } = useGameEngine();
+  // console.log(me, "ME!");
   const [currentAsset, setCurrentAsset] = useState([]);
   const [currentCompass, setCurrentCompass] = useState([]);
   return (
@@ -58,6 +63,7 @@ function CitizenControls({
           return (
             <button
               key={index}
+              style={{ backgroundColor: me.state.profile.color }}
               className={styles.citizenOption}
               onClick={() => {
                 setShowCitizen(true);
@@ -99,7 +105,10 @@ function CitizenControls({
                   xCoord -= adjustment;
                   yCoord += adjustment;
                 }
+                console.log(xCoord, "X");
+                console.log(yCoord, "Y");
                 setCitizenPosition([xCoord * 2, 4, yCoord * 2]);
+                setCitizenControlledPosition([xCoord * 2, 4, yCoord * 2])
               }}
             >
               <h3>{asset.asset}</h3>
@@ -118,12 +127,14 @@ function CitizenControls({
             xCoord -= adjustment;
             yCoord -= adjustment;
             setCitizenPosition([xCoord * 2, 4, yCoord * 2]);
+            setCitizenControlledPosition([xCoord * 2, 4, yCoord * 2])
           }}
         >
           Monastery
         </button>
       ) : null}
       <button
+        style={{ backgroundColor: 'darkgreen' }}
         className={styles.citizenButton}
         onClick={() => {
           // console.log(newTileData);
@@ -136,14 +147,27 @@ function CitizenControls({
               changeTileData.citizen.asset = currentAsset;
               changeTileData.citizen.location = currentCompass;
               changeTileData.citizen.player = playerTurn;
+              changeTileData.citizen.colour = me.state.profile.color;
+              changeTileData.citizen.position = citizenControlledPosition
               const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix));
               newerBoard[newTileData.grid_id.row][newTileData.grid_id.column] =
                 [changeTileData];
               setBoardGameMatrix(newerBoard);
               const scoreObj = checkTileCompletes(changeTileData, newerBoard)
-              const currScoreBoard = scoreBoard
-              for (let key in scoreObj) {
-                currScoreBoard[key] += scoreObj[key]
+
+              // {}
+              // {0: 4}
+              // {0: 3, 1: 3}
+              for (let i = 0; i < players.length; i++) {
+                console.log(i)
+                if (scoreObj[i]) {
+                  // console.log(players[i])
+                  const playerScore = players[i].state.score
+                  // console.log(playerScore)
+                  // console.log(playerScore + scoreObj[i])
+                  players[i].setState('score', playerScore + scoreObj[i], true)
+                }
+
               }
               setScoreBoard(currScoreBoard)
               return changeTileData;
@@ -154,13 +178,18 @@ function CitizenControls({
           }
         }}
       >
-        Confirm Citizen
+        <h3>
+          Confirm Citizen
+        </h3>
       </button>
       <button
+        style={{ backgroundColor: 'red' }}
         className={styles.citizenButton}
         onClick={() => setCitizenPosition([])}
       >
-        Don't place
+        <h3>
+          End turn
+        </h3>
       </button>
     </div>
   );

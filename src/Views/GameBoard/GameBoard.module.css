@@ -8,6 +8,7 @@
     left: 0;
     text-align: center;
     overflow: hidden;
+    font-family: "handMade";
 }
 .button {
     z-index: 1;
