@@ -290,7 +290,6 @@ const GameBoard = () => {
                 <boxGeometry args={[25, 0.5, 25]} />
                 <meshStandardMaterial color="#8f4111" />
               </mesh>
-              {/* {boardGrid} */}
             </RigidBody>
           </Physics>
 
