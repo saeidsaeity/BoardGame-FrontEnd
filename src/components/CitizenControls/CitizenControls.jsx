@@ -149,10 +149,10 @@ function CitizenControls({
               for (let i = 0; i < players.length; i++) {
                 console.log(i)
                 if (scoreObj[i]) {
-                  console.log(players[i])
+                  // console.log(players[i])
                   const playerScore = players[i].state.score
-                  console.log(playerScore)
-                  console.log(playerScore + scoreObj[i])
+                  // console.log(playerScore)
+                  // console.log(playerScore + scoreObj[i])
                   players[i].setState('score', playerScore + scoreObj[i], true)
                 }
               }

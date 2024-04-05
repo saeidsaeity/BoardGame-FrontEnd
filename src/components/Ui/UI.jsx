@@ -78,6 +78,7 @@ export const UI = (
     }, [newTileType])
 
     const playerScores = () => {
+        console.log(scoreBoard, "SCOREBOARD");
         return scoreBoard.map((playerScore, index) => {
             return <div>
                 {players[index].state.profile.name}: {playerScore}
@@ -85,6 +86,9 @@ export const UI = (
         })
     }
 
+
+    console.log(scoreBoard, "THIS");
+    
     return (
         <div className={styles.UIWrapper}>
             <div className={styles.turnInfo}>
@@ -97,9 +101,11 @@ export const UI = (
                 {me.id === player.id && turnPhase === 'Place Citizen' ? <h2>Place a citizen / End turn</h2> : null}
             </div>
             {players.map((player) => {
+                console.log(player.state.score, "JUST THIS");
                 return <div style={{ backgroundColor: player.state.profile.color }} className={styles.eachPlayer}>
                     <img src={player.state.profile.photo}/>
                     <p>{player.state.profile.name}</p>
+                    <p className={styles.score}>{player.state.score}</p>
                 </div>
             })}
             {playerScores()}

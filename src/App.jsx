@@ -7,18 +7,17 @@ import GameBoard from "./Views/GameBoard/GameBoard";
 import Lobby from "./Views/Lobby/Lobby";
 
 import "./App.css";
+import PreGameBoard from "./components/PreGameBoard/PreGameBoard";
 
 function App() {
   return (
     <>
-      <GameEngineProvider>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/lobby" element={<Lobby />} />
-          <Route path="/gameboard" element={<GameBoard />} />
+          <Route path="/gameboard" element={<PreGameBoard />} />
         </Routes>
-      </GameEngineProvider>
     </>
   );
 

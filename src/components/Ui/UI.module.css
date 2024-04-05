@@ -64,7 +64,7 @@
 }
 
 .eachPlayer{
-    height: 6rem;
+    height: 8rem;
     display: flex;
     flex-direction: column;
     margin: 3rem 1rem 0;
@@ -76,8 +76,14 @@
     height: 3rem;
 }
 
+.score{
+    font-weight:bold;
+    font-size: 1.2rem;
+}
+
 .eachPlayer p {
     margin: 0.4rem 0;
+    text-align: center;
 }
 
 .buttonWrapper{
