@@ -241,7 +241,7 @@ export const checkTileCompletes = (origTile, matrix) => {
                 if (tile.citizen.is_citizen) {
                     
                     // get original direction without orientation
-                    const dir = tileInfo.dir-(tile.orientation/90)
+                    let dir = tileInfo.dir-(tile.orientation/90)
                     if (dir < 0) {dir += 4}
 
                     // check if citizen is on asset

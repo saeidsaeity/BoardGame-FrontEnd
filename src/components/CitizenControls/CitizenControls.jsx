@@ -169,7 +169,7 @@ function CitizenControls({
                 }
 
               }
-              setScoreBoard(currScoreBoard)
+             
               return changeTileData;
             });
             setCitizenArray([])
