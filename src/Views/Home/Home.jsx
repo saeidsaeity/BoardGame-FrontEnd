@@ -112,10 +112,17 @@ function Home() {
           <button className={styles.music} onClick={toggleMute}>
             {muted ? <MdOutlineMusicOff /> : <SlMusicTone />}
           </button>
-          <h1 className={styles.heading}>Welcome to City Zen</h1>
           <Header />
         </div>
         <div className={styles.canvasWrapper}>
+          <div className={styles.introWrapper}>
+            <h1 className={styles.heading}>Welcome to City Zen!</h1>
+            <h3>Invite your friends</h3>
+            <h3>Build an empire!</h3>
+            <button className={styles.button} onClick={hostGameHandler}>
+              Host a game!
+            </button>
+          </div>
           <Canvas shadows camera={{ fov: 70, position: [0, 2, 8] }}>
             <Physics>
               <ambientLight intensity={1.25} />
@@ -151,7 +158,7 @@ function Home() {
               <directionalLight
                 castShadow
                 intensity={4}
-                position={[0, 23, 100]}
+                position={[-50, 23, 100]}
                 shadow-normalBias={0.03}
               />
 
@@ -332,13 +339,7 @@ function Home() {
 
         <div className={styles.imagewrapper}>
           {/* <div className={styles.backgroundimage} /> */}
-          <div className={styles.introWrapper}>
-            <h3>Invite your friends</h3>
-            <h3>Build your empire!</h3>
-            <button className={styles.button} onClick={hostGameHandler}>
-              Host a game!
-            </button>
-          </div>
+          
           <div className={styles.scrollableTextContainer}>
             {/* <Link className={styles.linkButton} to="/join">
             Join game

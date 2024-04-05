@@ -1,6 +1,12 @@
 .card {    
-    /* width: 262px;           */
+    color: black;
     text-align: right;
     margin-left:auto; 
     display: flex;
+    align-items: center;
+  }
+
+  .card h2{
+    padding: 0;
+    margin: 0 1rem;
   }
