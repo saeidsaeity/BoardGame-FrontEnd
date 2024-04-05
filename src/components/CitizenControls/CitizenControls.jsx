@@ -5,6 +5,7 @@ import { checkTileCompletes } from "../../Views/GameBoard/verifyFunctions";
 
 function CitizenControls({
   newTileData,
+  citizenPosition, // maybe a context?
   setCitizenPosition,
   tileRotation,
   setNewTileData,
@@ -14,6 +15,7 @@ function CitizenControls({
 }) {
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
+  const [ citizenControlledPosition, setCitizenControlledPosition ] = useState()
 
   // const adjustment = 0.25
   const adjustment = 0.3;
@@ -31,6 +33,7 @@ function CitizenControls({
       }
     }
   }, [newTileData]);
+
 
   const {
     turn,
@@ -101,7 +104,10 @@ function CitizenControls({
                   xCoord -= adjustment;
                   yCoord += adjustment;
                 }
+                console.log(xCoord, "X");
+                console.log(yCoord, "Y");
                 setCitizenPosition([xCoord * 2, 4, yCoord * 2]);
+                setCitizenControlledPosition([xCoord * 2, 4, yCoord * 2])
               }}
             >
               <h3>{asset.asset}</h3>
@@ -120,6 +126,7 @@ function CitizenControls({
             xCoord -= adjustment;
             yCoord -= adjustment;
             setCitizenPosition([xCoord * 2, 4, yCoord * 2]);
+            setCitizenControlledPosition([xCoord * 2, 4, yCoord * 2])
           }}
         >
           Monastery
@@ -139,7 +146,8 @@ function CitizenControls({
               changeTileData.citizen.asset = currentAsset;
               changeTileData.citizen.location = currentCompass;
               changeTileData.citizen.player = playerTurn;
-              changeTileData.citizen.colour = me.state.profile.color
+              changeTileData.citizen.colour = me.state.profile.color;
+              changeTileData.citizen.position = citizenControlledPosition
               const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix));
               newerBoard[newTileData.grid_id.row][newTileData.grid_id.column] =
                 [changeTileData];

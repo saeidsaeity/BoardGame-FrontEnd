@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Center, OrbitControls, PresentationControls } from "@react-three/drei";
 
 import { Canvas } from "@react-three/fiber";
-import { CitizenBlue } from "../../assets/citizens/CitizenBlue";
+import { Citizen } from "../../assets/citizens/Citizen";
 import { useGameEngine } from "../../Context/useGameEngine";
 
 import CitizenControls from "../CitizenControls/CitizenControls";
@@ -26,6 +26,7 @@ export const UI = (
         setNewTileType,
         newTile2DPosition,
         setReplaceTile,
+        citizenPosition,
         setCitizenPosition,
         setNewTileMesh,
         newTileMesh,
@@ -75,6 +76,16 @@ export const UI = (
           b: parseInt(result[3], 16)
         } : null;
       }
+
+      function hexToHexadecimalNumber(hexString) {
+        // Remove the ‘#’ character if present
+        hexString = hexString.replace('#', '');
+        // Convert the hexadecimal string to a hexadecimal number
+        const hexadecimalNumber = parseInt(hexString, 16);
+        // Add the ‘0x’ prefix to the hexadecimal number
+        return 0x000000 | hexadecimalNumber;
+    }
+      
 
     useEffect(() => {
         if(newTileType !== undefined){
@@ -138,7 +149,7 @@ export const UI = (
                         azimuth={[-Infinity, Infinity]} // Horizontal limits
                         config={{ mass: 1, tension: 170, friction: 26 }} // Spring config
                     >
-                        {turnPhase === 'Place Citizen' ? <Center><CitizenBlue scale={0.25} rotation={[-0.8, 0, 0]} color={me.state.profile.color}/></Center> : newPlayerTile}
+                        {turnPhase === 'Place Citizen' ? <Center><Citizen scale={0.25} rotation={[-0.8, 0, 0]} color={me.state.profile.color} citizenPosition={citizenPosition}/></Center> : newPlayerTile}
                     </PresentationControls>
                 </Canvas>
             </div>

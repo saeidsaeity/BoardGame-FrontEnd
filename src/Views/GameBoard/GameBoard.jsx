@@ -8,8 +8,7 @@ import { myPlayer } from "playroomkit";
 // Components
 import { UI } from '../../components/Ui/UI.jsx';
 import { GameBoardCells } from '../../components/GameBoardCells/GameBoardCells.jsx';
-import { CitizenRed } from '../../assets/citizens/CitizenRed.jsx';
-import { CitizenBlue } from '../../assets/citizens/CitizenBlue.jsx';
+import { Citizen } from '../../assets/citizens/Citizen.jsx';
 // 3D components
 
 import TileD from '../../assets/tiles/tileD.jsx';
@@ -96,7 +95,7 @@ const GameBoard = () => {
         lockRotations={true}
         restitution={0}
       >
-        <CitizenBlue color={colour}/>
+        <Citizen color={colour}/>
       </RigidBody>
     );
     return citizenComp;
@@ -117,7 +116,6 @@ const GameBoard = () => {
 
 
   const me = myPlayer()
-  console.log(me, "ME GAMEBOARD");
   const [citizenArray, setCitizenArray] = useState([]);
   const [releaseCitizen, setReleaseCitizen] = useState(true);
   useEffect(() => {
@@ -138,11 +136,7 @@ const GameBoard = () => {
             ];
 
             if (col[0].citizen.is_citizen) {
-              renderCitizen([
-                (col[0].grid_id.row - 5) * 2,
-                4,
-                (col[0].grid_id.column - 5) * 2,
-              ], col[0].citizen.colour).then((newcitizen) => {
+              renderCitizen( col[0].citizen.position , col[0].citizen.colour).then((newcitizen) => {
                 setCitizenArray((currArray) => {
                   return [...currArray, newcitizen];
                 });
@@ -191,6 +185,7 @@ const GameBoard = () => {
         setCitizenPosition={setCitizenPosition}
         setShowCitizen={setShowCitizen}
         setCitizenArray={setCitizenArray}
+        citizenPosition={citizenPosition}
       />
 
       <div className={styles.gameBoard}>
@@ -266,7 +261,7 @@ const GameBoard = () => {
                 lockRotations={true}
                 restitution={0}
               >
-                <CitizenBlue color={me.state.profile.color}/>
+                <Citizen color={me.state.profile.color}/>
               </RigidBody>
             ) : null}
 
