@@ -1,9 +1,11 @@
+import { myPlayer } from 'playroomkit';
+import { useGameEngine } from '../../Context/useGameEngine';
 import styles from './TileControls.module.css'
 
 function TileControls({
+    tileRotation,
     setTileRotation,
     newTileData,
-    tileRotation,
     setReleaseTile,
     showTile,
     setShowTile,
@@ -15,12 +17,20 @@ function TileControls({
     gameTileCount,
     checkTilePlacement,
     setNewTileMesh,
-    newTile2DPosition,
-    boardGameMatrix,
-    setBoardGameMatrix,
-    phaseEnd,
-    me
+    newTile2DPosition
 }) {
+
+
+const {
+    playerTurn,
+    players,
+    phaseEnd,
+    boardGameMatrix,
+    setBoardGameMatrix
+    } = useGameEngine();
+
+    const me = myPlayer()
+
   return (
     <>
         <button 
@@ -66,7 +76,7 @@ function TileControls({
             style={{ backgroundColor: me.state.profile.color }}
             className={styles.button}
         >
-            {showTile ? 'Take a new tile' : 'Get Tile'}
+        {showTile ? 'Take a new tile' : 'Draw a tile'}
         </button>
         <button
             style={{ backgroundColor: me.state.profile.color }}
@@ -80,7 +90,8 @@ function TileControls({
                     
                     phaseEnd()
                 } else {
-                    console.log("tile not been placed");
+                    console.log("tile can not be placed there");
+                    alert('You can not place that tile there, find another location or draw a new tile')
                 }
             }}
         >

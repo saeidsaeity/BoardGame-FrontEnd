@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./CitizenControls.module.css";
 import { useGameEngine } from "../../Context/useGameEngine";
 import { checkTileCompletes } from "../../Views/GameBoard/verifyFunctions";
+import { myPlayer } from "playroomkit";
 
 function CitizenControls({
   newTileData,
@@ -11,12 +12,13 @@ function CitizenControls({
   setNewTileData,
   setShowCitizen,
   setCitizenArray,
-  setTileRotation,
-  me
+  setTileRotation
 }) {
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
   const [ citizenControlledPosition, setCitizenControlledPosition ] = useState()
+  const [currentAsset, setCurrentAsset] = useState([]);
+  const [currentCompass, setCurrentCompass] = useState([]);
 
   // const adjustment = 0.25
   const adjustment = 0.3;
@@ -37,20 +39,15 @@ function CitizenControls({
 
 
   const {
-    turn,
-    turnPhase,
     playerTurn,
-    timer,
     players,
     phaseEnd,
     boardGameMatrix,
-
-    setBoardGameMatrix
-
+    setBoardGameMatrix,
   } = useGameEngine();
-  // console.log(me, "ME!");
-  const [currentAsset, setCurrentAsset] = useState([]);
-  const [currentCompass, setCurrentCompass] = useState([]);
+
+  const me = myPlayer()
+
   return (
     <div className={styles.CitizenControls}>
       <h2>Select citizen location:</h2>

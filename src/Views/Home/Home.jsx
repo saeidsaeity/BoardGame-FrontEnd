@@ -1,25 +1,27 @@
+import { Suspense, useEffect, useRef, useState } from 'react';
+import { OrbitControls, Sky, Stars } from '@react-three/drei';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from '../../components/Header/Header';
-import useSound from 'use-sound';
-import opening from '/GameSound1.mp3';
+import { Canvas } from '@react-three/fiber';
+import { Physics, RigidBody } from '@react-three/rapier';
+
 import { MdOutlineMusicOff } from 'react-icons/md';
 import { SlMusicTone } from 'react-icons/sl';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { insertCoin } from 'playroomkit';
-import styles from './Home.module.css';
+
+import Header from '../../components/Header/Header';
+
+import { CitizenRed } from '../../assets/citizens/CitizenRed';
+import { CitizenBlue } from '../../assets/citizens/CitizenBlue';
+import { CitizenGreen } from '../../assets/citizens/CitizenGreen';
+import { CitizenYellow } from '../../assets/citizens/CitizenYellow';
+
+import useSound from 'use-sound';
+import opening from '/GameSound1.mp3';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import aboutText from './aboutData';
 import { gsap } from 'gsap';
 import Rules from './Rules';
 import ProjectDescription from './ProjectDescription';
-import { Canvas } from '@react-three/fiber';
-import { Physics, RigidBody } from '@react-three/rapier';
-import { OrbitControls, Sky, Stars, Text3D } from '@react-three/drei';
-import { CitizenRed } from '../../assets/citizens/CitizenRed';
-import { CitizenBlue } from '../../assets/citizens/CitizenBlue';
-import { CitizenGreen } from '../../assets/citizens/CitizenGreen';
-import { CitizenYellow } from '../../assets/citizens/CitizenYellow';
-import { GameBoardCells } from '../../components/GameBoardCells/GameBoardCells';
+
 import TileA from '../../assets/tiles/tileA';
 import TileD from '../../assets/tiles/tileD';
 import TileE from '../../assets/tiles/tileE';
@@ -28,19 +30,30 @@ import TileK from '../../assets/tiles/tileK';
 import TileS from '../../assets/tiles/tileS';
 import TileU from '../../assets/tiles/tileU';
 import TileX from '../../assets/tiles/tileX';
+
+import styles from './Home.module.css';
+
 gsap.registerPlugin(ScrollTrigger);
+
 function Home() {
   const navigate = useNavigate();
   const [playSound] = useSound('/GameSound1.mp3');
   const [muted, setMuted] = useState(true);
+
   const aboutRef = useRef(null);
+  
   const [sunPosition, setSunPosition] = useState([-50, 0, 250]);
   const [citizenCount, setCitizenCount] = useState(new Array(60).fill(0));
+  const [ citizensRed, setCitizensRed ] = useState()
+  const [ citizensBlue, setCitizensBlue ] = useState()
+  const [ citizensGreen, setCitizensGreen ] = useState()
+  const [ citizensYellow, setCitizensYellow ] = useState()
 
   const toggleMute = () => {
     setMuted(!muted);
   };
   const [play] = useSound(opening);
+
   useEffect(() => {
     if (!muted) {
       setTimeout(() => {
@@ -69,40 +82,89 @@ function Home() {
         duration: 0.3,
         delay: index * 0.025,
       });
+
+      const redCitizens = citizenCount.map((arr, index) => {
+        return (
+          <RigidBody
+            key={'A'+ index}
+            gravityScale={0.15}
+            position={[Math.random() * 10, 20, 0]}
+            scale={0.095}
+            friction={0.1}
+            mass={1}
+            rotation={[0, 0, 0]}
+            canSleep={false}
+            lockRotations={false}
+            restitution={1}
+          >
+            <CitizenRed />
+          </RigidBody>
+        )})
+      setCitizensRed(redCitizens)
     });
 
-    // Set up ScrollTrigger to finish animation when bottom two-thirds of about section is visible
-    ScrollTrigger.create({
-      trigger: aboutRef.current,
-      start: 'bottom bottom-=33%', // Bottom two-thirds are visible
-      onEnterBack: () => {
-        // Complete the animation when bottom two-thirds of about section is visible
-        gsap.set(
-          letters.map((_, index) => aboutRef.current.children[index]),
-          { opacity: 1 }
+    const blueCitizens = citizenCount.map((arr, index) => {
+      return (
+        <RigidBody
+          key={'B'+ index}
+          gravityScale={0.1}
+          position={[Math.random() * 5, 19.2, 2]}
+          scale={0.095}
+          friction={0.1}
+          mass={1}
+          rotation={[0, 0, 0]}
+          canSleep={false}
+          lockRotations={false}
+          restitution={1}
+        >
+          <CitizenBlue />
+        </RigidBody>
+      )})
+      setCitizensBlue(blueCitizens)
+
+      const greenCitizens = citizenCount.map((arr, index) => {
+        return (
+          <RigidBody
+            key={'C'+ index}
+            gravityScale={0.15}
+            position={[Math.random() * 10, 19.5, 0]}
+            scale={0.095}
+            friction={0.1}
+            mass={1}
+            rotation={[0, 0, 0]}
+            canSleep={false}
+            lockRotations={false}
+            restitution={1}
+          >
+            <CitizenGreen />
+          </RigidBody>
         );
-      },
-    });
+      })
+      setCitizensGreen(greenCitizens)
+
+      const yellowCitizens = citizenCount.map((arr, index) => {
+        return (
+          <RigidBody
+            key={'D'+ index}
+            gravityScale={0.1}
+            position={[Math.random() * 10, 20.4, 4]}
+            scale={0.095}
+            friction={0.1}
+            mass={1}
+            rotation={[0, Math.PI /2, 0]}
+            canSleep={false}
+            lockRotations={false}
+            restitution={1}
+          >
+            <CitizenYellow />
+          </RigidBody>
+        );
+      })
+      setCitizensYellow(yellowCitizens)
   }, []);
 
   function hostGameHandler() {
-    // console.log('enter hostGameHandler');
     navigate('/lobby');
-    // insertCoin().then(() => {
-    //   navigate("/gameboard");
-    // });
-  }
-
-  function generateRandom(min = -5, max = -5) {
-    let difference = max - min;
-
-    let rand = Math.random();
-
-    rand = Math.floor(rand * difference);
-
-    rand = rand + min;
-
-    return rand;
   }
 
   return (
@@ -123,222 +185,153 @@ function Home() {
               Host a game!
             </button>
           </div>
-          <Canvas shadows camera={{ fov: 70, position: [0, 2, 8] }}>
-            <Physics>
-              <ambientLight intensity={1.25} />
-              <Stars factor={2.5} />
-              <Sky
-                sunPosition={sunPosition}
-                distance={50000}
-                inclination={10}
-                azimuth={0.5}
-                turbidity={0.5}
-                rayleigh={10}
-                mieDirectionalG={0.01}
-                mieCoefficient={0.005}
-              />
+          <Suspense fallback={<h1>Loading...</h1>}>
 
-              <OrbitControls
-                minDistance={2}
-                maxDistance={30}
-                enableRotate={true}
-                enableZoom={false}
-                maxPolarAngle={Math.PI / 2 - 0.1}
-                dampingFactor={0.8}
-                rotateSpeed={0.6}
-                target={[0, 3, 0]}
-              />
-
-              <directionalLight
-                
-                intensity={2}
-                position={sunPosition}
-                shadow-normalBias={0.03}
-              />
-              <directionalLight
-                castShadow
-                intensity={4}
-                position={[-50, 23, 100]}
-                shadow-normalBias={0.03}
-              />
-
-              {citizenCount.map((arr, index) => {
-                return (
-                  <RigidBody
-                    key={'A'+ index}
-                    gravityScale={0.15}
-                    position={[Math.random() * 10, 20, 0]}
-                    scale={0.095}
-                    friction={0.1}
-                    mass={1}
-                    rotation={[0, 0, 0]}
-                    canSleep={false}
-                    lockRotations={false}
-                    restitution={1}
-                  >
-                    <CitizenRed />
-                  </RigidBody>
-                );
-              })}
-
-              {citizenCount.map((arr, index) => {
-                return (
-                  <RigidBody
-                    key={'B'+ index}
-                    gravityScale={0.1}
-                    position={[Math.random() * 10, 20, 5]}
-                    scale={0.095}
-                    friction={0.1}
-                    mass={1}
-                    rotation={[0, 0, 0]}
-                    canSleep={false}
-                    lockRotations={false}
-                    restitution={1}
-                  >
-                    <CitizenBlue />
-                  </RigidBody>
-                );
-              })}
-
-              {citizenCount.map((arr, index) => {
-                return (
-                  <RigidBody
-                    key={'C'+ index}
-                    gravityScale={0.15}
-                    position={[Math.random() * 10, 20, 0]}
-                    scale={0.095}
-                    friction={0.1}
-                    mass={1}
-                    rotation={[0, 0, 0]}
-                    canSleep={false}
-                    lockRotations={false}
-                    restitution={1}
-                  >
-                    <CitizenGreen />
-                  </RigidBody>
-                );
-              })}
-
-              {citizenCount.map((arr, index) => {
-                return (
-                  <RigidBody
-                    key={'D'+ index}
-                    gravityScale={0.1}
-                    position={[Math.random() * 10, 20, 3]}
-                    scale={0.095}
-                    friction={0.1}
-                    mass={1}
-                    rotation={[0, 0, 0]}
-                    canSleep={false}
-                    lockRotations={false}
-                    restitution={1}
-                  >
-                    <CitizenYellow />
-                  </RigidBody>
-                );
-              })}
-
-              <RigidBody
-                gravityScale={0.1}
-                position={[0, 5, 0]}
-                scale={0.095}
-                friction={100}
-                mass={100}
-                rotation={[0, 0, 0]}
-                canSleep={true}
-                lockRotations={true}
-                restitution={0}
-              >
-                <CitizenRed />
-              </RigidBody>
-
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileA position={[-2, 0, 2]} scale={0.92} rotation={[0, Math.PI / 2, 0]}/>
-              </RigidBody>
-
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileD position={[0, 0, 0]} scale={0.92} />
-              </RigidBody>
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileE position={[-2, 0, 0]} scale={0.92} />
-              </RigidBody>
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileE position={[2, 0, 2]} scale={0.92} rotation={[0, Math.PI / 2, 0]}/>
-              </RigidBody>
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileF position={[2, 0, 0]} scale={0.92} />
-              </RigidBody>
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileK position={[0, 0, 2]} scale={0.92} />
-              </RigidBody>
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileS
-                  position={[-2, 0, -2]}
-                  scale={0.92}
-                  rotation={[0, Math.PI / 2, 0]}
+            <Canvas shadows camera={{ fov: 70, position: [0, 2, 8] }}>
+              <Physics>
+                <ambientLight intensity={1.25} />
+                <Stars factor={2.5} />
+                <Sky
+                  sunPosition={sunPosition}
+                  distance={50000}
+                  inclination={10}
+                  azimuth={0.5}
+                  turbidity={0.5}
+                  rayleigh={10}
+                  mieDirectionalG={0.01}
+                  mieCoefficient={0.005}
                 />
-              </RigidBody>
 
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileU position={[2, 0, -2]} scale={0.92} rotation={[0, Math.PI / 2, 0]}/>
-              </RigidBody>
+                <OrbitControls
+                  minDistance={2}
+                  maxDistance={30}
+                  enableRotate={true}
+                  enableZoom={false}
+                  maxPolarAngle={Math.PI / 2 - 0.1}
+                  dampingFactor={0.8}
+                  rotateSpeed={0.6}
+                  target={[0, 3, 0]}
+                />
 
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileU position={[0, 0, -4]} scale={0.92} />
-              </RigidBody>
+                <directionalLight
+                  intensity={2}
+                  position={sunPosition}
+                  shadow-normalBias={0.03}
+                />
+                <directionalLight
+                  castShadow
+                  intensity={4}
+                  position={[-50, 23, 100]}
+                  shadow-normalBias={0.03}
+                />
 
-              <RigidBody
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              >
-                <TileX position={[0, 0, -2]} scale={0.92} />
-              </RigidBody>
+                {citizensRed}
+                {citizensBlue}
+                {citizensGreen}
+                {citizensYellow}
 
-              <RigidBody type="fixed">
-                <mesh receiveShadow position-y={-0.3}>
-                  <boxGeometry args={[22, 0.5, 22]} />
-                  <meshStandardMaterial color="#8f4111" />
-                </mesh>
-              </RigidBody>
-            </Physics>
-          </Canvas>
+                <RigidBody
+                  gravityScale={0.1}
+                  position={[0, 5, 0]}
+                  scale={0.095}
+                  friction={100}
+                  mass={100}
+                  rotation={[0, 0, 0]}
+                  canSleep={true}
+                  lockRotations={true}
+                  restitution={0}
+                >
+                  <CitizenRed />
+                </RigidBody>
+
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileA position={[-2, 0, 2]} scale={0.92} rotation={[0, Math.PI / 2, 0]}/>
+                </RigidBody>
+
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileD position={[0, 0, 0]} scale={0.92} />
+                </RigidBody>
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileE position={[-2, 0, 0]} scale={0.92} />
+                </RigidBody>
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileE position={[2, 0, 2]} scale={0.92} rotation={[0, Math.PI / 2, 0]}/>
+                </RigidBody>
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileF position={[2, 0, 0]} scale={0.92} />
+                </RigidBody>
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileK position={[0, 0, 2]} scale={0.92} />
+                </RigidBody>
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileS
+                    position={[-2, 0, -2]}
+                    scale={0.92}
+                    rotation={[0, Math.PI / 2, 0]}
+                  />
+                </RigidBody>
+
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileU position={[2, 0, -2]} scale={0.92} rotation={[0, Math.PI / 2, 0]}/>
+                </RigidBody>
+
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileU position={[0, 0, -4]} scale={0.92} />
+                </RigidBody>
+
+                <RigidBody
+                  restitution={0}
+                  enabledTranslations={[false, true, false]}
+                  enabledRotations={[false, false, false]}
+                >
+                  <TileX position={[0, 0, -2]} scale={0.92} />
+                </RigidBody>
+
+                <RigidBody type="fixed">
+                  <mesh receiveShadow position-y={-0.3}>
+                    <boxGeometry args={[22, 0.5, 22]} />
+                    <meshStandardMaterial color="#8f4111" />
+                  </mesh>
+                </RigidBody>
+              </Physics>
+            </Canvas>
+          </Suspense>
         </div>
 
         <div className={styles.imagewrapper}>
