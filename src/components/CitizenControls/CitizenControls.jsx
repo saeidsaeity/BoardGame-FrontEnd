@@ -11,6 +11,7 @@ function CitizenControls({
   setNewTileData,
   setShowCitizen,
   setCitizenArray,
+  setTileRotation,
   me
 }) {
   const [placementOptions, setPlacementOptions] = useState([]);
@@ -73,8 +74,9 @@ function CitizenControls({
                 setCurrentCompass(index);
                 let xCoord = newTileData.grid_id.row - 5;
                 let yCoord = newTileData.grid_id.column - 5;
-                const integerTileRotation =
-                  -1 * Math.floor(tileRotation / (Math.PI / 2));
+                console.log(tileRotation,'hello');
+                const integerTileRotation =-1 * Math.floor(tileRotation / (Math.PI / 2));
+                  console.log(integerTileRotation);
                 if (integerTileRotation === 0) {
                   if (compass === "N") yCoord -= adjustment;
                   if (compass === "E") xCoord += adjustment;
@@ -172,6 +174,7 @@ function CitizenControls({
              
               return changeTileData;
             });
+            setTileRotation(0)
             setCitizenArray([])
             setShowCitizen(false);
             phaseEnd();

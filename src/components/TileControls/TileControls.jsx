@@ -77,7 +77,7 @@ function TileControls({
                     const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
                     newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
                     setBoardGameMatrix(newerBoard)
-                    setTileRotation(0)
+                    
                     phaseEnd()
                 } else {
                     console.log("tile not been placed");

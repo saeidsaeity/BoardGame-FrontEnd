@@ -165,6 +165,7 @@ export const UI = (
                     tileRotation={tileRotation} 
                     setNewTileData={setNewTileData} 
                     setCitizenArray={setCitizenArray}
+                    setTileRotation={setTileRotation}
                     me={me}
                 /> : null }
             {player !== me ? 
