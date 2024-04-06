@@ -19,6 +19,7 @@ function Login() {
       <Link to="/" className={styles.homeLink}>
         <AiFillHome />
       </Link>
+      <h1 className={styles.heading}>Coming soon...with the ability to save your games</h1>
       <h1 className={styles.heading}>Please Login</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputGroup}>
