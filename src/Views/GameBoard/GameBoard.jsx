@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { OrbitControls, Sky, Stars } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
@@ -12,6 +12,7 @@ import { Citizen } from '../../assets/citizens/Citizen.jsx';
 import TileD from '../../assets/tiles/tileD.jsx';
 // styling
 import styles from './GameBoard.module.css';
+import SpinnerLoader from '../../components/SpinnerLoader/SpinnerLoader.jsx';
 
 const GameBoard = () => {
   // TILE
@@ -170,6 +171,9 @@ const GameBoard = () => {
       />
 
       <div className={styles.gameBoard}>
+        <Suspense fallback={<SpinnerLoader />}>
+
+        
         <Canvas shadows camera={{ fov: 70, position: [0, 8, 14] }}>
 
           <Physics>
@@ -270,6 +274,7 @@ const GameBoard = () => {
           {/* <axesHelper args={[5]} />
           <gridHelper args={[50, 25, "black", "red"]} /> */}
         </Canvas>
+        </Suspense>
       </div>
     </>
   );
