@@ -176,10 +176,7 @@ const GameBoard = () => {
 
       <div className={styles.gameBoard}>
         <Suspense fallback={<SpinnerLoader />}>
-
-        
         <Canvas shadows camera={{ fov: 70, position: [0, 8, 14] }}>
-
           <Physics>
             <ambientLight intensity={1.2} />
             <Sky
