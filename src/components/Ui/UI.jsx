@@ -6,7 +6,6 @@ import { Canvas } from "@react-three/fiber";
 import { Citizen } from "../../assets/citizens/Citizen";
 import { useGameEngine } from "../../Context/useGameEngine";
 import { checkTilePlacement } from '../../Views/GameBoard/verifyFunctions.js';
-import { randomTileGenerator } from '../../../utils.js';
 
 import CitizenControls from "../CitizenControls/CitizenControls";
 
@@ -128,7 +127,6 @@ export const UI = (
                         setNewTileType={setNewTileType}
                         setReplaceTile={setReplaceTile}
                         gameTileCount={gameTileCount}
-                        randomTileGenerator={randomTileGenerator}
                         checkTilePlacement={checkTilePlacement}
                         newTile2DPosition={newTile2DPosition}
                         setNewTileMesh={setNewTileMesh}

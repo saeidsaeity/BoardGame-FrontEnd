@@ -44,6 +44,7 @@ const GameBoard = () => {
     );
     const renderNewTile = (
       <RigidBody
+        key={tileType + ',' + newTilePosition}
         canSleep={true}
         position={newTilePosition}
         rotation={[0, tileRotation, 0]}
@@ -54,6 +55,7 @@ const GameBoard = () => {
         <TileComponent.default scale={tileScale} />
       </RigidBody>
     );
+    // console.log(renderNewTile, "DRAW NEWT TILE");
     setNewTileMesh(renderNewTile);
   };
 
@@ -68,10 +70,12 @@ const GameBoard = () => {
           position={position}
           rotation={[0, -rotation, 0]}
           scale={tileScale}
+          key={tileType + ',' + position}
         >
           <TileComponent.default />
         </RigidBody>
       );
+      // console.log(renderNewTile, "RENDER NEW TILE");
       return renderNewTile;
     }
   };
@@ -237,6 +241,8 @@ const GameBoard = () => {
               turnPhase={turnPhase}
               isCitizenPhase={isCitizenPhase}
             />
+
+            {console.log(newTileMesh, "MESH")}
 
             {releaseTile && replaceTile ? newTileMesh : null}
 

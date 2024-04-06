@@ -1,5 +1,8 @@
 import { myPlayer } from 'playroomkit';
 import { useGameEngine } from '../../Context/useGameEngine';
+
+import { randomTileGenerator } from '../../../utils.js';
+
 import styles from './TileControls.module.css'
 
 function TileControls({
@@ -13,7 +16,6 @@ function TileControls({
     drawEventHandler,
     setNewTileType,
     setReplaceTile,
-    randomTileGenerator,
     gameTileCount,
     checkTilePlacement,
     setNewTileMesh,
@@ -29,40 +31,56 @@ const {
     setBoardGameMatrix
     } = useGameEngine();
 
-    const me = myPlayer()
+    const me = myPlayer();
+
+    const rotateTileHandler = () => {
+        setTileRotation((currRotation) => {
+            if(currRotation <= -2*Math.PI){
+                return currRotation + 1.5 * Math.PI
+            }
+            return currRotation - Math.PI / 2;
+        });
+        newTileData.orientation = (tileRotation-Math.PI / 2)*-1*(180 / Math.PI)%360;
+        setNewTileMesh((currTile) => {
+            if (currTile === undefined) {
+                return currTile;
+            }
+            const updatedTile = {
+                ...currTile,
+                props: {
+                ...currTile.props,
+                rotation: [0, tileRotation - Math.PI / 2, 0],
+                },
+            };
+            return updatedTile;
+        });
+    }
+
+    const confirmTileHandler = () => {
+        console.log(newTileData, "newTiledata");
+        if (checkTilePlacement(newTileData, boardGameMatrix)) {
+            setReplaceTile(false)
+            const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
+            newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
+            setBoardGameMatrix(newerBoard)
+            phaseEnd()
+        } else {
+            console.log("tile can not be placed there");
+            alert('You can not place that tile there, find another location or draw a new tile')
+        }
+    }
 
   return (
     <>
         <button 
-            onClick={() => {
-                setTileRotation((currRotation) => {
-                    if(currRotation <= -2*Math.PI){
-                        return currRotation + 1.5 * Math.PI
-                    }
-                    return currRotation - Math.PI / 2;
-                });
-
-                newTileData.orientation = (tileRotation-Math.PI / 2)*-1*(180 / Math.PI)%360;
-                setNewTileMesh((currTile) => {
-                    if (currTile === undefined) {
-                        return currTile;
-                    }
-                    const updatedTile = {
-                        ...currTile,
-                        props: {
-                        ...currTile.props,
-                        rotation: [0, tileRotation - Math.PI / 2, 0],
-                        },
-                    };
-                    return updatedTile;
-                });
-            }}
+            onClick={rotateTileHandler}
             style={{ backgroundColor: me.state.profile.color }}
             className={styles.button}
-        >
-            Rotate
-        </button>
+        >Rotate</button>
+        
         <button 
+            style={{ backgroundColor: me.state.profile.color }}
+            className={styles.button}
             onClick={async () => {
                 setReleaseTile(false)
                 setShowTile(false)
@@ -73,30 +91,13 @@ const {
                 setShowTile(true)
                 setReplaceTile(true)
             }}
-            style={{ backgroundColor: me.state.profile.color }}
-            className={styles.button}
-        >
-        {showTile ? 'Take a new tile' : 'Draw a tile'}
-        </button>
+        >{showTile ? 'Take a new tile' : 'Draw a tile'}</button>
+
         <button
             style={{ backgroundColor: me.state.profile.color }}
             className={styles.button}
-            onClick={() => {
-                if (checkTilePlacement(newTileData, boardGameMatrix)) {
-                    setReplaceTile(false)
-                    const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
-                    newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
-                    setBoardGameMatrix(newerBoard)
-                    
-                    phaseEnd()
-                } else {
-                    console.log("tile can not be placed there");
-                    alert('You can not place that tile there, find another location or draw a new tile')
-                }
-            }}
-        >
-            Confirm
-        </button>
+            onClick={confirmTileHandler}
+        >Confirm</button>
     </>
   )
 }
