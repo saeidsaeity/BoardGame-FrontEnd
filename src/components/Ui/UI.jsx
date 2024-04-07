@@ -1,5 +1,5 @@
 import { myPlayer } from "playroomkit";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Center, OrbitControls, PresentationControls } from "@react-three/drei";
 
 import { Canvas } from "@react-three/fiber";
@@ -11,31 +11,19 @@ import CitizenControls from "../CitizenControls/CitizenControls";
 // import PopUp from "../popUpRules";
 import styles from './UI.module.css'
 import TileControls from "../TileControls/TileControls";
+import { BoardGameContext } from "../../Context/BoardGameContext";
 
-export const UI = (
-    { 
-        tileRotation, 
-        setTileRotation, 
+
+export const UI = ({drawEventHandler}) => {
+    const {
         newTileType,
-        newTileData,
-        checkTilePlacement,
-        setReleaseTile,
-        randomTileGenerator,
-        setNewTileData,
-        drawEventHandler,
-        setNewTileType,
-        newTile2DPosition,
-        setReplaceTile,
         citizenPosition,
-        setCitizenPosition,
-        setNewTileMesh,
-        newTileMesh,
-        setShowCitizen,
-        setCitizenArray
+        showTile,
+        setShowTile
+        }= useContext(BoardGameContext)
 
-    }) => {
     const [ newPlayerTile, setNewPlayerTile ] = useState()
-    const [ showTile, setShowTile ] = useState(false)
+ 
     const [ currScoreBoard, setCurrScoreBoard] = useState([])
     
     const {
@@ -157,13 +145,6 @@ export const UI = (
             {/* <PopUp/> */}
             {turnPhase === 'Place Citizen' ?  
                 <CitizenControls 
-                    setShowCitizen={setShowCitizen} 
-                    newTileData={newTileData} 
-                    setCitizenPosition={setCitizenPosition} 
-                    tileRotation={tileRotation} 
-                    setNewTileData={setNewTileData} 
-                    setCitizenArray={setCitizenArray}
-                    setTileRotation={setTileRotation}
                     me={me}
                 /> : null }
             {player !== me ? 
@@ -175,25 +156,8 @@ export const UI = (
                     :
 
                     <TileControls
-                        newTileData={newTileData}
-                        tileRotation={tileRotation}
-                        setTileRotation={setTileRotation}
-                        setReleaseTile={setReleaseTile}
-                        showTile={showTile}
-                        setShowTile={setShowTile}
-                        setNewTileData={setNewTileData}
-                        drawEventHandler={drawEventHandler}
-                        setNewTileType={setNewTileType}
-                        setReplaceTile={setReplaceTile}
-                        gameTileCount={gameTileCount}
-                        boardGameMatrix={boardGameMatrix}
-                        setBoardGameMatrix={setBoardGameMatrix}
-                        phaseEnd={phaseEnd}
-                        randomTileGenerator={randomTileGenerator}
-                        checkTilePlacement={checkTilePlacement}
-                        newTile2DPosition={newTile2DPosition}
-                        setNewTileMesh={setNewTileMesh}
                         me={me}
+                        drawEventHandler={drawEventHandler}
                     />
 
                 }
