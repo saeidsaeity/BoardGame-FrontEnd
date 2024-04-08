@@ -1,24 +1,23 @@
-import { useContext, useEffect, useState } from 'react';
-import { Cloud, Clouds, OrbitControls, Sky, Stars } from '@react-three/drei';
+
+import { Suspense, useEffect, useState ,useContext} from 'react';
+import { OrbitControls, Sky, Stars } from '@react-three/drei';
+
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
 import { useGameEngine } from '../../Context/useGameEngine.jsx';
-import { myPlayer } from "playroomkit";
-
+import { myPlayer } from 'playroomkit';
 // Components
 import { UI } from '../../components/Ui/UI.jsx';
 import { GameBoardCells } from '../../components/GameBoardCells/GameBoardCells.jsx';
-import { Citizen } from '../../assets/citizens/Citizen.jsx';
 // 3D components
-
+import { Citizen } from '../../assets/citizens/Citizen.jsx';
 import TileD from '../../assets/tiles/tileD.jsx';
-
-// Functions
-import { checkTilePlacement } from './verifyFunctions.js';
-import { randomTileGenerator } from '../../../utils.js';
 // styling
 import styles from './GameBoard.module.css';
+
 import { BoardGameContext } from '../../Context/BoardGameContext.jsx';
+import SpinnerLoader from '../../components/SpinnerLoader/SpinnerLoader.jsx';
+
 
 const GameBoard = () => {
   // TILE
@@ -30,13 +29,13 @@ const GameBoard = () => {
   citizenPosition,isCitizenPhase,replaceTile,showCitizen,citizenArray,setCitizenArray,releaseCitizen,setReleaseCitizen}=useContext(BoardGameContext)
   // STATES //
   // CAMERA & ENVIRONMENT
-
   const drawEventHandler = async (tileType) => {
     const TileComponent = await import(
       `../../assets/tiles/tile${tileType}.jsx`
     );
     const renderNewTile = (
       <RigidBody
+        key={tileType + ',' + newTilePosition}
         canSleep={true}
         position={newTilePosition}
         rotation={[0, tileRotation, 0]}
@@ -47,6 +46,7 @@ const GameBoard = () => {
         <TileComponent.default scale={tileScale} />
       </RigidBody>
     );
+    // console.log(renderNewTile, "DRAW NEWT TILE");
     setNewTileMesh(renderNewTile);
   };
 
@@ -61,13 +61,17 @@ const GameBoard = () => {
           position={position}
           rotation={[0, -rotation, 0]}
           scale={tileScale}
+
           restitution={0}
         enabledTranslations={[false, true, false]}
         enabledRotations={[false, false, false]}
+
+          key={tileType + ',' + position}
         >
           <TileComponent.default />
         </RigidBody>
       );
+      // console.log(renderNewTile, "RENDER NEW TILE");
       return renderNewTile;
     }
   };
@@ -86,27 +90,22 @@ const GameBoard = () => {
         lockRotations={true}
         restitution={0}
       >
-        <Citizen color={colour}/>
+        <Citizen color={colour} />
       </RigidBody>
     );
     return citizenComp;
   };
 
   const {
-    turn,
     turnPhase,
-    playerTurn,
-    timer,
-    players,
-    phaseEnd,
-    boardGameMatrix,
-    setBoardGameMatrix,
-    newTileArray,
-    setNewTileArray
+    boardGameMatrix
   } = useGameEngine();
 
 
+
   const me = myPlayer()
+
+
   useEffect(() => {
     // setting rendered tile array
     setReleaseCitizen(false);
@@ -125,18 +124,17 @@ const GameBoard = () => {
             ];
 
             if (col[0].citizen.is_citizen) {
-              renderCitizen( col[0].citizen.position , col[0].citizen.colour).then((newcitizen) => {
+              renderCitizen(
+                col[0].citizen.position,
+                col[0].citizen.colour
+              ).then((newcitizen) => {
                 setCitizenArray((currArray) => {
                   return [...currArray, newcitizen];
                 });
                 setReleaseCitizen(true);
               });
             }
-            getRenderTileMesh(
-              col[0].tile_type,
-              position,
-              (col[0].orientation * Math.PI) / 180
-            )
+            getRenderTileMesh( col[0].tile_type, position, (col[0].orientation * Math.PI) / 180 )
               .then((tileMesh) => {
                 setRenderTileArr((currArray) => {
                   return [...currArray, tileMesh];
@@ -156,26 +154,35 @@ const GameBoard = () => {
     <>
       <UI  drawEventHandler={drawEventHandler} />
 
+
       <div className={styles.gameBoard}>
+        <Suspense fallback={<SpinnerLoader />}>
         <Canvas shadows camera={{ fov: 70, position: [0, 8, 14] }}>
           <Physics>
-            <ambientLight intensity={1.5} />
+            <ambientLight intensity={1.2} />
             <Sky
               sunPosition={sunPosition}
-              distance={5000}
-              inclination={1}
-              azimuth={0.1}
-              turbidity={0.1}
-              rayleigh={1}
-              mieDirectionalG={0.01}
-              mieCoefficient={0.005}
+              distance={50000}
+                  inclination={10}
+                  azimuth={0.5}
+                  turbidity={0.5}
+                  rayleigh={10}
+                  mieDirectionalG={0.01}
+                  mieCoefficient={0.005}
             />
 
             <Stars factor={2.5} />
 
             <directionalLight
               castShadow
-              intensity={3}
+              intensity={1.5}
+              position={[50, 50, 150]}
+              shadow-normalBias={0.03}
+            />
+
+            <directionalLight
+              castShadow
+              intensity={5}
               position={sunPosition}
               shadow-normalBias={0.03}
             />
@@ -190,14 +197,14 @@ const GameBoard = () => {
               target={[0, 2.25, 0]}
             />
 
-            <RigidBody>
-              <TileD
-                position={[0, 4, 0]}
-                scale={tileScale}
-                restitution={0}
-                enabledTranslations={[false, true, false]}
-                enabledRotations={[false, false, false]}
-              />
+            <RigidBody 
+              position={[0, 4, 0]}
+              scale={tileScale}
+              restitution={0}
+              enabledTranslations={[false, true, false]}
+              enabledRotations={[false, false, false]}
+            >
+              <TileD />
             </RigidBody>
 
             <GameBoardCells
@@ -213,11 +220,14 @@ const GameBoard = () => {
               isCitizenPhase={isCitizenPhase}
             />
 
+            {console.log(newTileMesh, "MESH")}
+
             {releaseTile && replaceTile ? newTileMesh : null}
 
             {turnPhase === 'Place Citizen' &&
             citizenPosition.length > 0 &&
-            showCitizen && me ? (
+            showCitizen &&
+            me ? (
               <RigidBody
                 gravityScale={0.5}
                 position={citizenPosition}
@@ -229,7 +239,7 @@ const GameBoard = () => {
                 lockRotations={true}
                 restitution={0}
               >
-                <Citizen color={me.state.profile.color}/>
+                <Citizen color={me.state.profile.color} />
               </RigidBody>
             ) : null}
 
@@ -248,6 +258,7 @@ const GameBoard = () => {
           {/* <axesHelper args={[5]} />
           <gridHelper args={[50, 25, "black", "red"]} /> */}
         </Canvas>
+        </Suspense>
       </div>
     </>
   );
