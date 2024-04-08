@@ -1,5 +1,5 @@
 import { myPlayer } from "playroomkit";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState , useContext} from "react";
 import { Center, OrbitControls, PresentationControls } from "@react-three/drei";
 
 import { Canvas } from "@react-three/fiber";
@@ -12,27 +12,21 @@ import CitizenControls from "../CitizenControls/CitizenControls";
 // import PopUp from "../popUpRules";
 import styles from './UI.module.css'
 import TileControls from "../TileControls/TileControls";
+import { BoardGameContext } from "../../Context/BoardGameContext";
 
-export const UI = (
-    { 
-        tileRotation, 
-        setTileRotation, 
+
+export const UI = ({drawEventHandler}) => {
+    const {
         newTileType,
-        newTileData,
-        setReleaseTile,
-        setNewTileData,
-        drawEventHandler,
-        setNewTileType,
-        newTile2DPosition,
-        setReplaceTile,
         citizenPosition,
-        setCitizenPosition,
-        setNewTileMesh,
-        setShowCitizen,
-        setCitizenArray
-    }) => {
+        showTile,
+        setShowTile
+        }= useContext(BoardGameContext)
+
     const [ newPlayerTile, setNewPlayerTile ] = useState()
-    const [ showTile, setShowTile ] = useState(false)
+ 
+    const [ currScoreBoard, setCurrScoreBoard] = useState([])
+
     
     const {
         turnPhase,
@@ -105,31 +99,14 @@ export const UI = (
             {/* <PopUp/> */}
             {turnPhase === 'Place Citizen' && player.id === me.id ?  
                 <CitizenControls 
-                    setShowCitizen={setShowCitizen} 
-                    newTileData={newTileData} 
-                    setCitizenPosition={setCitizenPosition} 
-                    tileRotation={tileRotation} 
-                    setNewTileData={setNewTileData} 
-                    setCitizenArray={setCitizenArray}
-                    setTileRotation={setTileRotation}
+                    me={me}
                 /> : null }
             {turnPhase === 'Place Tile' && player.id === me.id ? 
                 <div className={styles.buttonWrapper}>
                     <TileControls
-                        newTileData={newTileData}
-                        tileRotation={tileRotation}
-                        setTileRotation={setTileRotation}
-                        setReleaseTile={setReleaseTile}
-                        showTile={showTile}
-                        setShowTile={setShowTile}
-                        setNewTileData={setNewTileData}
+
+                        me={me}
                         drawEventHandler={drawEventHandler}
-                        setNewTileType={setNewTileType}
-                        setReplaceTile={setReplaceTile}
-                        gameTileCount={gameTileCount}
-                        checkTilePlacement={checkTilePlacement}
-                        newTile2DPosition={newTile2DPosition}
-                        setNewTileMesh={setNewTileMesh}
                     />
             </div>
             : null

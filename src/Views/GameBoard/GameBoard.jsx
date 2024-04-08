@@ -1,5 +1,7 @@
-import { Suspense, useEffect, useState } from 'react';
+
+import { Suspense, useEffect, useState ,useContext} from 'react';
 import { OrbitControls, Sky, Stars } from '@react-three/drei';
+
 import { Canvas } from '@react-three/fiber';
 import { Physics, RigidBody } from '@react-three/rapier';
 import { useGameEngine } from '../../Context/useGameEngine.jsx';
@@ -12,32 +14,21 @@ import { Citizen } from '../../assets/citizens/Citizen.jsx';
 import TileD from '../../assets/tiles/tileD.jsx';
 // styling
 import styles from './GameBoard.module.css';
+
+import { BoardGameContext } from '../../Context/BoardGameContext.jsx';
 import SpinnerLoader from '../../components/SpinnerLoader/SpinnerLoader.jsx';
+
 
 const GameBoard = () => {
   // TILE
   const tileScale = [0.92, 0.92, 0.92];
   const tileSize = 2;
+  const {enableRotate,sunPosition,
+  newTileMesh,setNewTileMesh,
+ setNewTileData,newTilePosition,setNewTilePosition,setNewTile2DPosition,releaseTile,setReleaseTile,tileRotation,setTileRotation,renderTileArr,setRenderTileArr,
+  citizenPosition,isCitizenPhase,replaceTile,showCitizen,citizenArray,setCitizenArray,releaseCitizen,setReleaseCitizen}=useContext(BoardGameContext)
   // STATES //
   // CAMERA & ENVIRONMENT
-  const [enableRotate, setEnableRotate] = useState(true);
-  const [sunPosition, setSunPosition] = useState([-50, 0, 250]);
-  //NEW TILE
-  const [newTileMesh, setNewTileMesh] = useState(); // the new tile mesh thing
-  const [newTileData, setNewTileData] = useState(); //the new tile object
-  const [newTileType, setNewTileType] = useState(); // string of tile type
-  const [newTilePosition, setNewTilePosition] = useState([12, 4, 0]); //updates the postion
-  const [newTile2DPosition, setNewTile2DPosition] = useState([]); //updates the 2D tile position
-  const [releaseTile, setReleaseTile] = useState(false); //makes it so you cant click after confirm
-  const [tileRotation, setTileRotation] = useState(0); // sets tile rotation
-  const [renderTileArr, setRenderTileArr] = useState([]); // renders 3D models to canvas
-  // Citizen
-  const [citizenPosition, setCitizenPosition] = useState([]);
-  const [isCitizenPhase, setIsCitizenPhase] = useState(false);
-  const [replaceTile, setReplaceTile] = useState(true);
-  const [showCitizen, setShowCitizen] = useState(true);
-
-  // functions
   const drawEventHandler = async (tileType) => {
     const TileComponent = await import(
       `../../assets/tiles/tile${tileType}.jsx`
@@ -70,6 +61,11 @@ const GameBoard = () => {
           position={position}
           rotation={[0, -rotation, 0]}
           scale={tileScale}
+
+          restitution={0}
+        enabledTranslations={[false, true, false]}
+        enabledRotations={[false, false, false]}
+
           key={tileType + ',' + position}
         >
           <TileComponent.default />
@@ -105,9 +101,11 @@ const GameBoard = () => {
     boardGameMatrix
   } = useGameEngine();
 
-  const me = myPlayer();
-  const [citizenArray, setCitizenArray] = useState([]);
-  const [releaseCitizen, setReleaseCitizen] = useState(true);
+
+
+  const me = myPlayer()
+
+
   useEffect(() => {
     // setting rendered tile array
     setReleaseCitizen(false);
@@ -154,25 +152,8 @@ const GameBoard = () => {
   // RENDERING STARTS HERE //
   return (
     <>
-      <UI
-        drawEventHandler={drawEventHandler}
-        newTileType={newTileType}
-        setNewTileType={setNewTileType}
-        newTileMesh={newTileMesh}
-        setNewTileMesh={setNewTileMesh}
-        tileRotation={tileRotation}
-        setTileRotation={setTileRotation}
-        newTileData={newTileData}
-        setNewTileData={setNewTileData}
-        newTile2DPosition={newTile2DPosition}
-        setReleaseTile={setReleaseTile}
-        replaceTile={replaceTile}
-        setReplaceTile={setReplaceTile}
-        citizenPosition={citizenPosition}
-        setCitizenPosition={setCitizenPosition}
-        setCitizenArray={setCitizenArray}
-        setShowCitizen={setShowCitizen}
-      />
+      <UI  drawEventHandler={drawEventHandler} />
+
 
       <div className={styles.gameBoard}>
         <Suspense fallback={<SpinnerLoader />}>

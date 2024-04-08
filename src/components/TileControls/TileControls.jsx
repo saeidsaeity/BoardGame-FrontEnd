@@ -1,27 +1,42 @@
+
+import { useContext } from 'react';
 import { myPlayer } from 'playroomkit';
 import { useGameEngine } from '../../Context/useGameEngine';
-
 import { randomTileGenerator } from '../../../utils.js';
-
 import styles from './TileControls.module.css'
+import { BoardGameContext } from '../../Context/BoardGameContext';
+import { useGameEngine } from '../../Context/useGameEngine';
+import { checkTilePlacement } from '../../Views/GameBoard/verifyFunctions';
 
-function TileControls({
-    tileRotation,
-    setTileRotation,
-    newTileData,
-    setReleaseTile,
-    showTile,
-    setShowTile,
-    setNewTileData,
-    drawEventHandler,
-    setNewTileType,
-    setReplaceTile,
-    gameTileCount,
-    checkTilePlacement,
-    setNewTileMesh,
-    newTile2DPosition
+function TileControls({me,drawEventHandler
 }) {
-
+    const {setTileRotation,
+        newTileData,
+        tileRotation,
+        setReleaseTile,
+        showTile,
+        setShowTile,
+        setNewTileData,
+        setNewTileType,
+        setReplaceTile,
+        setNewTileMesh,
+        newTile2DPosition,
+        }= useContext(BoardGameContext)
+        const {
+            turn,
+            turnPhase,
+            playerTurn,
+            timer,
+            players,
+            phaseEnd,
+            boardGameMatrix,
+            setBoardGameMatrix,
+            setNewTileArray,
+            newTileArray,
+            gameTileCount,
+            scoreBoard
+        } = useGameEngine()
+    
 
 const {
     playerTurn,
