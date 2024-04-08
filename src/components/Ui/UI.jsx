@@ -104,8 +104,6 @@ export const UI = ({drawEventHandler}) => {
             {turnPhase === 'Place Tile' && player.id === me.id ? 
                 <div className={styles.buttonWrapper}>
                     <TileControls
-
-                        me={me}
                         drawEventHandler={drawEventHandler}
                     />
             </div>

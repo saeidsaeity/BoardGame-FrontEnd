@@ -5,10 +5,9 @@ import { useGameEngine } from '../../Context/useGameEngine';
 import { randomTileGenerator } from '../../../utils.js';
 import styles from './TileControls.module.css'
 import { BoardGameContext } from '../../Context/BoardGameContext';
-import { useGameEngine } from '../../Context/useGameEngine';
 import { checkTilePlacement } from '../../Views/GameBoard/verifyFunctions';
 
-function TileControls({me,drawEventHandler
+function TileControls({drawEventHandler
 }) {
     const {setTileRotation,
         newTileData,
@@ -22,20 +21,6 @@ function TileControls({me,drawEventHandler
         setNewTileMesh,
         newTile2DPosition,
         }= useContext(BoardGameContext)
-        const {
-            turn,
-            turnPhase,
-            playerTurn,
-            timer,
-            players,
-            phaseEnd,
-            boardGameMatrix,
-            setBoardGameMatrix,
-            setNewTileArray,
-            newTileArray,
-            gameTileCount,
-            scoreBoard
-        } = useGameEngine()
     
 
 const {
@@ -43,7 +28,8 @@ const {
     players,
     phaseEnd,
     boardGameMatrix,
-    setBoardGameMatrix
+    setBoardGameMatrix,
+    gameTileCount
     } = useGameEngine();
 
     const me = myPlayer();
