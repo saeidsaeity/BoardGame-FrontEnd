@@ -257,7 +257,7 @@ const GameBoard = () => {
             ) : null}
 
             {renderTileArr}
-            {releaseCitizen ? citizenArray : null}
+            {citizenArray}
             <RigidBody type="fixed">
               <mesh receiveShadow position-y={-0.3}>
                 <boxGeometry args={[22, 0.5, 22]} />
