@@ -23,13 +23,15 @@ export const randomTileGenerator = async (gameTileCount) => {
 
 
 
-export const tileChecks = (x,z,i,j,setReleaseTile, setNewTilePosition, setNewTileMesh, setNewTile2DPosition, tileSize) => {
+export const tileChecks = (x,z,i,j,setReleaseTile, setNewTilePosition, setNewTile2DPosition, tileSize,newTileMesh,setNewTileMesh) => {
+ 
     setReleaseTile(true);
       setNewTilePosition([
         x * tileSize,
         4,
         z * tileSize,
       ]);
+      console.log(newTileMesh);
       setNewTileMesh((currTile) => {
         if(currTile ===  undefined){
           return currTile
@@ -47,6 +49,8 @@ export const tileChecks = (x,z,i,j,setReleaseTile, setNewTilePosition, setNewTil
         };
         return updatedTile; 
       });
+      
+    
       setNewTile2DPosition([i + 5, j + 5]);
   }
 

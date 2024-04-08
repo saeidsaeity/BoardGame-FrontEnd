@@ -24,6 +24,9 @@ export const GameEngineProvider = ({ children }) => {
     const [tileDeck, setTileDeck] = useMultiplayerState('tileDeck', [])
     const [newTileArray, setNewTileArray] = useMultiplayerState('newTileArray', [])
     const [scoreBoard, setScoreBoard] = useMultiplayerState('scoreBoard', [])
+    const [newTilePosition, setNewTilePosition] = useMultiplayerState('NewTilePosition',[])
+    
+    const [otherPlayerTile,setOtherPlayerTile] = useMultiplayerState('OtherPlayerTile',[])
     // const [playerTile, setPlayerTile] = useMultiplayerState('playerTile', null)
     // const [grid, setGrid] = useMultiplayerState('grid', [])
     // const [gridSpaces, setGridSpaces] = useMultiplayerState('gridSpaces', [])
@@ -249,7 +252,11 @@ export const GameEngineProvider = ({ children }) => {
         setNewTileArray,
         gameTileCount,
         scoreBoard,
-        setScoreBoard
+        setScoreBoard,
+        newTilePosition,
+        setNewTilePosition,
+       otherPlayerTile,
+       setOtherPlayerTile
     }
     
     return (
