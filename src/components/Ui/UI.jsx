@@ -55,7 +55,7 @@ export const UI = ({drawEventHandler}) => {
                     <img src={me.state.profile.photo}/>
                     <h2 style={{color: me.state.profile.color}}>{me.state.profile.name}</h2>
                 </div>
-                <h2>{me.id === player.id ? `It's your turn!` : `${player.state.profile.name}'s turn...` }</h2>
+                <h2>{me.id === player.id ? `It's they/them/xem/xi/apacheattackhelicopter's turn!` : `${player.state.profile.name}'s turn...` }</h2>
                 {me.id === player.id && turnPhase === 'Place Tile' ? <h2>Place a tile!</h2> : null}
                 {me.id === player.id && turnPhase === 'Place Citizen' ? <h2>Place a citizen / End turn</h2> : null}
             </div>
