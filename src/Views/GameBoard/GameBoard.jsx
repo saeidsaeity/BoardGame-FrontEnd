@@ -110,10 +110,13 @@ const GameBoard = () => {
     // setting rendered tile array
     setReleaseCitizen(false);
     setCitizenArray([]);
-    setRenderTileArr([]);
+    //setRenderTileArr([]);
+    console.log(renderTileArr);
     boardGameMatrix.forEach((row) => {
       row.forEach((col) => {
+        
         // A tile exists in Matrix cell
+        
         if (col.length > 0) {
           // only render non-starting tile
           if (col[0]._id) {
@@ -122,7 +125,8 @@ const GameBoard = () => {
               0,
               (col[0].grid_id.column - 5) * 2,
             ];
-
+            //renderTileArr.forEach((tile)=>{console.log(col[0].tile_type+','+ position);console.log(tile.key===col[0].tile_type+','+ position);})
+            
             if (col[0].citizen.is_citizen) {
               renderCitizen(
                 col[0].citizen.position,
@@ -134,16 +138,24 @@ const GameBoard = () => {
                 setReleaseCitizen(true);
               });
             }
+            console.log(!renderTileArr.some((tile)=>{tile.key===col[0].tile_type+','+ position}));
+            console.log(col[0].tile_type+','+ position);
+            
             getRenderTileMesh( col[0].tile_type, position, (col[0].orientation * Math.PI) / 180 )
               .then((tileMesh) => {
                 setRenderTileArr((currArray) => {
+                  if(currArray.some((tile)=>{return tile.key===col[0].tile_type+','+ position})){
+                    return currArray
+
+                  }
                   return [...currArray, tileMesh];
                 });
               })
               .catch((err) => {
                 console.log(err);
               });
-          }
+          
+        }
         }
       });
     });
