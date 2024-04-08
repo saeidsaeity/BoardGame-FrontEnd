@@ -109,9 +109,8 @@ const GameBoard = () => {
   useEffect(() => {
     // setting rendered tile array
     setReleaseCitizen(false);
-    setCitizenArray([]);
+    //setCitizenArray([]);
     //setRenderTileArr([]);
-    console.log(renderTileArr);
     boardGameMatrix.forEach((row) => {
       row.forEach((col) => {
         
@@ -133,13 +132,15 @@ const GameBoard = () => {
                 col[0].citizen.colour
               ).then((newcitizen) => {
                 setCitizenArray((currArray) => {
+                  
+                  if(citizenArray.some((citizen)=>{return citizen.key ===col[0].citizen.position[0]+','+col[0].citizen.position[1]+','+col[0].citizen.position[2]})){
+                    return currArray
+                  }
                   return [...currArray, newcitizen];
                 });
                 setReleaseCitizen(true);
               });
             }
-            console.log(!renderTileArr.some((tile)=>{tile.key===col[0].tile_type+','+ position}));
-            console.log(col[0].tile_type+','+ position);
             
             getRenderTileMesh( col[0].tile_type, position, (col[0].orientation * Math.PI) / 180 )
               .then((tileMesh) => {

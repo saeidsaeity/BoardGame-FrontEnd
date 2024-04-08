@@ -58,7 +58,7 @@ const {
     }
 
     const confirmTileHandler = () => {
-        console.log(newTileData, "newTiledata");
+        //console.log(newTileData, "newTiledata");
         if (checkTilePlacement(newTileData, boardGameMatrix)) {
             setReplaceTile(false)
             const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
