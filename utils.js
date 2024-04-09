@@ -78,6 +78,6 @@ export const tileChecks = (x,z,i,j,setReleaseTile, setNewTilePosition, setNewTil
       else return 0x32cd32;
     } else {
       if(isCitizenPhase === false) return 0xc3c3c3;
-      else return 0x000000;
+      else  return 0xc3c3c3;
     }
   };
