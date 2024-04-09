@@ -174,7 +174,7 @@ const GameBoard = () => {
   }, [boardGameMatrix]);
   if(newTileMesh){
     const TileTypeEnemy=newTileMesh.key.split('')
-    console.log(newTileMesh);
+    
 setOtherPlayerTile([TileTypeEnemy[0],newTileMesh.props.position,-newTileMesh.props.rotation[1]])
   }
  

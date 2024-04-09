@@ -6,7 +6,7 @@ import { randomTileGenerator } from '../../../utils.js';
 import styles from './TileControls.module.css'
 import { BoardGameContext } from '../../Context/BoardGameContext';
 import { checkTilePlacement } from '../../Views/GameBoard/verifyFunctions';
-
+import useSound from 'use-sound';
 function TileControls({drawEventHandler
 }) {
     const {setTileRotation,
@@ -36,6 +36,7 @@ const {
     } = useGameEngine();
 
     const me = myPlayer();
+    const [playSound] = useSound('confirm.mp3');
 
     const rotateTileHandler = () => {
         setTileRotation((currRotation) => {
@@ -71,6 +72,7 @@ const {
             setNewTileMesh(null)
             setReleaseTile(false)
             setRenderEnemyTile(null)
+            playSound()
             phaseEnd()
         } else {
             console.log("tile can not be placed there");

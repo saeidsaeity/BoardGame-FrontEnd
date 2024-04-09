@@ -5,6 +5,7 @@ import { useGameEngine } from "../../Context/useGameEngine";
 import { checkTileCompletes } from "../../Views/GameBoard/verifyFunctions";
 import { BoardGameContext } from "../../Context/BoardGameContext";
 import { myPlayer } from 'playroomkit';
+import useSound from 'use-sound';
 function CitizenControls() {
   const {newTileData,
     citizenPosition, // maybe a context?
@@ -15,7 +16,9 @@ function CitizenControls() {
     setCitizenArray,
     setTileRotation}= useContext(BoardGameContext)
 
-
+    const [sound] = useSound("drop.wav");
+    const [falling]= useSound('falling.mp3')
+    const [playSound] = useSound('confirm.mp3');
   const [placementOptions, setPlacementOptions] = useState([]);
   const [isMonastery, setIsMonastery] = useState(false);
   const [citizenControlledPosition, setCitizenControlledPosition] = useState();
@@ -72,6 +75,7 @@ function CitizenControls() {
       setTileRotation(0);
       setCitizenArray([]);
       setShowCitizen(false);
+      playSound()
       phaseEnd();
     }
   };
@@ -132,7 +136,11 @@ function CitizenControls() {
               style={{ backgroundColor: me.state.profile.color }}
               className={styles.citizenOption}
               onClick={() => {
+                falling()
                 selectCitizenLocationHandler(asset, index, compass)
+                setTimeout(function () {
+                  sound();
+                }, 1000);
               }}
             >
               <h3>{asset.asset}</h3>
