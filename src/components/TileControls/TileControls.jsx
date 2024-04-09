@@ -19,7 +19,8 @@ function TileControls({drawEventHandler
         setNewTileType,
         setReplaceTile,
         newTile2DPosition,
-        setNewTileMesh
+        setNewTileMesh,
+        renderEnemyTile,setRenderEnemyTile
         }= useContext(BoardGameContext)
     
 
@@ -29,7 +30,8 @@ const {
     phaseEnd,
     boardGameMatrix,
     setBoardGameMatrix,
-    gameTileCount
+    gameTileCount,
+    setOtherPlayerTile
    
     } = useGameEngine();
 
@@ -65,6 +67,10 @@ const {
             const newerBoard = JSON.parse(JSON.stringify(boardGameMatrix))
             newerBoard[newTile2DPosition[0]][newTile2DPosition[1]] = [newTileData];
             setBoardGameMatrix(newerBoard)
+            setOtherPlayerTile(null)
+            setNewTileMesh(null)
+            setReleaseTile(false)
+            setRenderEnemyTile(null)
             phaseEnd()
         } else {
             console.log("tile can not be placed there");

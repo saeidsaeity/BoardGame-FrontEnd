@@ -3,6 +3,7 @@ import { tileChecks, tileColourLogic } from '../../../utils.js';
 import { useGameEngine } from '../../Context/useGameEngine.jsx';
 import { useContext } from 'react';
 import { BoardGameContext } from '../../Context/BoardGameContext.jsx';
+import { myPlayer } from 'playroomkit';
 
 export const GameBoardCells = ({
 
@@ -12,8 +13,11 @@ export const GameBoardCells = ({
   const tileSize = 2;
   const{setReleaseTile,setNewTile2DPosition,setNewTileData,newTileMesh,
     setNewTileMesh}=useContext(BoardGameContext)
-  const{setNewTilePosition,boardGameMatrix,turnPhase,isCitizenPhase
+  const{setNewTilePosition,boardGameMatrix,turnPhase,isCitizenPhase, players,
+    playerTurn
   } = useGameEngine();
+  const player = players[playerTurn]
+  const me = myPlayer()
   const grid = [];
   for (let i = -5; i < 6; i++) {
     for (let j = -5; j < 6; j++) {
@@ -23,6 +27,8 @@ export const GameBoardCells = ({
         <mesh
           key={`${i}-${j}-tile`}
           onClick={() => {
+            if(newTileMesh){
+            if(me.id === player.id){
             if (turnPhase !== 'Place Tile') {
               console.log('You can not place during the citizen phase!');
               return [];
@@ -84,6 +90,11 @@ export const GameBoardCells = ({
               });
             }
           }}
+          else{
+            console.log('please draw a tile');
+          }
+        }
+        }
           position={[i * tileSize, 0, j * tileSize]}
           scale={tileScale}
         >

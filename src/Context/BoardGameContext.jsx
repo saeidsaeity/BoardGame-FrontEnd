@@ -23,10 +23,11 @@ export const BoardGameProvider =({children})=>{
     const [ showTile, setShowTile ] = useState(false)
     const [citizenArray, setCitizenArray] = useState([]);
     const [releaseCitizen, setReleaseCitizen] = useState(true);
+    const[renderEnemyTile,setRenderEnemyTile]=useState([])
     return (<BoardGameContext.Provider value={{enableRotate,setEnableRotate,sunPosition,
     setSunPosition,newTileMesh,setNewTileMesh,
     newTileData,setNewTileData,newTileType,setNewTileType,newTile2DPosition,setNewTile2DPosition,releaseTile,setReleaseTile,tileRotation,setTileRotation,renderTileArr,setRenderTileArr,
-    citizenPosition,setCitizenPosition,isCitizenPhase,setIsCitizenPhase,replaceTile,setReplaceTile,showCitizen,setShowCitizen,showTile,setShowTile,citizenArray,setCitizenArray,releaseCitizen,setReleaseCitizen}}>
+    citizenPosition,setCitizenPosition,isCitizenPhase,setIsCitizenPhase,replaceTile,setReplaceTile,showCitizen,setShowCitizen,showTile,setShowTile,citizenArray,setCitizenArray,releaseCitizen,setReleaseCitizen,renderEnemyTile,setRenderEnemyTile}}>
         {children}
     </BoardGameContext.Provider>)
 }

@@ -17,17 +17,18 @@ import styles from './GameBoard.module.css';
 
 import { BoardGameContext } from '../../Context/BoardGameContext.jsx';
 import SpinnerLoader from '../../components/SpinnerLoader/SpinnerLoader.jsx';
+import { useMemo } from 'react';
 
 
 const GameBoard = () => {
   // TILE
-  const[renderEnemyTile,setRenderEnemyTile]=useState([])
+  
   const tileScale = [0.92, 0.92, 0.92];
   const tileSize = 2;
   const {enableRotate,sunPosition,
  setNewTileData,setNewTile2DPosition,releaseTile,setReleaseTile,tileRotation,renderTileArr,setRenderTileArr,
   citizenPosition,isCitizenPhase,replaceTile,showCitizen,citizenArray,setCitizenArray,setReleaseCitizen,newTileMesh,
-  setNewTileMesh}=useContext(BoardGameContext)
+  setNewTileMesh,renderEnemyTile,setRenderEnemyTile}=useContext(BoardGameContext)
   // STATES //
   // CAMERA & ENVIRONMENT
   const {
@@ -116,7 +117,7 @@ const GameBoard = () => {
   const me = myPlayer()
 
 
-  useEffect(() => {
+  useMemo(() => {
     // setting rendered tile array
     setReleaseCitizen(false);
     //setCitizenArray([]);
@@ -174,7 +175,7 @@ const GameBoard = () => {
   if(newTileMesh){
     const TileTypeEnemy=newTileMesh.key.split('')
     console.log(newTileMesh);
-setOtherPlayerTile([TileTypeEnemy[0],newTileMesh.props.position,newTileMesh.props.rotation[1]])
+setOtherPlayerTile([TileTypeEnemy[0],newTileMesh.props.position,-newTileMesh.props.rotation[1]])
   }
  
   if(otherPlayerTile){
@@ -266,7 +267,8 @@ setOtherPlayerTile([TileTypeEnemy[0],newTileMesh.props.position,newTileMesh.prop
            
 
             {releaseTile && replaceTile ? newTileMesh : null}
-            {me.id !== player.id ? renderEnemyTile: null}
+            
+            {me.id !== player.id && otherPlayerTile ? renderEnemyTile: null}
             {turnPhase === 'Place Citizen' &&
             citizenPosition.length > 0 &&
             showCitizen &&
