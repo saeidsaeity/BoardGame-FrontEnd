@@ -1,6 +1,6 @@
 import { myPlayer, RPC } from "playroomkit";
 import { Suspense, useEffect, useState, useContext } from "react";
-import { Center, OrbitControls, PresentationControls } from "@react-three/drei";
+import { Center, OrbitControls, PresentationControls,Text } from "@react-three/drei";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { Canvas } from "@react-three/fiber";
@@ -41,6 +41,11 @@ export const UI = ({ drawEventHandler }) => {
         setNewPlayerTile(tileComp);
       });
     }
+    else{setNewPlayerTile(<Text scale={[0.3, 0.3,1 ]}
+        rotation={[0,0,0]}
+        color="white" // default
+        anchorX="center" // default
+        anchorY="middle">Loading New Tile....</Text>)}
   }, [newTileType]);
   const handleMessageChange = (e) => {
     
