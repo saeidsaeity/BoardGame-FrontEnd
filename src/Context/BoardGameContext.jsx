@@ -9,7 +9,7 @@ export const BoardGameProvider =({children})=>{
     const [newTileData, setNewTileData] = useState(); //the new tile object
   
     const [newTileType, setNewTileType] = useState(); // string of tile type
-    const [newTilePosition, setNewTilePosition] = useState([12, 4, 0]); //updates the postion
+    const [newTilePosition, setNewTilePosition] = useState([]); //updates the postion
   
     const [newTile2DPosition, setNewTile2DPosition] = useState([]); //updates the 2D tile position
     const [releaseTile, setReleaseTile] = useState(false); //makes it so you cant click after confirm
@@ -25,7 +25,7 @@ export const BoardGameProvider =({children})=>{
     const [releaseCitizen, setReleaseCitizen] = useState(true);
     return (<BoardGameContext.Provider value={{enableRotate,setEnableRotate,sunPosition,
     setSunPosition,newTileMesh,setNewTileMesh,
-    newTileData,setNewTileData,newTileType,setNewTileType,newTilePosition,setNewTilePosition,newTile2DPosition,setNewTile2DPosition,releaseTile,setReleaseTile,tileRotation,setTileRotation,renderTileArr,setRenderTileArr,
+    newTileData,setNewTileData,newTileType,setNewTileType,newTile2DPosition,setNewTile2DPosition,releaseTile,setReleaseTile,tileRotation,setTileRotation,renderTileArr,setRenderTileArr,
     citizenPosition,setCitizenPosition,isCitizenPhase,setIsCitizenPhase,replaceTile,setReplaceTile,showCitizen,setShowCitizen,showTile,setShowTile,citizenArray,setCitizenArray,releaseCitizen,setReleaseCitizen}}>
         {children}
     </BoardGameContext.Provider>)

@@ -1,18 +1,19 @@
 import * as THREE from 'three';
 import { tileChecks, tileColourLogic } from '../../../utils.js';
+import { useGameEngine } from '../../Context/useGameEngine.jsx';
+import { useContext } from 'react';
+import { BoardGameContext } from '../../Context/BoardGameContext.jsx';
 
 export const GameBoardCells = ({
-  boardGameMatrix,
-  tileSize,
-  tileScale,
-  setReleaseTile,
-  setNewTilePosition,
-  setNewTile2DPosition,
-  setNewTileMesh,
-  setNewTileData,
-  turnPhase,
-  isCitizenPhase,
+
+  newTilePosition
 }) => {
+  const tileScale = [0.92, 0.92, 0.92];
+  const tileSize = 2;
+  const{setReleaseTile,setNewTile2DPosition,setNewTileData,newTileMesh,
+    setNewTileMesh}=useContext(BoardGameContext)
+  const{setNewTilePosition,boardGameMatrix,turnPhase,isCitizenPhase
+  } = useGameEngine();
   const grid = [];
   for (let i = -5; i < 6; i++) {
     for (let j = -5; j < 6; j++) {
@@ -41,9 +42,10 @@ export const GameBoardCells = ({
                   j,
                   setReleaseTile,
                   setNewTilePosition,
-                  setNewTileMesh,
                   setNewTile2DPosition,
-                  tileSize
+                  tileSize,
+                  newTileMesh,
+                  setNewTileMesh
                 );
                 setNewTileData((currTileData) => {
                   const newtilepos = { ...currTileData };
@@ -67,9 +69,10 @@ export const GameBoardCells = ({
                 j,
                 setReleaseTile,
                 setNewTilePosition,
-                setNewTileMesh,
                 setNewTile2DPosition,
-                tileSize
+                tileSize,
+                newTileMesh,
+                setNewTileMesh
               );
               setNewTileData((currTileData) => {
                 const newtilepos = { ...currTileData };

@@ -18,8 +18,8 @@ function TileControls({drawEventHandler
         setNewTileData,
         setNewTileType,
         setReplaceTile,
-        setNewTileMesh,
         newTile2DPosition,
+        setNewTileMesh
         }= useContext(BoardGameContext)
     
 
@@ -30,6 +30,7 @@ const {
     boardGameMatrix,
     setBoardGameMatrix,
     gameTileCount
+   
     } = useGameEngine();
 
     const me = myPlayer();

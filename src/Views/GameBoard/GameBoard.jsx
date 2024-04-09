@@ -21,14 +21,26 @@ import SpinnerLoader from '../../components/SpinnerLoader/SpinnerLoader.jsx';
 
 const GameBoard = () => {
   // TILE
+  const[renderEnemyTile,setRenderEnemyTile]=useState([])
   const tileScale = [0.92, 0.92, 0.92];
   const tileSize = 2;
   const {enableRotate,sunPosition,
-  newTileMesh,setNewTileMesh,
- setNewTileData,newTilePosition,setNewTilePosition,setNewTile2DPosition,releaseTile,setReleaseTile,tileRotation,setTileRotation,renderTileArr,setRenderTileArr,
-  citizenPosition,isCitizenPhase,replaceTile,showCitizen,citizenArray,setCitizenArray,releaseCitizen,setReleaseCitizen}=useContext(BoardGameContext)
+ setNewTileData,setNewTile2DPosition,releaseTile,setReleaseTile,tileRotation,renderTileArr,setRenderTileArr,
+  citizenPosition,isCitizenPhase,replaceTile,showCitizen,citizenArray,setCitizenArray,setReleaseCitizen,newTileMesh,
+  setNewTileMesh}=useContext(BoardGameContext)
   // STATES //
   // CAMERA & ENVIRONMENT
+  const {
+    turnPhase,
+    boardGameMatrix,
+    newTilePosition,
+    setNewTilePosition,
+    setOtherPlayerTile,
+    otherPlayerTile,
+    players,
+    playerTurn
+  } = useGameEngine();
+
   const drawEventHandler = async (tileType) => {
     const TileComponent = await import(
       `../../assets/tiles/tile${tileType}.jsx`
@@ -52,6 +64,7 @@ const GameBoard = () => {
 
   const getRenderTileMesh = async (tileType, position, rotation) => {
     if (tileType !== undefined) {
+    
       const TileComponent = await import(
         `../../assets/tiles/tile${tileType}.jsx`
       );
@@ -71,6 +84,7 @@ const GameBoard = () => {
           <TileComponent.default />
         </RigidBody>
       );
+      // console.log(renderNewTile,'i am here');
       // console.log(renderNewTile, "RENDER NEW TILE");
       return renderNewTile;
     }
@@ -96,11 +110,7 @@ const GameBoard = () => {
     return citizenComp;
   };
 
-  const {
-    turnPhase,
-    boardGameMatrix
-  } = useGameEngine();
-
+  
 
 
   const me = myPlayer()
@@ -161,8 +171,27 @@ const GameBoard = () => {
       });
     });
   }, [boardGameMatrix]);
-
+  if(newTileMesh){
+    const TileTypeEnemy=newTileMesh.key.split('')
+    console.log(newTileMesh);
+setOtherPlayerTile([TileTypeEnemy[0],newTileMesh.props.position,newTileMesh.props.rotation[1]])
+  }
+ 
+  if(otherPlayerTile){
+    
+    getRenderTileMesh(otherPlayerTile[0],otherPlayerTile[1],otherPlayerTile[2]).then((outputtile)=>{
+      
+    setRenderEnemyTile(outputtile)
+ } )
+   
+  }
+  const player = players[playerTurn]
+  // console.log(otherPlayerTile);
+  // console.log(newTileMesh);
+  // console.log(me);
   // RENDERING STARTS HERE //
+  // console.log(me.id !== player.id );
+  // console.log(renderEnemyTile);
   return (
     <>
       <UI  drawEventHandler={drawEventHandler} />
@@ -231,12 +260,13 @@ const GameBoard = () => {
               setNewTileData={setNewTileData}
               turnPhase={turnPhase}
               isCitizenPhase={isCitizenPhase}
+              newTilePosition={newTilePosition}
             />
 
-            {console.log(newTileMesh, "MESH")}
+           
 
             {releaseTile && replaceTile ? newTileMesh : null}
-
+            {me.id !== player.id ? renderEnemyTile: null}
             {turnPhase === 'Place Citizen' &&
             citizenPosition.length > 0 &&
             showCitizen &&
@@ -255,7 +285,7 @@ const GameBoard = () => {
                 <Citizen color={me.state.profile.color} />
               </RigidBody>
             ) : null}
-
+              {/* {otherPlayerTile ?  renderEnemyTile :null} */}
             {renderTileArr}
             {citizenArray}
             <RigidBody type="fixed">
@@ -264,8 +294,13 @@ const GameBoard = () => {
                 <meshStandardMaterial color="#8f4111" />
               </mesh>
             </RigidBody>
+          
           </Physics>
-
+          {newTilePosition && turnPhase === 'Place Tile' ?<mesh  position={newTilePosition}>
+      <boxGeometry args={[2, 10, 2]} />
+      <meshBasicMaterial color="yellow" transparent opacity={0.3} />
+    </mesh>: null}
+         
           {/* HELPERS */}
           {/* <Perf position="top-left" /> */}
           {/* <axesHelper args={[5]} />
