@@ -46,6 +46,7 @@ export const GameEngineProvider = ({ children }) => {
         [[], [], [], [], [], [], [], [], [], [], []],
     ])
 
+    // 
     const [gameTileCount, setGameTileCount] = useMultiplayerState('gameTileCount', {
         A: 2,
         B: 4,
@@ -73,7 +74,23 @@ export const GameEngineProvider = ({ children }) => {
         X: 1
       })
     
+    
+    const countRemainingTiles = (gameTileCount) => {
+        const count = Object.values(gameTileCount).reduce((a,b) => a + b, 0)
+        if(count === 0) console.log("THE GAME IS OVER");
+        return count;
+    }
 
+    const removePlacedTile = (tileType, gameTileCount) => {
+        const gameTileCopy = {...gameTileCount}
+        for(const n in gameTileCopy){
+            if(n === tileType){
+                gameTileCopy[n] = gameTileCopy[n] - 1;
+            }
+        }
+        // console.log(gameTileCopy, "gameTileCopy Engine");
+        setGameTileCount(gameTileCopy)
+    }
 
     // Create platers and sort them so all players have same order of players
     const players = usePlayersList(true)
@@ -256,7 +273,9 @@ export const GameEngineProvider = ({ children }) => {
         newTilePosition,
         setNewTilePosition,
        otherPlayerTile,
-       setOtherPlayerTile
+       setOtherPlayerTile,
+       countRemainingTiles,
+       removePlacedTile
     }
     
     return (

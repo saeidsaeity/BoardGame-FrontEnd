@@ -6,7 +6,6 @@ import { myPlayer } from 'playroomkit';
 function PopUp({ setIsOpen }) {
 
 const me = myPlayer();
-
   return (
     <>
       <div className={styles.darkBG} onClick={() => setIsOpen(false)} />

@@ -50,7 +50,7 @@ function CitizenControls() {
   const confirmCitizenHandler = () => {
     if (currentAsset && currentCompass + 1) {
       setNewTileData((currTileData) => {
-        console.log(currTileData, "currTileData");
+        // console.log(currTileData, "currTileData");
         const changeTileData = { ...currTileData };
         changeTileData.citizen.is_citizen = true;
         changeTileData.citizen.asset = currentAsset;
