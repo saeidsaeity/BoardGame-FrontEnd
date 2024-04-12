@@ -6,11 +6,10 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { Canvas } from "@react-three/fiber";
 import { Citizen } from "../../assets/citizens/Citizen";
 import { useGameEngine } from "../../Context/useGameEngine";
-import { checkTilePlacement } from "../../Views/GameBoard/verifyFunctions.js";
 
 import CitizenControls from "../CitizenControls/CitizenControls";
 
-// import PopUp from "../popUpRules";
+import PopUpRules from "../PopUp/popUpRules";
 import styles from "./UI.module.css";
 import TileControls from "../TileControls/TileControls";
 import { BoardGameContext } from "../../Context/BoardGameContext";
@@ -22,6 +21,7 @@ export const UI = ({ drawEventHandler }) => {
   const [newPlayerTile, setNewPlayerTile] = useState();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [ isOpen, setIsOpen ] = useState(false);
 
   useEffect(() => {
     RPC.register("chat", (data, caller) => {
@@ -104,6 +104,7 @@ export const UI = ({ drawEventHandler }) => {
         {me.id === player.id && turnPhase === "Place Citizen" ? (
           <h2>Place a citizen / End turn</h2>
         ) : null}
+        <button onClick={() => setIsOpen(true)}> Game rules</button>
       </div>
       {players.map((player, index) => {
         return (
@@ -165,7 +166,11 @@ export const UI = ({ drawEventHandler }) => {
           </Canvas>
         </div>
       </Suspense>
-      {/* <PopUp/> */}
+      {isOpen ? 
+        <PopUpRules setIsOpen={setIsOpen}/>
+        : 
+        null
+      }
       {turnPhase === "Place Citizen" && player.id === me.id ? (
         <CitizenControls me={me} />
       ) : null}
