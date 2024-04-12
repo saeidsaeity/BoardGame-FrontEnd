@@ -4,10 +4,10 @@ import { useGameEngine } from "../../Context/useGameEngine.jsx";
 import { useContext } from "react";
 import { BoardGameContext } from "../../Context/BoardGameContext.jsx";
 import { myPlayer } from "playroomkit";
-import useSound from "use-sound";
+// import useSound from "use-sound";
 export const GameBoardCells = ({ newTilePosition }) => {
-  const [sound] = useSound("drop.wav");
-  const [falling]= useSound('falling.mp3')
+  // const [sound] = useSound("drop.wav");
+  // const [falling]= useSound('falling.mp3')
   const tileScale = [0.92, 0.92, 0.92];
   const tileSize = 2;
   const {
@@ -50,7 +50,7 @@ export const GameBoardCells = ({ newTilePosition }) => {
                       boardGameMatrix[i + 5][j + 6]?.length > 0 ||
                       boardGameMatrix[i + 5][j + 4]?.length > 0)
                   ) {
-                    falling()
+                    // falling()
                     tileChecks(
                       position.x,
                       position.z,
@@ -70,9 +70,9 @@ export const GameBoardCells = ({ newTilePosition }) => {
                         column: position.z,
                       };
                       
-                      setTimeout(function () {
-                        sound();
-                      }, 900);
+                      // setTimeout(function () {
+                      //   sound();
+                      // }, 900);
                       return newtilepos;
                     });
                   }
@@ -84,7 +84,7 @@ export const GameBoardCells = ({ newTilePosition }) => {
                     boardGameMatrix[i + 6][j + 5]?.length > 0 ||
                     boardGameMatrix[i + 5][j + 6]?.length > 0)
                 ) {
-                  falling()
+                  // falling()
                   //setReleaseTile(!releaseTile);
                   tileChecks(
                     position.x,
@@ -105,9 +105,9 @@ export const GameBoardCells = ({ newTilePosition }) => {
                       column: position.z + 5,
                     };
                     
-                    setTimeout(function () {
-                      sound();
-                    }, 1000);
+                    // setTimeout(function () {
+                    //   sound();
+                    // }, 1000);
                     return newtilepos;
                   });
                 }
